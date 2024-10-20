@@ -43,23 +43,23 @@ export class UIManager {
     }
 
     createSettingButton(fontAsset: pc.Asset) {
-        this.settingButton = new pc.Entity("SettingButton");
-        this.settingButton.setLocalPosition(-10, -10, 0);
-        this.settingButton.addComponent('element', {
-            pivot: new pc.Vec2(1, 1),
-            anchor: new pc.Vec4(1, 1, 1, 1),
-            fontAsset: fontAsset.id,
-            fontSize: 24,
-            type: pc.ELEMENTTYPE_TEXT,
-            text: 'Settings',
-            color: new pc.Color(0, 0, 0),
-        });
-        this.screen.addChild(this.settingButton);
+        // this.settingButton = new pc.Entity("SettingButton");
+        // this.settingButton.setLocalPosition(-10, -10, 0);
+        // this.settingButton.addComponent('element', {
+        //     pivot: new pc.Vec2(1, 1),
+        //     anchor: new pc.Vec4(1, 1, 1, 1),
+        //     fontAsset: fontAsset.id,
+        //     fontSize: 24,
+        //     type: pc.ELEMENTTYPE_TEXT,
+        //     text: 'Settings',
+        //     color: new pc.Color(0, 0, 0),
+        // });
+        // this.screen.addChild(this.settingButton);
 
-        this.settingButton.element!.on('click', () => {
-            console.log("ok")
-            this.openSettingsMenu();
-        });
+        // this.settingButton.element!.on('click', () => {
+        //     console.log("ok")
+        //     this.openSettingsMenu();
+        // });
     }
 
     updateScore(newScore: number) {

@@ -5,6 +5,7 @@ import { IdleState } from "../StateMachine/IdleState";
 import { RunState } from "../StateMachine/RunState";
 import { DeathState } from "../StateMachine/DeathState";
 import { JumpState } from "../StateMachine/JumpState";
+import { InputHandler } from "../Input/InputHandler ";
 
 export class Character {
     app: pc.Application;
@@ -16,16 +17,21 @@ export class Character {
     isJumpping: boolean;
     jumpCooldown: number;
     isPlayerDead: boolean;
-
-    constructor(app: pc.Application, assets: any) {
+    inputHandler: InputHandler;
+    startX: number;
+    
+    constructor(app: pc.Application, assets: any, inputHandler: InputHandler) {
         this.app = app;
         this.assets = assets;
+        this.inputHandler = inputHandler;
         this.entity = new pc.Entity("Character");
         this.isGrounded = true;
         this.isJumpping = false;
         this.isPlayerDead = false;
         this.jumpCooldown = 0;
-        
+        this.startX = inputHandler.startX;
+
+        this.startX = 0;
         const scale = 1;
         this.entity.setLocalScale(scale, scale, scale);
         this.entity.setPosition(0, 5, 0);
@@ -118,6 +124,7 @@ export class Character {
     }
 
     update(dt: number) {
+        this.startX = this.inputHandler.startX;
         this.currentState.update(dt);
     }
 

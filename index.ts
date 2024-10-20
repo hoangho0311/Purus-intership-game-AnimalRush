@@ -4,6 +4,7 @@ import { createLight } from "./scripts/Core/Light.ts";
 import { Character } from "./scripts/Entities/Character.ts";
 import { RoadManager } from "./scripts/Manager/RoadManager.ts";
 import { UIManager } from "./scripts/UI/UIManager.ts";
+import { InputHandler } from "./scripts/Input/InputHandler .ts";
 
 const rootPath = "./scr/lib/AmmoJS/Utils";
 window.focus();
@@ -25,8 +26,9 @@ const canvas = document.createElement("canvas");
 document.body.appendChild(canvas);
 
 const app = new pc.Application(canvas, {
-  keyboard: new pc.Keyboard(window), // Đảm bảo keyboard input được khởi tạo
+  keyboard: new pc.Keyboard(window),
   mouse: new pc.Mouse(canvas),
+  touch: new pc.TouchDevice(canvas),
 });
 app.setCanvasFillMode(pc.FILLMODE_FILL_WINDOW);
 app.setCanvasResolution(pc.RESOLUTION_AUTO);
@@ -71,7 +73,8 @@ const assetListLoader = new pc.AssetListLoader(
 assetListLoader.load(() => {
   app.systems.rigidbody!.gravity.set(0, -15.81, 0);
   // Create character
-  const character = new Character(app, assets);
+  const inputHandler = new InputHandler(app);
+  const character = new Character(app, assets, inputHandler);
 
   // Setup camera to follow the character
   const cameraEntity = createCamera(app, character.entity);

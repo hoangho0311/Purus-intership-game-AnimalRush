@@ -3,41 +3,41 @@ import { State } from "./State";
 
 export class RunState extends State {
     enter() {
-        console.log("Entering Run State");
         this.character.playAnimation(this.character.assets.charRunAnimationAsset, 0.1, true, 1);
     }
 
     update(dt: number) {
         const keyboard = this.character.app.keyboard;
-        const velocity = this.character.entity.rigidbody!.linearVelocity.clone();
-        
-        const charSpeed = 20;
+        const touchX = this.character.inputHandler.startX;
+        const charSpeed = 15;
         const position = this.character.entity.getPosition();
 
         const minX = -4;
         const maxX = 4;
 
-        if (keyboard.isPressed(pc.KEY_A) && position.x < maxX) {
-            velocity.x += charSpeed * dt;
-        }
-        else if (keyboard.isPressed(pc.KEY_D) && position.x > minX) {
-            velocity.x -= charSpeed * dt;
-        }else{
-            velocity.x = 0;
+        if (keyboard.isPressed(pc.KEY_A) && position.x > minX) {
+            position.x += charSpeed * dt;
+        } else if (keyboard.isPressed(pc.KEY_D) && position.x < maxX) {
+            position.x -= charSpeed * dt;
         }
 
-        if(position.x == maxX || position.x == minX){
-            velocity.x =0;
+        if (this.character.inputHandler.isTouching) {
+            const screenWidth = this.character.app.graphicsDevice.width;
+            const normalizedTouchX = (touchX / screenWidth) * 2 - 1; 
+            const newPosX = normalizedTouchX * maxX; 
+
+            const clampedPosX = pc.math.clamp(newPosX, minX, maxX);
+
+            this.character.entity.rigidbody!.teleport(new pc.Vec3(-clampedPosX, position.y, position.z));
         }
 
-        this.character.entity.rigidbody!.linearVelocity = velocity;
+        this.character.entity.rigidbody!.teleport(position);
 
-        if (keyboard.wasPressed(pc.KEY_SPACE) && this.character.isGrounded) {
+        if ((keyboard.wasPressed(pc.KEY_SPACE) || this.character.inputHandler.deltaY < -500) && this.character.isGrounded) {
             this.character.changeState("jump");
         }
     }
 
     exit() {
-        console.log("Exiting Run State");
     }
 }
