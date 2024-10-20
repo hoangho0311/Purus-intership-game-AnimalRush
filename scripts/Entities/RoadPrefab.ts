@@ -38,7 +38,7 @@ export class RoadPrefab {
       type: "asset",
       asset: asset.obstacleAsset1,
     });
-    const scale = 1;
+    const scale = 0.5;
     obstacle.setLocalScale(scale/ this.roadWidth, scale, scale/this.roadLength);
 
     obstacle.setLocalPosition(position);
@@ -49,13 +49,12 @@ export class RoadPrefab {
   addItem(road: pc.Entity, position: pc.Vec3, asset: pc.Asset): pc.Entity {
     const item = new pc.Entity("Item");
 
-    // Sử dụng mô hình từ asset đã tải
     item.addComponent("model", {
       type: "asset",
       asset: asset.itemAsset1,
     });
 
-    const scale = 1;
+    const scale = 0.3;
     item.setLocalScale(scale/ this.roadWidth, scale, scale/this.roadLength);
 
     item.setLocalPosition(position);
@@ -68,11 +67,11 @@ export class RoadPrefab {
     const road = this.createRoad();
 
     obstacles.forEach(obstacle => {
-    this.addObstacle(road, obstacle.position, obstacle.asset);
+      this.addObstacle(road, obstacle.position, obstacle.asset);
     });
 
     items.forEach(item => {
-    this.addItem(road, item.position, item.asset);
+      this.addItem(road, item.position, item.asset);
     });
 
     return road;

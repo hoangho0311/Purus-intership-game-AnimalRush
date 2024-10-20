@@ -71,17 +71,8 @@ assetListLoader.load(() => {
     const lightEntity = createLight(app);
     const roadManager = new RoadManager( app, character.entity, 3, 8, 30, assets);
 
-    // // create box entity
-    // const box = new pc.Entity("cube");
-    // box.addComponent("model", {
-    //   type: "asset",
-    //   asset: assets.obstacleAsset1,
-    // });
-    // box.setPosition(0, 2, 0);
-    // app.root.addChild(box);
-
     app.on("update", (dt) => {
       character.update(dt);
-      //roadManager.update(dt);
+      roadManager.update(dt);
   });
 });
