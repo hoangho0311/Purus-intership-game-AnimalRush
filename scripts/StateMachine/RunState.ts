@@ -26,6 +26,10 @@ export class RunState extends State {
             velocity.x = 0;
         }
 
+        if(position.x == maxX || position.x == minX){
+            velocity.x =0;
+        }
+
         this.character.entity.rigidbody!.linearVelocity = velocity;
 
         if (keyboard.wasPressed(pc.KEY_SPACE) && this.character.isGrounded) {

@@ -1,9 +1,10 @@
 import * as pc from "playcanvas";
 
-import { IdleState } from "./IdleState";
-import { RunState } from "./RunState";
-import { JumpState } from "./JumpState";
-import { State } from "./State";
+import { State } from "../StateMachine/State";
+import { IdleState } from "../StateMachine/IdleState";
+import { RunState } from "../StateMachine/RunState";
+import { DeathState } from "../StateMachine/DeathState";
+import { JumpState } from "../StateMachine/JumpState";
 
 export class Character {
     app: pc.Application;
@@ -14,6 +15,7 @@ export class Character {
     isGrounded: boolean;
     isJumpping: boolean;
     jumpCooldown: number;
+    isPlayerDead: boolean;
 
     constructor(app: pc.Application, assets: any) {
         this.app = app;
@@ -21,6 +23,7 @@ export class Character {
         this.entity = new pc.Entity("Character");
         this.isGrounded = true;
         this.isJumpping = false;
+        this.isPlayerDead = false;
         this.jumpCooldown = 0;
         
         const scale = 1;
@@ -37,6 +40,7 @@ export class Character {
               assets.charIdleAnimationAsset,
               assets.charRunAnimationAsset,
               assets.charJumpAnimationAsset,
+              assets.charDeathAnimationAsset,
             ],
         });
 
@@ -50,6 +54,8 @@ export class Character {
             halfExtents: [0.5, 0.8, 0.5],
             linearOffset: new pc.Vec3(0, 0.8, 0),
         });
+
+        this.entity.tags.add("player");
         
         this.applyMaterials();
         this.entity.rigidbody!.angularFactor = new pc.Vec3(0, 0, 0);
@@ -60,6 +66,7 @@ export class Character {
             idle: new IdleState(this),
             run: new RunState(this),
             jump: new JumpState(this),
+            death: new DeathState(this),
         };
 
         this.currentState = this.states.idle;

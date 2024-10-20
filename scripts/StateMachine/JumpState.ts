@@ -12,8 +12,8 @@ export class JumpState extends State {
     
         const velocity = this.character.entity.rigidbody!.linearVelocity.clone();
         const jumpImpulse = new pc.Vec3(0, 200, 0);
-        velocity.y = 0;
         velocity.x = 0;
+        velocity.y = 0;
         this.character.entity.rigidbody!.linearVelocity = velocity;
         this.character.entity.rigidbody!.applyImpulse(jumpImpulse);
     }
@@ -25,6 +25,30 @@ export class JumpState extends State {
             this.character.isGrounded = true;
             this.character.changeState("run");
         }
+
+        const keyboard = this.character.app.keyboard;
+        const velocity = this.character.entity.rigidbody!.linearVelocity.clone();
+        
+        const charSpeed = 20;
+        const position = this.character.entity.getPosition();
+
+        const minX = -4;
+        const maxX = 4;
+
+        if (keyboard.isPressed(pc.KEY_A) && position.x < maxX) {
+            velocity.x += charSpeed * dt;
+        }
+        else if (keyboard.isPressed(pc.KEY_D) && position.x > minX) {
+            velocity.x -= charSpeed * dt;
+        }else{
+            velocity.x = 0;
+        }
+
+        if(position.x == maxX || position.x == minX){
+            velocity.x =0;
+        }
+
+        this.character.entity.rigidbody!.linearVelocity = velocity;
     }
 
     exit() {

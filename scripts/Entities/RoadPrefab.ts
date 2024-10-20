@@ -38,13 +38,30 @@ export class RoadPrefab {
       type: "asset",
       asset: asset.obstacleAsset1,
     });
+
     const scale = 0.5;
     obstacle.setLocalScale(scale/ this.roadWidth, scale, scale/this.roadLength);
 
+    obstacle.addComponent("rigidbody", {
+      type: "static",
+      restitution: 0.5,
+    });
+  
+    obstacle.addComponent("collision", {
+      type: "box",
+      halfExtents: new pc.Vec3(0.5, 2, 0.3)
+    });
+
     obstacle.setLocalPosition(position);
     road.addChild(obstacle);
+    obstacle.collision!.on('collisionstart', function (result) {
+      if (result.other.tags.has('player')) {
+        console.log('Player hit an obstacle!');
+      }
+    });
     return obstacle;
   }
+  
 
   addItem(road: pc.Entity, position: pc.Vec3, asset: pc.Asset): pc.Entity {
     const item = new pc.Entity("Item");
@@ -57,8 +74,21 @@ export class RoadPrefab {
     const scale = 0.3;
     item.setLocalScale(scale/ this.roadWidth, scale, scale/this.roadLength);
 
+    item.addComponent("collision", {
+      type: "box",
+      halfExtents: new pc.Vec3(0.4, 0.2, 0.3),
+      trigger: true,
+    });
+
     item.setLocalPosition(position);
     road.addChild(item);
+    item.collision!.on('triggerenter', function (result) {
+      if (result.tags.has('player')) {
+          console.log('Item collected by player!');
+          item.destroy();
+      }
+    });
+
     return item;
   }
 

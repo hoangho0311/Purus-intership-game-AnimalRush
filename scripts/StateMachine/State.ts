@@ -1,4 +1,4 @@
-import { Character } from "./Character";
+import { Character } from "../Entities/Character";
 export abstract class State {
     character: Character;
 
