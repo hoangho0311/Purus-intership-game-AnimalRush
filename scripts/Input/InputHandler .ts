@@ -7,6 +7,7 @@ export class InputHandler {
     startY: number;
     deltaY: number;
     deltaX: number;
+    touchSpeed: number;
 
     constructor(app: pc.Application) {
         this.app = app;
@@ -15,6 +16,7 @@ export class InputHandler {
         this.startY = 0;
         this.deltaY = 0;
         this.deltaX = 0;
+        this.touchSpeed = 0.01;
 
         this.setupTouchEvents();
     }

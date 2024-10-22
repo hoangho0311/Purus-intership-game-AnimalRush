@@ -8,7 +8,7 @@ export class JumpState extends State {
         this.jumpTime = 0;
         this.character.isJumpping = true;
         this.character.isGrounded = false;
-        this.character.playAnimation(this.character.assets.charJumpAnimationAsset, 0, false, 1.3);
+        this.character.playAnimation(this.character.assets.charJumpAnimationAsset, 0, false, 1.13);
 
         const velocity = this.character.entity.rigidbody!.linearVelocity.clone();
         const jumpImpulse = new pc.Vec3(0, 200, 0);
@@ -21,8 +21,7 @@ export class JumpState extends State {
     update(dt: number) {
         this.jumpTime += dt;
 
-        if (this.jumpTime > 0.5 && this.checkIfGrounded()) {
-            this.character.isGrounded = true;
+        if (this.jumpTime > 0.8 && this.checkIfGrounded()) {
             this.character.changeState("run");
         }
 
@@ -39,13 +38,14 @@ export class JumpState extends State {
         
         const deltaX = this.character.inputHandler.getMovementDelta();
 
-        position.x += -deltaX * 0.01; 
+        position.x += -deltaX * this.character.inputHandler.touchSpeed; 
         position.x = pc.math.clamp(position.x, minX, maxX); 
 
         this.character.entity.rigidbody!.teleport(position);
     }
 
     exit() {
+        this.jumpTime = 0;
         this.character.isJumpping = false;
     }
 
@@ -57,7 +57,7 @@ export class JumpState extends State {
     
         const results = this.character.app.systems.rigidbody!.raycastAll(rayOrigin, rayEnd);
     
-        let minDistance = Infinity;
+        let minDistance = 0.3;
     
         for (let i = 0; i < results.length; i++) {
             if (results[i].entity.tags.has("ground")) {

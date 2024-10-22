@@ -4,6 +4,7 @@ import { State } from "./State";
 export class RunState extends State {
     enter() {
         this.character.playAnimation(this.character.assets.charRunAnimationAsset, 0.1, true, 1);
+        this.character.isGrounded = true;
     }
 
     update(dt: number) {
@@ -20,12 +21,12 @@ export class RunState extends State {
 
         const deltaX = this.character.inputHandler.getMovementDelta();
 
-        position.x += -deltaX * 0.01; 
+        position.x += -deltaX * this.character.inputHandler.touchSpeed; 
         position.x = pc.math.clamp(position.x, minX, maxX); 
  
         this.character.entity.rigidbody!.teleport(position);
 
-        if ((this.character.app.keyboard.wasPressed(pc.KEY_SPACE) || this.character.inputHandler.deltaY < -400) && this.character.isGrounded) {
+        if ((this.character.app.keyboard.wasPressed(pc.KEY_SPACE) || this.character.inputHandler.deltaY < -300) && this.character.isGrounded) {
             this.character.changeState("jump");
         }
     }
