@@ -32,9 +32,9 @@ export class Character {
         this.startX = inputHandler.startX;
 
         this.startX = 0;
-        const scale = 1;
+        const scale = 1.4;
         this.entity.setLocalScale(scale, scale, scale);
-        this.entity.setPosition(0, 5, 0);
+        this.entity.setPosition(0, 0, -5);
 
         this.entity.addComponent("model", {
             type: "asset",
@@ -58,7 +58,7 @@ export class Character {
         this.entity.addComponent("collision", {
             type: "box",
             halfExtents: [0.5, 0.8, 0.5],
-            linearOffset: new pc.Vec3(0, 0.8, 0),
+            linearOffset: new pc.Vec3(0, 1.4, 0),
         });
 
         this.entity.tags.add("player");
@@ -88,7 +88,7 @@ export class Character {
     
         colliderBox.setLocalScale(1, 1.6, 1); // Gấp đôi halfExtents của collider: [1, 2, 1.5]
     
-        colliderBox.setLocalPosition(0, 0.8, 0);
+        colliderBox.setLocalPosition(0, 1.4, 0);
     
         const material = new pc.StandardMaterial();
         material.diffuse = new pc.Color(1, 0, 0); // Màu đỏ để dễ nhận biết

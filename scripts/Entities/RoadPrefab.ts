@@ -1,109 +1,139 @@
 import * as pc from "playcanvas";
+import { GameManager } from "../Manager/GameManager";
 
 export class RoadPrefab {
-  roadWidth: number;
-  roadLength: number;
+    roadWidth: number;
+    roadLength: number;
 
-  constructor(roadWidth: number, roadLength: number) {
-    this.roadWidth = roadWidth;
-    this.roadLength = roadLength;
-  }
+    constructor(roadWidth: number, roadLength: number) {
+        this.roadWidth = roadWidth;
+        this.roadLength = roadLength;
+    }
 
-  createRoad(): pc.Entity {
-    const road = new pc.Entity("Road");
+    createRoad(Asset: pc.Asset): pc.Entity {
+        const road = new pc.Entity("Road");
 
-    road.addComponent("model", {
-      type: "box"
-    });
+        road.addComponent("model", {
+            type: "asset",
+            asset: Asset.groundAsset,
+        });
 
-    road.setLocalScale(this.roadWidth, 1, this.roadLength);
+        const material = road.model?.meshInstances[0].material as pc.StandardMaterial;
+        material.diffuseMap = Asset.groundTextureAsset.resource;
 
-    road.addComponent("rigidbody", {
-      type: "static",
-      restitution: 0.5,
-    });
+        road.addComponent("rigidbody", {
+            type: "static",
+            restitution: 0.5,
+        });
 
-    road.addComponent("collision", {
-      type: "box",
-      halfExtents: [this.roadWidth / 2, 0.5, this.roadLength / 2],
-    });
-    road.tags.add("ground");
-    return road;
-  }
+        const scale = 1;
+        road.setLocalScale(this.roadWidth, scale, this.roadLength);
 
-  addObstacle(road: pc.Entity, position: pc.Vec3, asset: pc.Asset): pc.Entity {
-    const obstacle = new pc.Entity("Obstacle");
+        road.addComponent("collision", {
+            type: "box",
+            halfExtents: new pc.Vec3(this.roadWidth * 6, 1, this.roadLength),
+        });
 
-    obstacle.addComponent("model", {
-      type: "asset",
-      asset: asset.obstacleAsset1,
-    });
+        road.tags.add("ground");
+        return road;
+    }
 
-    const scale = 0.5;
-    obstacle.setLocalScale(scale/ this.roadWidth, scale, scale/this.roadLength);
+    addDecoration(road: pc.Entity, position: pc.Vec3, asset: pc.Asset): pc.Entity {
+        const decoration = new pc.Entity("Decoration");
 
-    obstacle.addComponent("rigidbody", {
-      type: "static",
-      restitution: 0.5,
-    });
-  
-    obstacle.addComponent("collision", {
-      type: "box",
-      halfExtents: new pc.Vec3(0.5, 2, 0.3)
-    });
+        decoration.addComponent("model", {
+            type: "asset",
+            asset: asset,
+        });
 
-    obstacle.setLocalPosition(position);
-    road.addChild(obstacle);
-    obstacle.collision!.on('collisionstart', function (result) {
-      if (result.other.tags.has('player')) {
-        console.log('Player hit an obstacle!');
-      }
-    });
-    return obstacle;
-  }
-  
+        const scale = 0.3;
+        decoration.setLocalScale(scale / this.roadWidth, scale, scale / this.roadLength);
 
-  addItem(road: pc.Entity, position: pc.Vec3, asset: pc.Asset): pc.Entity {
-    const item = new pc.Entity("Item");
+        decoration.setLocalPosition(position);
 
-    item.addComponent("model", {
-      type: "asset",
-      asset: asset.itemAsset1,
-    });
+        road.addChild(decoration);
 
-    const scale = 0.3;
-    item.setLocalScale(scale/ this.roadWidth, scale, scale/this.roadLength);
+        return decoration;
+    }
 
-    item.addComponent("collision", {
-      type: "box",
-      halfExtents: new pc.Vec3(0.4, 0.2, 0.3),
-      trigger: true,
-    });
+    addObstacle(road: pc.Entity, position: pc.Vec3, asset: pc.Asset): pc.Entity {
+        const obstacle = new pc.Entity("Obstacle");
 
-    item.setLocalPosition(position);
-    road.addChild(item);
-    item.collision!.on('triggerenter', function (result) {
-      if (result.tags.has('player')) {
-          console.log('Item collected by player!');
-          item.destroy();
-      }
-    });
+        obstacle.addComponent("model", {
+            type: "asset",
+            asset: asset,
+        });
 
-    return item;
-  }
+        const scale = 1;
+        obstacle.setLocalScale(scale / this.roadWidth, scale, scale / this.roadLength);
 
-  createCustomRoad(obstacles: { position: pc.Vec3, asset: pc.Asset }[], 
-    items: { position: pc.Vec3, asset: pc.Asset }[]): pc.Entity {
-    const road = this.createRoad();
+        obstacle.addComponent("rigidbody", {
+            type: "static",
+            restitution: 0.5,
+        });
+      
+        obstacle.addComponent("collision", {
+            type: "box",
+            halfExtents: new pc.Vec3(1, 2, 1),
+        });
 
-    obstacles.forEach(obstacle => {
-      this.addObstacle(road, obstacle.position, obstacle.asset);
-    });
+        obstacle.setLocalPosition(position);
+        road.addChild(obstacle);
 
-    items.forEach(item => {
-      this.addItem(road, item.position, item.asset);
-    });
+        return obstacle;
+    }
 
-    return road;
-  }
+    addItem(road: pc.Entity, position: pc.Vec3, asset: pc.Asset): pc.Entity {
+        const item = new pc.Entity("Item");
+        const gameManager = GameManager.getInstance();
+
+        item.addComponent("model", {
+            type: "asset",
+            asset: asset,
+        });
+
+        const scale = 1;
+        item.setLocalScale(scale / this.roadWidth, scale, scale / this.roadLength);
+
+        item.addComponent("collision", {
+            type: "box",
+            halfExtents: new pc.Vec3(0.4, 0.2, 0.3),
+            trigger: true,
+        });
+
+        item.setLocalPosition(position);
+        road.addChild(item);
+
+        item.collision!.on('triggerenter', function (result) {
+            if (result.tags.has('player')) {
+                gameManager.addScore(1);
+                item.destroy();
+            }
+        });
+
+        return item;
+    }
+
+    createCustomRoad(
+        obstacles: { position: pc.Vec3, asset: pc.Asset }[],
+        items: { position: pc.Vec3, asset: pc.Asset }[],
+        decorations: { position: pc.Vec3, asset: pc.Asset}[],
+        Asset: pc.Asset,
+    ): pc.Entity {
+        const road = this.createRoad(Asset);
+
+        obstacles.forEach(obstacle => {
+            this.addObstacle(road, obstacle.position, obstacle.asset);
+        });
+
+        items.forEach(item => {
+            this.addItem(road, item.position, item.asset);
+        });
+
+        decorations.forEach(decoration => {
+            this.addDecoration(road, decoration.position, decoration.asset);
+        });
+
+        return road;
+    }
 }

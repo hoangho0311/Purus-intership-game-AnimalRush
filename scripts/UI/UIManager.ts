@@ -4,6 +4,7 @@ export class UIManager {
     app: pc.Application;
     screen: pc.Entity;
     scoreText: pc.Entity;
+    distanceText: pc.Entity;
     settingButton: pc.Entity;
     score: number;
 
@@ -11,7 +12,6 @@ export class UIManager {
         this.app = app;
         this.score = 0;
 
-        // Tạo màn hình UI
         this.screen = new pc.Entity();
         this.screen.addComponent('screen', {
             referenceResolution: new pc.Vec2(1280, 720),
@@ -21,13 +21,11 @@ export class UIManager {
         });
         this.app.root.addChild(this.screen);
 
-        // Tạo các thành phần UI
-        this.createScoreText(fontAsset);
-        this.createSettingButton(fontAsset);
+        this.createCoinText(fontAsset);
+        this.createDistanceText(fontAsset);
     }
 
-    createScoreText(fontAsset: pc.Asset) {
-        // Tạo Text hiển thị điểm số
+    createCoinText(fontAsset: pc.Asset) {
         this.scoreText = new pc.Entity("ScoreText");
         this.scoreText.setLocalPosition(10, -10, 0);
         this.scoreText.addComponent('element', {
@@ -36,61 +34,33 @@ export class UIManager {
             fontAsset: fontAsset.id,
             fontSize: 32,
             color: new pc.Color(0, 0, 0),
-            text: 'Score: 0',
+            text: 'Coin: 0',
             type: pc.ELEMENTTYPE_TEXT,
         });
         this.screen.addChild(this.scoreText);
     }
 
-    createSettingButton(fontAsset: pc.Asset) {
-        // this.settingButton = new pc.Entity("SettingButton");
-        // this.settingButton.setLocalPosition(-10, -10, 0);
-        // this.settingButton.addComponent('element', {
-        //     pivot: new pc.Vec2(1, 1),
-        //     anchor: new pc.Vec4(1, 1, 1, 1),
-        //     fontAsset: fontAsset.id,
-        //     fontSize: 24,
-        //     type: pc.ELEMENTTYPE_TEXT,
-        //     text: 'Settings',
-        //     color: new pc.Color(0, 0, 0),
-        // });
-        // this.screen.addChild(this.settingButton);
-
-        // this.settingButton.element!.on('click', () => {
-        //     console.log("ok")
-        //     this.openSettingsMenu();
-        // });
+    createDistanceText(fontAsset: pc.Asset) {
+        this.distanceText = new pc.Entity("Distance");
+        this.distanceText.setLocalPosition(10, -50, 0);
+        this.distanceText.addComponent('element', {
+            pivot: new pc.Vec2(0, 1),
+            anchor: new pc.Vec4(0, 1, 0, 1),
+            fontAsset: fontAsset.id,
+            fontSize: 32,
+            color: new pc.Color(0, 0, 0),
+            text: 'Distance: 0',
+            type: pc.ELEMENTTYPE_TEXT,
+        });
+        this.screen.addChild(this.distanceText);
     }
 
-    updateScore(newScore: number) {
+    updateCoin(newScore: number) {
         this.score = newScore;
-        this.scoreText.element!.text = `Score: ${this.score}`;
+        this.scoreText.element!.text = `Coin: ${this.score}`;
     }
 
-    openSettingsMenu() {
-        const settingsPopup = new pc.Entity("SettingsPopup");
-        settingsPopup.addComponent('element', {
-            type: 'group',
-            anchor: [0.5, 0.5, 0.5, 0.5],
-            pivot: [0.5, 0.5],
-            width: 400,
-            height: 300,
-        });
-        this.screen.addChild(settingsPopup);
-
-        const closeButton = new pc.Entity("CloseButton");
-        closeButton.addComponent('element', {
-            type: 'text',
-            text: 'Close',
-            fontSize: 24,
-            pivot: [0.5, 0.5],
-            anchor: [0.5, 0.1, 0.5, 0.1],
-            color: new pc.Color(1, 0, 0),
-        });
-        settingsPopup.addChild(closeButton);
-
-        closeButton.element!.on('click', () => {
-            settingsPopup.destroy();
-        });
+    updateDistance(newDistance: number) {
+        this.distanceText.element!.text = `Distance: ${Math.round(newDistance)}`;
     }
 }

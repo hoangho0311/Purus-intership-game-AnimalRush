@@ -1,49 +1,90 @@
 import * as pc from "playcanvas";
-import { Character } from "./Character";
-import { RoadManager } from "./RoadManager";
-import { UIManager } from "./UIManager";
 
 export class GameManager {
-    app: pc.Application;
-    character: Character;
-    roadManager: RoadManager;
-    uiManager: UIManager;
-    assets: any;
-    score: number;
+    private static instance: GameManager;
 
-    constructor(app: pc.Application, assets: any) {
-        this.app = app;
-        this.assets = assets;
+    private isGamePaused: boolean;
+    private isGameStarted: boolean;
+    private isGameOver: boolean;
+    private score: number;
+    private distance: number;
+    
+    private constructor() {
+        this.isGamePaused = false;
+        this.isGameStarted = false;
+        this.isGameOver = false;
         this.score = 0;
-
-        this.character = new Character(app, assets);
-        this.roadManager = new RoadManager(app, this.character.entity, 5, 2, 10, assets);
-        this.uiManager = new UIManager(app);
-
-        // Bắt đầu trò chơi
-        this.startGame();
+        this.distance = 0;
     }
 
-    startGame() {
-        this.character.changeState('run');
-        this.app.on('update', this.update.bind(this));
+    public static getInstance(): GameManager {
+        if (!GameManager.instance) {
+            GameManager.instance = new GameManager();
+        }
+        return GameManager.instance;
     }
 
-    update(dt: number) {
-        this.character.update(dt);
-        this.roadManager.update(dt);
+    public startGame(): void {
+        this.isGameStarted = true;
+        this.isGamePaused = false;
+        this.isGameOver = false;
+        this.score = 0;
+    }
 
-        this.score += 1;
-        this.uiManager.updateScore(this.score);
-
-        if (this.character.isPlayerDead) {
-            this.stopGame();
+    public pauseGame(): void {
+        if (this.isGameStarted && !this.isGameOver) {
+            this.isGamePaused = true;
+            console.log("Game paused.");
         }
     }
 
-    stopGame() {
-        console.log("Game Over");
-        // this.uiManager.showGameOver();
-        this.app.off('update', this.update);
+    public resumeGame(): void {
+        if (this.isGameStarted && this.isGamePaused && !this.isGameOver) {
+            this.isGamePaused = false;
+            console.log("Game resumed.");
+        }
+    }
+
+    public endGame(): void {
+        if (this.isGameStarted) {
+            this.isGameStarted = false;
+            this.isGameOver = true;
+            this.isGamePaused = false;
+            console.log("Game over.");
+        }
+    }
+
+    public addScore(points: number): void {
+        if (this.isGameStarted && !this.isGameOver) {
+            this.score += points;
+        }
+    }
+
+    public getScore(): number {
+        return this.score;
+    }
+
+    public isPaused(): boolean {
+        return this.isGamePaused;
+    }
+
+    public isStarted(): boolean {
+        return this.isGameStarted;
+    }
+
+    public isOver(): boolean {
+        return this.isGameOver;
+    }
+
+    public updateDistance(delta: number): void {
+        this.distance += delta;
+    }
+
+    public getDistance(): number {
+        return this.distance;
+    }
+
+    public resetDistance(): void {
+        this.distance = 0;
     }
 }

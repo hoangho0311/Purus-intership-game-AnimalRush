@@ -1,6 +1,6 @@
 import * as pc from "playcanvas";
 import { RoadPrefab } from "../Entities/RoadPrefab";
-import { Character } from "../Entities/Character";
+import { GameManager } from "./GameManager";
 
 export class RoadManager {
   app: pc.Application;
@@ -10,11 +10,14 @@ export class RoadManager {
   roadWidth: number;
   playerEntity: any;
   roadSpeed: number;
+  speedIncrement: number;
+  maxRoadSpeed: number;
   assets: any;
   roadPrefabManager: RoadPrefab;
   isPlayerStopped: boolean;
 
-  roadConfigs: Array<{ obstacles: { position: pc.Vec3, asset: pc.Asset }[], items: { position: pc.Vec3, asset: pc.Asset }[] }>;
+  roadConfigs: Array<{ obstacles: { position: pc.Vec3, asset: pc.Asset }[], items: { position: pc.Vec3, asset: pc.Asset }[] 
+  , decorations: { position: pc.Vec3, asset: pc.Asset }[]}>;
 
   constructor(app: pc.Application, playerEntity: any, maxRoads: number, roadWidth: number, roadLength: number, assets: any) {
     this.app = app;
@@ -24,6 +27,8 @@ export class RoadManager {
     this.roadWidth = roadWidth;
     this.roadLength = roadLength;
     this.roadPool = [];
+    this.speedIncrement = 0.1;
+    this.maxRoadSpeed = 40;
     this.roadSpeed = 10;
     this.isPlayerStopped = false;
 
@@ -32,28 +37,40 @@ export class RoadManager {
     this.roadConfigs = [
       {
         obstacles: [
-          { position: new pc.Vec3(0.4, 0, 0), asset: this.assets }
+          { position: new pc.Vec3(0, 0, 0), asset: this.assets.obstacleAsset12 }
         ],
         items: [
-          { position: new pc.Vec3(0, 1, 0), asset: this.assets }
-        ]
+          // { position: new pc.Vec3(-3, 1, 0), asset: this.assets.itemAsset1 }
+        ],
+        decorations: [
+          // { position: new pc.Vec3(9, 1, 0), asset: this.assets.decorationAsset1 },
+          // { position: new pc.Vec3(-9, 1, 0), asset: this.assets.decorationAsset1 }
+        ],
       },
       {
         obstacles: [
-          { position: new pc.Vec3(-0.5, 0, 0), asset: this.assets }
+          { position: new pc.Vec3(-3, 0, 0), asset: this.assets.obstacleAsset9 }
         ],
         items: [
-          { position: new pc.Vec3(0, 1, 0), asset: this.assets }
-        ]
+          { position: new pc.Vec3(0, 1, 0), asset: this.assets.itemAsset1 }
+        ],
+        decorations: [
+          // { position: new pc.Vec3(9, 1, 0), asset: this.assets.decorationAsset1 },
+          // { position: new pc.Vec3(-9, 1, 0), asset: this.assets.decorationAsset1 }
+        ],
       },
       {
         obstacles: [
-          { position: new pc.Vec3(0, 0, 0), asset: this.assets },
+          { position: new pc.Vec3(0, 0, 0), asset: this.assets.obstacleAsset1 },
         ],
         items: [
-          { position: new pc.Vec3(-0.5, 1, 0), asset: this.assets },
-          { position: new pc.Vec3(0.5, 1, 0), asset: this.assets }
-        ]
+          { position: new pc.Vec3(-3, 1, 0), asset: this.assets.itemAsset1 },
+          { position: new pc.Vec3(3, 1, 0), asset: this.assets.itemAsset1 }
+        ],
+        decorations: [
+          // { position: new pc.Vec3(9, 1, 0), asset: this.assets.decorationAsset1 },
+          // { position: new pc.Vec3(-9, 1, 0), asset: this.assets.decorationAsset1 }
+        ],
       }
     ];
 
@@ -67,7 +84,8 @@ export class RoadManager {
   createRandomRoad(zPos: number): pc.Entity {
     const randomIndex = Math.floor(Math.random() * this.roadConfigs.length);
     const selectedConfig = this.roadConfigs[randomIndex];
-    const road = this.roadPrefabManager.createCustomRoad(selectedConfig.obstacles, selectedConfig.items);
+    const road = this.roadPrefabManager.createCustomRoad(selectedConfig.obstacles, selectedConfig.items, 
+      selectedConfig.decorations, this.assets);
   
     road.children.forEach((child) => {
       if (child.name === "Obstacle" && child.collision) {
@@ -92,7 +110,10 @@ export class RoadManager {
   
 
   update(dt: number) {
+    const gameManager = GameManager.getInstance();
     if (this.isPlayerStopped || this.playerEntity.isPlayerDead) return;
+    this.roadSpeed = Math.min(this.roadSpeed + this.speedIncrement * dt, this.maxRoadSpeed);
+    gameManager.updateDistance(this.roadSpeed * dt);
     this.roadPool.forEach((road) => {
       const currentPos = road.getPosition();
       currentPos.z -= this.roadSpeed * dt;

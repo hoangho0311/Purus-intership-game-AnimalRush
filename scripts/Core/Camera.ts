@@ -8,7 +8,7 @@ export function createCamera(app: pc.Application, character: pc.Entity): pc.Enti
         clearColor: new pc.Color(66 / 255, 135 / 255, 245 / 255),
     });
 
-    const initialPosition = new pc.Vec3(0, 10, -13);
+    const initialPosition = new pc.Vec3(0, 10, -20);
     cameraEntity.setPosition(initialPosition);
 
     app.on("update", () => {

@@ -5,6 +5,7 @@ import { Character } from "./scripts/Entities/Character.ts";
 import { RoadManager } from "./scripts/Manager/RoadManager.ts";
 import { UIManager } from "./scripts/UI/UIManager.ts";
 import { InputHandler } from "./scripts/Input/InputHandler .ts";
+import { GameManager } from "./scripts/Manager/GameManager.ts";
 
 const rootPath = "./scr/lib/AmmoJS/Utils";
 window.focus();
@@ -21,7 +22,6 @@ await new Promise((resolve) => {
 });
 //#endregion
 
-// Setup application
 const canvas = document.createElement("canvas");
 document.body.appendChild(canvas);
 
@@ -34,7 +34,7 @@ app.setCanvasFillMode(pc.FILLMODE_FILL_WINDOW);
 app.setCanvasResolution(pc.RESOLUTION_AUTO);
 window.addEventListener("resize", () => app.resizeCanvas());
 app.start();
-// Use AssetListLoader to load the character
+
 const assets = {
   charModelAsset: new pc.Asset("model_purus", "model", {
     url: "../../assets/models/Chibi_Cat.glb",
@@ -57,11 +57,24 @@ const assets = {
   charJumpAnimationAsset: new pc.Asset("anim_purus_jump", "animation", {
     url: "../../assets/animations/Cat/Anim_Chibi@Jump.glb",
   }),
-  obstacleAsset1: new pc.Asset("rockModel", "model", {
+  obstacleAsset1: new pc.Asset("obstacleModel1", "model", {
     url: "../../assets/models/Map/obstacle_7_001.glb",
   }),
+  obstacleAsset9: new pc.Asset("obstacleModel9", "model", {
+    url: "../../assets/models/Map/obstacle_9_001.glb",
+  }),
+  obstacleAsset12: new pc.Asset("obstacleModel12", "model", {
+    url: "../../assets/models/Map/obstacle_12_001.glb",
+  }),
   itemAsset1: new pc.Asset("starModel", "model", {
-    url: "../../assets/models/Map/candy_001.glb",
+    url: "../../assets/models/Map/coin_001.glb",
+  }),
+  groundAsset: new pc.Asset("groundModel", "model", {
+    url: "../../assets/models/Map/platform_candy_002.glb",
+  }),
+  groundTextureAsset: new pc.Asset("tex_ground", "texture", { url: "../../assets/textures/Map/Textures3.png" }),
+  decorationAsset1: new pc.Asset("groundModel", "model", {
+    url: "../../assets/models/Map/ground_009.glb",
   }),
   font: new pc.Asset("font", "font", { url: rootPath + "/courier.json" }),
 };
@@ -72,24 +85,24 @@ const assetListLoader = new pc.AssetListLoader(
 );
 assetListLoader.load(() => {
   app.systems.rigidbody!.gravity.set(0, -15.81, 0);
-  // Create character
+
   const inputHandler = new InputHandler(app);
+  const gameManager = GameManager.getInstance();
   const character = new Character(app, assets, inputHandler);
 
-  // Setup camera to follow the character
+
   const cameraEntity = createCamera(app, character.entity);
   const lightEntity = createLight(app);
-  const roadManager = new RoadManager(app, character, 5, 7, 30, assets);
+  const roadManager = new RoadManager(app, character, 7, 1, 30, assets);
 
   const uiManager = new UIManager(app, assets.font);
 
-  let score = 0;
-
   app.on("update", (dt) => {
     character.update(dt);
-    roadManager.update(dt);
 
-    // score += Math.floor(dt * 100);
-    // uiManager.updateScore(score);
+    if(!gameManager.isStarted() || gameManager.isPaused() || gameManager.isOver()) return;
+      roadManager.update(dt);
+      uiManager.updateCoin(gameManager.getScore());
+      uiManager.updateDistance(gameManager.getDistance());
   });
 });
