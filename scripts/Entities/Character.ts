@@ -6,6 +6,7 @@ import { RunState } from "../StateMachine/RunState";
 import { DeathState } from "../StateMachine/DeathState";
 import { JumpState } from "../StateMachine/JumpState";
 import { InputHandler } from "../Input/InputHandler ";
+import { GameManager } from "../Manager/GameManager";
 
 export class Character {
     app: pc.Application;
@@ -19,6 +20,7 @@ export class Character {
     isPlayerDead: boolean;
     inputHandler: InputHandler;
     startX: number;
+    gameManager: GameManager
     
     constructor(app: pc.Application, assets: any, inputHandler: InputHandler) {
         this.app = app;
@@ -30,7 +32,8 @@ export class Character {
         this.isPlayerDead = false;
         this.jumpCooldown = 0;
         this.startX = inputHandler.startX;
-
+        this.gameManager = GameManager.getInstance();
+        
         this.startX = 0;
         const scale = 1.4;
         this.entity.setLocalScale(scale, scale, scale);
@@ -88,7 +91,7 @@ export class Character {
     
         colliderBox.setLocalScale(1, 1.6, 1); // Gấp đôi halfExtents của collider: [1, 2, 1.5]
     
-        colliderBox.setLocalPosition(0, 1.4, 0);
+        colliderBox.setLocalPosition(0, 0.7, 0);
     
         const material = new pc.StandardMaterial();
         material.diffuse = new pc.Color(1, 0, 0); // Màu đỏ để dễ nhận biết
@@ -124,7 +127,8 @@ export class Character {
     }
 
     update(dt: number) {
-        this.startX = this.inputHandler.startX;
+        // console.log(this.isPlayerDead)
+        // this.startX = this.inputHandler.startX;
         this.currentState.update(dt);
     }
 

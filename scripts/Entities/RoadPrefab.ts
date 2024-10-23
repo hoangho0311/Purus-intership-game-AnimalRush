@@ -1,11 +1,17 @@
 import * as pc from "playcanvas";
 import { GameManager } from "../Manager/GameManager";
+import { Obstacle } from "../Entities/Obstacle";
+import { SawBlade } from "../Entities/Obstacles/SawBlade";
+import { Scythe } from "../Entities/Obstacles/Scythe";
+import { Barrier } from "../Entities/Obstacles/Barrier";
 
 export class RoadPrefab {
+    app: pc.Application;
     roadWidth: number;
     roadLength: number;
 
-    constructor(roadWidth: number, roadLength: number) {
+    constructor(app: pc.Application, roadWidth: number, roadLength: number) {
+        this.app = app;
         this.roadWidth = roadWidth;
         this.roadLength = roadLength;
     }
@@ -55,31 +61,46 @@ export class RoadPrefab {
 
         return decoration;
     }
+    
+    createObstacle(road: pc.Entity, config: any): Obstacle {
+        const { type, position, asset, scale, collisionConfig, behaviorConfig } = config;
 
-    addObstacle(road: pc.Entity, position: pc.Vec3, asset: pc.Asset): pc.Entity {
-        const obstacle = new pc.Entity("Obstacle");
+        let obstacle: Obstacle;
+        switch (type) {
+            case "SawBlade":
+                obstacle = new SawBlade(
+                    this.app,
+                    asset,
+                    position,
+                    scale,
+                    collisionConfig,
+                    5
+                );
+                break;
+            case "Scythe":
+                obstacle = new Scythe(
+                    this.app,
+                    asset,
+                    position,
+                    scale,
+                    collisionConfig,
+                    5
+                );
+                break;
+            case "Barrier":
+                obstacle = new Barrier(
+                    this.app,
+                    asset,
+                    position,
+                    scale,
+                    collisionConfig
+                );
+                break;
+            default:
+                obstacle = new Obstacle(this.app, asset, position, scale, collisionConfig);
+        }
 
-        obstacle.addComponent("model", {
-            type: "asset",
-            asset: asset,
-        });
-
-        const scale = 1;
-        obstacle.setLocalScale(scale / this.roadWidth, scale, scale / this.roadLength);
-
-        obstacle.addComponent("rigidbody", {
-            type: "static",
-            restitution: 0.5,
-        });
-      
-        obstacle.addComponent("collision", {
-            type: "box",
-            halfExtents: new pc.Vec3(1, 2, 1),
-        });
-
-        obstacle.setLocalPosition(position);
-        road.addChild(obstacle);
-
+        road.addChild(obstacle.entity);
         return obstacle;
     }
 
@@ -115,15 +136,15 @@ export class RoadPrefab {
     }
 
     createCustomRoad(
-        obstacles: { position: pc.Vec3, asset: pc.Asset }[],
+        obstacles: any[],
         items: { position: pc.Vec3, asset: pc.Asset }[],
-        decorations: { position: pc.Vec3, asset: pc.Asset}[],
-        Asset: pc.Asset,
+        decorations: { position: pc.Vec3, asset: pc.Asset }[],
+        Asset: pc.Asset
     ): pc.Entity {
         const road = this.createRoad(Asset);
 
-        obstacles.forEach(obstacle => {
-            this.addObstacle(road, obstacle.position, obstacle.asset);
+        obstacles.forEach(config => {
+            this.createObstacle(road, config);
         });
 
         items.forEach(item => {
