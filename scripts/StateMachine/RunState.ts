@@ -1,9 +1,12 @@
 import * as pc from "playcanvas";
 import { State } from "./State";
-
+import { AssetManager } from "../Manager/AssetManager";
+import { SafeKeyAsset } from "../Helper/SafeKeyAsset";
 export class RunState extends State {
     enter() {
-        this.character.playAnimation(this.character.assets.charRunAnimationAsset, 0.1, true, 1);
+        const assetManager = AssetManager.getInstance();
+        const charRunAnimationAsset = assetManager.getAsset(SafeKeyAsset.CharRunAnimationAsset);
+        this.character.playAnimation(charRunAnimationAsset!, 0, true, 1);
         this.character.isGrounded = true;
     }
 

@@ -13,10 +13,4 @@ export class Barrier extends Obstacle {
 
     setupBehavior() {
     }
-
-    onCollisionStart(result: pc.ContactResult) {
-        if (result.other.tags.has('player')) {
-            console.log('Player hit the barrier!');
-        }
-    }
 }

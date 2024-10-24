@@ -1,5 +1,7 @@
 import * as pc from "playcanvas";
 import { State } from "./State";
+import { AssetManager } from "../Manager/AssetManager";
+import { SafeKeyAsset } from "../Helper/SafeKeyAsset";
 
 export class JumpState extends State {
     private jumpTime: number = 0;
@@ -8,7 +10,9 @@ export class JumpState extends State {
         this.jumpTime = 0;
         this.character.isJumpping = true;
         this.character.isGrounded = false;
-        this.character.playAnimation(this.character.assets.charJumpAnimationAsset, 0, false, 1.13);
+        const assetManager = AssetManager.getInstance();
+        const charJumpAnimationAsset = assetManager.getAsset(SafeKeyAsset.CharJumpAnimationAsset);
+        this.character.playAnimation(charJumpAnimationAsset!, 0, false, 1.13);
 
         const velocity = this.character.entity.rigidbody!.linearVelocity.clone();
         const jumpImpulse = new pc.Vec3(0, 200, 0);

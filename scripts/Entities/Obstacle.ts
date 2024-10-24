@@ -1,5 +1,6 @@
 import * as pc from "playcanvas";
 import { GameManager } from "../Manager/GameManager";
+import { UIManager } from "../Manager/UIManager";
 
 export class Obstacle {
     app: pc.Application;
@@ -9,6 +10,7 @@ export class Obstacle {
     scale: pc.Vec3;
     collisionConfig: any;
     gameManager: GameManager
+    uiManager: UIManager;
 
     constructor(app: pc.Application, asset: pc.Asset, position: pc.Vec3, scale: pc.Vec3, collisionConfig: any) {
         this.app = app;
@@ -18,12 +20,12 @@ export class Obstacle {
         this.collisionConfig = collisionConfig;
         this.entity = new pc.Entity("Obstacle");
         this.gameManager = GameManager.getInstance();
+        this.uiManager = UIManager.getInstance(app);
 
         this.setupModel();
         this.setupCollision();
         this.setupBehavior();
         //this.showCollisionBounds();
-
     }
 
     setupModel() {
@@ -48,7 +50,22 @@ export class Obstacle {
             radius: this.collisionConfig.radius,
             linearOffset: this.collisionConfig.linearOffset || new pc.Vec3(0, 0, 0)
         });
+
+        this.entity.collision!.on('collisionstart', this.onCollisionStart.bind(this));
     }
+
+    onCollisionStart(result: pc.ContactResult) {
+        if (result.other.tags.has('player')) {
+        const character = result.other.script?.characterInstance;
+
+            if (!character.isPlayerDead) {
+                this.uiManager.showLoseUI();
+                this.gameManager.endGame();
+                character.changeState('death');
+            }
+        }
+    }
+
 
     setupBehavior() {
     }
@@ -60,9 +77,9 @@ export class Obstacle {
             type: "box"
         });
     
-        colliderBox.setLocalScale(0.8, 2, 0.8);
+        colliderBox.setLocalScale(2, 4, 2);
     
-        colliderBox.setLocalPosition(0, 1, 0);
+        colliderBox.setLocalPosition(0, 2, 0);
     
         const material = new pc.StandardMaterial();
         material.diffuse = new pc.Color(1, 0, 0);
