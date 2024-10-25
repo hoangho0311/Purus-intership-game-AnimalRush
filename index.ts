@@ -43,16 +43,8 @@ const setCanvasSize = () => {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-
-  if (isMobile) {
-    canvas.style.width = `${screenWidth}px`;
-    canvas.style.height = `${screenHeight}px`;
-    canvas.width = screenWidth;
-    canvas.height = screenHeight;
-    canvas.style.left = "0px";
-    canvas.style.top = "0px";
-  } else {
-    const canvasWidth = screenWidth / 2.5;
+  if (!isMobile) {
+    const canvasWidth = screenWidth / 2.8;
     const canvasHeight = screenHeight;
     canvas.style.width = `${canvasWidth}px`;
     canvas.style.height = `${canvasHeight}px`;
@@ -61,10 +53,15 @@ const setCanvasSize = () => {
     canvas.style.left = `${(screenWidth - canvasWidth) / 2}px`;
     canvas.style.top = "0px";
   }
-
   canvas.style.position = "absolute";
 };
 setCanvasSize();
+const resize = () => app.resizeCanvas();
+window.addEventListener('resize', resize);
+window.addEventListener('resize', setCanvasSize);
+app.on('destroy', () => {
+  window.removeEventListener('resize', resize);
+});
 app.start();
 app.systems.rigidbody!.gravity.set(0, -15.81, 0);
 
@@ -72,25 +69,20 @@ const assetManager = AssetManager.getInstance();
 assetManager.on("assetsLoaded", onAssetsLoaded, this);
 assetManager.loadAssets(app);
 
-const assets = {
-  snowflake: new pc.Asset(
-    "snowflake",
-    "texture",
-    { url: "../../assets/sprites/Particle/snowflake.png" },
-    { srgb: true }
-  ),
-};
-
 function onAssetsLoaded() {
   const inputHandler = new InputHandler(app);
   const gameManager = GameManager.getInstance();
   const character = new Character(app, assetManager, inputHandler);
+
   const cameraEntity = createCamera(app, character.entity);
   cameraEntity.name = "Camera";
+
   const lightEntity = createLight(app);
+
   const roadManager = new RoadManager(app, character, 7, 1, 72);
   gameManager.setRoadManager(roadManager);
   gameManager.setPlayer(character);
+
   const uiManager = new UIManager(app);
 
   SetupSkybox(app);
@@ -127,16 +119,6 @@ function setupCurvedWorld(app) {
     this.activeCamera =
       this.app.root.findByName("Camera") ||
       this.app.root.findByType("camera")[0];
-
-    if (!this.activeCamera) {
-      console.warn("No camera found. Curved World effect will not be applied.");
-      return;
-    }
-
-    console.log(
-      "CurvedWorld script initialized with camera:",
-      this.activeCamera
-    );
 
     this.materials.forEach((material) => this.updateShader(material));
 
@@ -278,12 +260,6 @@ function setupCurvedWorld(app) {
       cameraDir.y,
       cameraDir.z,
     ]);
-
-    console.log("Shader uniforms updated:", {
-      curvePower: this.curvePower,
-      curveCenterPos: [cameraPos.x, cameraPos.y, cameraPos.z],
-      curveCameraDirection: [cameraDir.x, cameraDir.y, cameraDir.z],
-    });
   };
 
   const curvedEntity = new pc.Entity("CurvedWorldEntity");

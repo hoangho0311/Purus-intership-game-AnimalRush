@@ -4,83 +4,80 @@ import { AssetManager } from "../../Manager/AssetManager";
 import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
 
 export class BasePanelUI extends pc.Entity {
-    protected app: pc.Application;
-    protected panel: UIPanel;
-    protected overlay: pc.Entity;
-
-    private readonly defaultMobileWidthRatio = 0.7;
-    private readonly defaultMobileHeightRatio = 0.5;
-    private readonly defaultDesktopWidthRatio = 1.4;
-    private readonly defaultDesktopHeightRatio = 1.1;
+    app: pc.Application;
+    panel: UIPanel;
+    overlay: pc.Entity;
+    screen: pc.Entity;
 
     private backgroundTexture: pc.Asset | undefined;
     private widthRatio: number;
     private heightRatio: number;
 
-    constructor(app: pc.Application, widthRatio?: number, heightRatio?: number, backgroundTexture?: pc.Asset, useOverlay: boolean = true) {
+    constructor(app: pc.Application, widthRatio: number, heightRatio: number, backgroundTexture?: pc.Asset, useOverlay: boolean = true) {
         super();
         this.app = app;
-        this.widthRatio = widthRatio || this.defaultMobileWidthRatio;
-        this.heightRatio = heightRatio || this.defaultMobileHeightRatio;
+        this.widthRatio = widthRatio;
+        this.heightRatio = heightRatio;
         this.backgroundTexture = backgroundTexture || undefined;
-        
+
         this.setupScreen();
-        if(useOverlay){
+        if (useOverlay) {
             this.setupOverlay();
         }
         this.setupPanel();
+
+        this.app.root.addChild(this.screen);
     }
 
-    public setupScreen() {
-        this.addComponent('screen', {
+    private setupScreen() {
+        this.screen = new pc.Entity("UIScreen");
+        this.screen.addComponent("screen", {
             referenceResolution: new pc.Vec2(1280, 720),
             scaleBlend: 0.5,
             scaleMode: pc.SCALEMODE_BLEND,
-            screenSpace: true
+            screenSpace: true,
         });
-        this.app.root.addChild(this);
     }
 
-    public setupOverlay() {
-        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-        const screenWidth = this.app.graphicsDevice.width * (isMobile ? 1 : 2);
-        const screenHeight = this.app.graphicsDevice.height * (isMobile ? 1 : 2);
+    private setupOverlay() {
+        const screenWidth = this.app.graphicsDevice.width;
+        const screenHeight = this.app.graphicsDevice.height;
 
-        this.overlay = new pc.Entity('Overlay');
-        this.addChild(this.overlay);
-
-        this.overlay.addComponent('element', {
+        this.overlay = new pc.Entity("Overlay");
+        this.overlay.addComponent("element", {
             anchor: [0.5, 0.5, 0.5, 0.5],
             pivot: [0.5, 0.5],
-            width: screenWidth,
-            height: screenHeight,
+            width: screenWidth*2,
+            height: screenHeight*2,
             type: pc.ELEMENTTYPE_IMAGE,
             color: new pc.Color(0, 0, 0),
             opacity: 0.5,
         });
 
-        this.overlay.setLocalPosition(0, 0, 0);
+        this.screen.addChild(this.overlay);
     }
 
-    public setupPanel() {
+    private setupPanel() {
         const screenWidth = this.app.graphicsDevice.width;
         const screenHeight = this.app.graphicsDevice.height;
-        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-        const panelWidth = screenWidth * (isMobile ? this.widthRatio : this.defaultDesktopWidthRatio);
-        const panelHeight = screenHeight * (isMobile ? this.heightRatio : this.defaultDesktopHeightRatio);
+        const panelWidth = screenWidth * this.widthRatio;
+        const panelHeight = screenHeight * this.heightRatio;
 
         this.panel = new UIPanel(new pc.Vec2(panelWidth, panelHeight), this.backgroundTexture);
         this.panel.entity.setLocalPosition(0, 0, 0);
-        this.addChild(this.panel.entity);
+
+        this.screen.addChild(this.panel.entity);
         this.enabled = false;
     }
 
     public show() {
         this.enabled = true;
+        this.screen.enabled = true;
     }
 
     public hide() {
         this.enabled = false;
+        this.screen.enabled = false;
     }
 }

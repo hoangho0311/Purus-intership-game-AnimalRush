@@ -18,7 +18,7 @@ export class LoseUI extends BasePanelUI {
         const assetManager = AssetManager.getInstance();
         const backgroundTexture = assetManager.getAsset(SafeKeyAsset.IMGBackGroundLose);
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-        super(app, 0.65, 0.55, backgroundTexture, true);
+        super(app, isMobile ? 0.6 : 1.2, isMobile ? 0.5 : 1.2, backgroundTexture, true);
 
         this.assetManager = assetManager;
         this.isMobile = isMobile;

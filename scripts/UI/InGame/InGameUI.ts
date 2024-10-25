@@ -11,14 +11,12 @@ export class InGameUI extends BasePanelUI {
     private scoreText: UIText;
     private distanceText: UIText;
     private timeText: UIText;
-    private isMobile: boolean;
     private assetManager: AssetManager;
     
 
     constructor(app: pc.Application) {
         super(app, 0.65, 0.6, undefined, false);
         this.assetManager = AssetManager.getInstance();
-        this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
         
         this.setupText();
         this.setupButtons();
@@ -26,7 +24,7 @@ export class InGameUI extends BasePanelUI {
 
     private setupText() {
         const fontSize = 30;
-        const scorePosition = this.isMobile ? new pc.Vec2(0, 0) : new pc.Vec2(0, 30);
+        const scorePosition = new pc.Vec2(0, 0);
         const scoreTexture = this.assetManager.getAsset(SafeKeyAsset.IMGCoinLabel);
         const distanceTexture = this.assetManager.getAsset(SafeKeyAsset.IMGDistanceLabel);
         const timeTexture = this.assetManager.getAsset(SafeKeyAsset.IMGTimeLabel);
@@ -36,7 +34,7 @@ export class InGameUI extends BasePanelUI {
             this.app,
             this.assetManager,
             "",
-            new pc.Vec2(200, 80),
+            new pc.Vec2(180, 70),
             scorePosition,
             fontSize,
             new pc.Color(0, 0, 0),
@@ -44,18 +42,17 @@ export class InGameUI extends BasePanelUI {
             new pc.Vec2(20, 0),
         );
 
-        this.scoreText.entity.element!.anchor = this.isMobile ? new pc.Vec4(0, 1, 0, 1) : new pc.Vec4(0, 1, 0, 1);
-        this.scoreText.entity.element!.pivot = this.isMobile ? new pc.Vec2(0.1, 0) : new pc.Vec2(0.4, -0.4);
-        this.scoreText.entity.setLocalPosition(scorePosition.x, scorePosition.y, 0);
+        this.scoreText.entity.element!.anchor = new pc.Vec4(0.03, 0.88, 0.03, 0.88);
+        this.scoreText.entity.element!.pivot = new pc.Vec2(0, 0);
 
-        this.panel.addChild(this.scoreText.entity);
+        this.screen.addChild(this.scoreText.entity);
 
         //Distance Text
         this.distanceText = new UIText(
             this.app,
             this.assetManager,
             "",
-            new pc.Vec2(200, 80),
+            new pc.Vec2(180, 70),
             scorePosition,
             fontSize,
             new pc.Color(0, 0, 0),
@@ -63,18 +60,17 @@ export class InGameUI extends BasePanelUI {
             new pc.Vec2(20, 0),
         );
 
-        this.distanceText.entity.element!.anchor = this.isMobile ? new pc.Vec4(0, 0.92, 0, 0.92) : new pc.Vec4(0, 0.9, 0, 0.9);
-        this.distanceText.entity.element!.pivot = this.isMobile ? new pc.Vec2(0.1, 0) : new pc.Vec2(0.4, -0.4);
-        this.distanceText.entity.setLocalPosition(scorePosition.x, scorePosition.y, 0);
+        this.distanceText.entity.element!.anchor = new pc.Vec4(0.03, 0.81, 0.03, 0.81);
+        this.distanceText.entity.element!.pivot = new pc.Vec2(0, 0);
 
-        this.panel.addChild(this.distanceText.entity);
+        this.screen.addChild(this.distanceText.entity);
 
         //Time Text
         this.timeText = new UIText(
             this.app,
             this.assetManager,
             "",
-            new pc.Vec2(200, 80),
+            new pc.Vec2(180, 70),
             scorePosition,
             fontSize,
             new pc.Color(0, 0, 0),
@@ -82,20 +78,19 @@ export class InGameUI extends BasePanelUI {
             new pc.Vec2(20, 0),
         );
 
-        this.timeText.entity.element!.anchor = this.isMobile ? new pc.Vec4(0, 0.84, 0, 0.84) : new pc.Vec4(0, 0.8, 0, 0.8);
-        this.timeText.entity.element!.pivot = this.isMobile ? new pc.Vec2(0.1, 0) : new pc.Vec2(0.4, -0.4);
-        this.timeText.entity.setLocalPosition(scorePosition.x, scorePosition.y, 0);
+        this.timeText.entity.element!.anchor = new pc.Vec4(0.03, 0.74, 0.03, 0.74);
+        this.timeText.entity.element!.pivot = new pc.Vec2(0, 0);
 
-        this.panel.addChild(this.timeText.entity);
+        this.screen.addChild(this.timeText.entity);
     }
 
     private setupButtons() {
         const settingButton = new SettingButton(this.app, new pc.Vec2(0, 0), this.assetManager);
        
-        settingButton.entity.element!.anchor = this.isMobile ? [0.9, 1, 0.9, 1] : [1, 1, 1, 1];
-        settingButton.entity.element!.pivot = this.isMobile ? [0, 0] : [0, -0.6];
+        settingButton.entity.element!.anchor = [0.8, 0.88, 0.8, 0.88];
+        settingButton.entity.element!.pivot = [0, 0];
 
-        this.panel.addChild(settingButton.entity);
+        this.screen.addChild(settingButton.entity);
     }
 
     public updateScore() {
