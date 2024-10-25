@@ -1,28 +1,30 @@
 import * as pc from "playcanvas";
 import { RoadManager } from "./RoadManager";
 import { Character } from "../Entities/Character";
+import { TimeManager } from "./TimeManager";
+import { ScoreManager } from "./ScoreManager";
+import { DistanceManager } from "./DistanceManager";
 
 export class GameManager {
     private static instance: GameManager;
     private roadManager!: RoadManager;
-    private player!: Character;
 
     private isGamePaused: boolean;
     private isGameStarted: boolean;
     private isGameOver: boolean;
-    private score: number;
-    private distance: number;
-    private time: number;
-    private deltaTime: number;
+
+    private timeManager: TimeManager;
+    private scoreManager: ScoreManager;
+    private distanceManager: DistanceManager;
 
     private constructor() {
         this.isGamePaused = false;
         this.isGameStarted = false;
         this.isGameOver = false;
-        this.score = 0;
-        this.distance = 0;
-        this.time = 0;
-        this.deltaTime = 0;
+
+        this.timeManager = new TimeManager();
+        this.scoreManager = new ScoreManager();
+        this.distanceManager = new DistanceManager();
     }
 
     public static getInstance(): GameManager {
@@ -36,17 +38,14 @@ export class GameManager {
         this.roadManager = roadManager;
     }
 
-    public setPlayer(player: Character): void {
-        this.player = player;
-    }
 
     public startGame(): void {
         this.isGameStarted = true;
         this.isGamePaused = false;
         this.isGameOver = false;
-        this.score = 0;
-        this.distance = 0;
-        this.time = 0;
+        this.timeManager.resetTime();
+        this.scoreManager.resetScore();
+        this.distanceManager.resetDistance();
     }
 
     public pauseGame(): void {
@@ -74,27 +73,44 @@ export class GameManager {
 
     public updateTime(delta: number): void {
         if (this.isGameStarted && !this.isGameOver && !this.isGamePaused) {
-            this.deltaTime = delta;
-            this.time += this.deltaTime;
+            this.timeManager.updateTime(delta);
         }
     }
 
     public getTime(): number {
-        return this.time;
-    }
-
-    public resetTime(): void {
-        this.time = 0;
+        return this.timeManager.getTime();
     }
 
     public addScore(points: number): void {
         if (this.isGameStarted && !this.isGameOver) {
-            this.score += points;
+            this.scoreManager.addScore(points);
         }
     }
 
     public getScore(): number {
-        return this.score;
+        return this.scoreManager.getScore();
+    }
+
+    public updateDistance(delta: number): void {
+        if (this.isGameStarted && !this.isGameOver && !this.isGamePaused) {
+            this.distanceManager.updateDistance(delta);
+        }
+    }
+
+    public getDistance(): number {
+        return this.distanceManager.getDistance();
+    }
+
+    public replayGame(): void {
+        this.startGame();
+
+        if (this.roadManager) {
+            this.roadManager.resetRoads();
+        }
+        if (this.player) {
+            this.player.reset();
+        }
+        console.log("Game replayed.");
     }
 
     public isPaused(): boolean {
@@ -107,34 +123,5 @@ export class GameManager {
 
     public isOver(): boolean {
         return this.isGameOver;
-    }
-
-    public updateDistance(delta: number): void {
-        if (this.isGameStarted && !this.isGameOver && !this.isGamePaused) {
-            this.distance += delta;
-        }
-    }
-
-    public getDistance(): number {
-        return this.distance;
-    }
-
-    public resetDistance(): void {
-        this.distance = 0;
-    }
-
-    public replayGame(): void {
-        this.startGame();
-        this.resetDistance();
-        this.resetTime();
-        this.isGameStarted = false;
-
-        if (this.roadManager) {
-            this.roadManager.resetRoads();
-        }
-        if(this.player){
-            this.player.reset();
-        }
-        console.log("Game replayed.");
     }
 }
