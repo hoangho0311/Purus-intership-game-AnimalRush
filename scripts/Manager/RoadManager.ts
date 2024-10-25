@@ -18,10 +18,11 @@ export class RoadManager {
     assetManager: AssetManager;
     respawnCount: number = 0;
     noObstacleRespawnThreshold: number = 1;
+    
     roadConfigs: Array<{
         obstacles: { position: pc.Vec3, assetKey: string, type: string, scale: pc.Vec3, collisionConfig: any }[],
         items: { position: pc.Vec3, assetKey: string }[],
-        decorations: { position: pc.Vec3, assetKey: string }[]
+        decorations: { position: pc.Vec3, assetKey: string, scale: pc.Vec3 }[]
     }>;
 
     constructor(app: pc.Application, playerEntity: any, maxRoads: number, roadWidth: number, roadLength: number) {
@@ -42,7 +43,7 @@ export class RoadManager {
                         position: new pc.Vec3(0, 0, 0),
                         assetKey: "obstacleAsset1",
                         type: "Barrier",
-                        scale: new pc.Vec3(1 / this.roadWidth, 1, 1 / this.roadLength),
+                        scale: new pc.Vec3(1, 1, 1),
                         collisionConfig: {
                             type: "box",
                             halfExtents: new pc.Vec3(1, 2, 1),
@@ -53,7 +54,33 @@ export class RoadManager {
                 items: [
                     { position: new pc.Vec3(-3, 1, 0), assetKey: "itemAsset1" }
                 ],
-                decorations: []
+                decorations: [
+                    { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(-15, 3, 0), assetKey: "airBalloonAsset", scale: new pc.Vec3(1, 1, 1), }
+                ]
+            },
+            {
+                obstacles: [
+                    {
+                        position: new pc.Vec3(-5, 15, 0),
+                        assetKey: "hammerObstacleAsset",
+                        type: "Barrier",
+                        scale: new pc.Vec3(3, 3, 3),
+                        collisionConfig: {
+                            type: "box",
+                            halfExtents: new pc.Vec3(1, 2, 1),
+                            linearOffset: new pc.Vec3(0, 2, 0)
+                        }
+                    }
+                ],
+                items: [
+                ],
+                decorations: [
+                    { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(-15, 3, 0), assetKey: "airBalloonAsset", scale: new pc.Vec3(1, 1, 1), }
+                ]
             },
             {
                 obstacles: [
@@ -61,7 +88,7 @@ export class RoadManager {
                         position: new pc.Vec3(-3, 0, 0),
                         assetKey: "obstacleAsset9",
                         type: "Scythe",
-                        scale: new pc.Vec3(2 / this.roadWidth, 2, 2 / this.roadLength),
+                        scale: new pc.Vec3(2, 2, 2),
                         collisionConfig: {
                             type: "box",
                             halfExtents: new pc.Vec3(0.4, 1, 0.4),
@@ -72,8 +99,38 @@ export class RoadManager {
                 items: [
                     { position: new pc.Vec3(0, 1, 0), assetKey: "itemAsset1" }
                 ],
-                decorations: []
-            }
+                decorations: [
+                    { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(10, 0, 0), assetKey: "lollipop34Asset", scale: new pc.Vec3(1.5, 1.5, 1.5), },
+                    { position: new pc.Vec3(-10, 0, 0), assetKey: "iceCreamAsset", scale: new pc.Vec3(1, 1, 1), },
+
+                ]
+            },
+            {
+                obstacles: [
+                    {
+                        position: new pc.Vec3(0, 0, 0),
+                        assetKey: "obstacleAsset12",
+                        type: "SawBlade",
+                        scale: new pc.Vec3(1, 1, 1),
+                        collisionConfig: {
+                            type: "box",
+                            halfExtents: new pc.Vec3(6, 0.6, 0.5),
+                            linearOffset: new pc.Vec3(0, 1, 0)
+                        }
+                    }
+                ],
+                items: [
+                ],
+                decorations: [
+                    { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(-10, 0, 0), assetKey: "lollipop24Asset", scale: new pc.Vec3(1, 1, 1),},
+                    { position: new pc.Vec3(10, 0, 0), assetKey: "lollipop34Asset", scale: new pc.Vec3(1.5, 1.5, 1.5), },
+                
+                ]
+            },
         ];
 
         this.initializeRoads();
@@ -88,7 +145,10 @@ export class RoadManager {
     }
 
     createEmptyRoad(zPos: number): pc.Entity {
-        const road = this.roadPrefabManager.createCustomRoad([], [], []);
+        const road = this.roadPrefabManager.createCustomRoad([], [], [
+            { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+            { position: new pc.Vec3(15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+        ]);
         road.setPosition(0, 0, zPos);
         return road;
     }

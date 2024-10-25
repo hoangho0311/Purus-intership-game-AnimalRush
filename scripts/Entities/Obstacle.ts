@@ -25,7 +25,7 @@ export class Obstacle {
         this.setupModel();
         this.setupCollision();
         this.setupBehavior();
-        //this.showCollisionBounds();
+        // this.showCollisionBounds();
     }
 
     setupModel() {
@@ -77,9 +77,9 @@ export class Obstacle {
             type: "box"
         });
     
-        colliderBox.setLocalScale(2, 4, 2);
+        colliderBox.setLocalScale(12, 2, 2);
     
-        colliderBox.setLocalPosition(0, 2, 0);
+        colliderBox.setLocalPosition(0, 1, 0);
     
         const material = new pc.StandardMaterial();
         material.diffuse = new pc.Color(1, 0, 0);

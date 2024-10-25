@@ -127,7 +127,7 @@ export class GameManager {
         this.startGame();
         this.resetDistance();
         this.resetTime();
-        this.score = 0;
+        this.isGameStarted = false;
 
         if (this.roadManager) {
             this.roadManager.resetRoads();

@@ -54,6 +54,9 @@ export class AssetManager {
             [SafeKeyAsset.ObstacleAsset12]: new pc.Asset("obstacleModel12", "model", {
                 url: "../../assets/models/Map/obstacle_12_001.glb",
             }),
+            [SafeKeyAsset.HammerObstacleAsset]: new pc.Asset("hammerObstacleAsset", "model", {
+                url: "../../assets/models/Map/obstacle_8_002.glb",
+            }),
             [SafeKeyAsset.ItemAsset1]: new pc.Asset("starModel", "model", {
                 url: "../../assets/models/Map/coin_001.glb",
             }),
@@ -112,8 +115,32 @@ export class AssetManager {
 
             //Sky
             [SafeKeyAsset.SkyboxAsset]: new pc.Asset("skyAsset", "cubemap", {
-                url: "../../assets/sprites/Sky/sky.png",
+                url: "../../assets/sprites/Sky/Sky.png",
             }),
+
+            //#region particle
+            [SafeKeyAsset.IMGRaindrop]: new pc.Asset("imgRaindrop", "texture", {
+                url: "../../assets/sprites/Particle/Raindrop.png",
+            }, { srgb: true }),
+            //#endregion
+
+            //#region Decorate
+            [SafeKeyAsset.AirBalloonAsset]: new pc.Asset("airBalloonAsset", "model", {
+                url: "../../assets/models/Decorate/air_balloon_001.glb",
+            }, { srgb: true }),
+            [SafeKeyAsset.IceCreamAsset]: new pc.Asset("iceCreamAsset", "model", {
+                url: "../../assets/models/Decorate/ice_cream_001.glb",
+            }, { srgb: true }),
+            [SafeKeyAsset.Lollipop24Asset]: new pc.Asset("lollipop24Asset", "model", {
+                url: "../../assets/models/Decorate/lollipop_024.glb",
+            }, { srgb: true }),
+            [SafeKeyAsset.Lollipop34Asset]: new pc.Asset("lollipop34Asset", "model", {
+                url: "../../assets/models/Decorate/lollipop_034.glb",
+            }, { srgb: true }),
+            [SafeKeyAsset.GrassGroundAsset]: new pc.Asset("grassGroundAsset", "model", {
+                url: "../../assets/models/Decorate/ground_011.glb",
+            }, { srgb: true }),
+            //#endregion
         };
 
         const assetLoader = new pc.AssetListLoader(Object.values(listAsset), app.assets);

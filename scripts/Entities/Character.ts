@@ -153,6 +153,7 @@ export class Character {
     }
 
     reset() {
+        this.entity.setPosition(0,1,-5);
         this.isPlayerDead = false;
         this.isGrounded = true;
         this.isJumpping = false;

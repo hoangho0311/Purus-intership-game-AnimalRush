@@ -21,38 +21,60 @@ export class RoadPrefab {
     }
 
     createRoad(): pc.Entity {
-        const road = new pc.Entity("Road");
-
+        const roadParent = new pc.Entity("RoadParent");
+    
+        const segmentCount = 2;
+        const segmentLength = this.roadLength / segmentCount;
+    
         const groundAsset = this.assetManager.getAsset(SafeKeyAsset.GroundAsset) as pc.Asset;
         const groundTexture = this.assetManager.getAsset(SafeKeyAsset.GroundTextureAsset) as pc.Asset;
-
-        road.addComponent("model", {
-            type: "asset",
-            asset: groundAsset,
-        });
-
-        const material = road.model?.meshInstances[0].material as pc.StandardMaterial;
-        material.diffuseMap = groundTexture.resource;
-        this.assetManager.addMaterial(material);
-
-        road.addComponent("rigidbody", {
+    
+        for (let i = 0; i < segmentCount; i++) {
+            const roadSegment = new pc.Entity(`RoadSegment_${i}`);
+    
+            roadSegment.addComponent("model", {
+                type: "asset",
+                asset: groundAsset,
+            });
+    
+            const material = roadSegment.model?.meshInstances[0].material as pc.StandardMaterial;
+            material.diffuseMap = groundTexture.resource;
+            this.assetManager.addMaterial(material);
+    
+            roadSegment.addComponent("rigidbody", {
+                type: "static",
+                restitution: 0.5,
+            });
+    
+            roadSegment.setLocalScale(1, 1, 1);
+    
+            roadSegment.addComponent("collision", {
+                type: "box",
+                halfExtents: new pc.Vec3(this.roadWidth * 6, 1, segmentLength),
+            });
+    
+            roadSegment.setPosition(0, 0, i * segmentLength);
+    
+            roadParent.addChild(roadSegment);
+        }
+    
+        roadParent.addComponent("rigidbody", {
             type: "static",
             restitution: 0.5,
         });
-
-        const scale = 1;
-        road.setLocalScale(this.roadWidth, scale, this.roadLength);
-
-        road.addComponent("collision", {
+    
+        roadParent.addComponent("collision", {
             type: "box",
-            halfExtents: new pc.Vec3(this.roadWidth * 6, 1, this.roadLength),
+            halfExtents: new pc.Vec3(this.roadWidth * 6, 1, this.roadLength * 5),
         });
+    
 
-        road.tags.add("ground");
-        return road;
+        roadParent.tags.add("ground");
+        return roadParent;
     }
+    
 
-    addDecoration(road: pc.Entity, position: pc.Vec3, assetKey: string): pc.Entity {
+    addDecoration(road: pc.Entity, position: pc.Vec3, assetKey: string, scale: pc.Vec3): pc.Entity {
         const decorationAsset = this.assetManager.getAsset(assetKey) as pc.Asset;
         const decoration = new pc.Entity("Decoration");
 
@@ -61,8 +83,7 @@ export class RoadPrefab {
             asset: decorationAsset,
         });
 
-        const scale = 0.3;
-        decoration.setLocalScale(scale / this.roadWidth, scale, scale / this.roadLength);
+        decoration.setLocalScale(scale);
 
         decoration.setLocalPosition(position);
 
@@ -84,7 +105,7 @@ export class RoadPrefab {
                     position,
                     scale,
                     collisionConfig,
-                    5
+                    20
                 );
                 break;
             case "Scythe":
@@ -111,6 +132,7 @@ export class RoadPrefab {
         }
 
         road.addChild(obstacle.entity);
+
         return obstacle;
     }
 
@@ -149,7 +171,7 @@ export class RoadPrefab {
     createCustomRoad(
         obstacles: any[],
         items: { position: pc.Vec3, assetKey: string }[],
-        decorations: { position: pc.Vec3, assetKey: string }[]
+        decorations: { position: pc.Vec3, assetKey: string, scale: pc.Vec3}[]
     ): pc.Entity {
         const road = this.createRoad();
 
@@ -162,7 +184,7 @@ export class RoadPrefab {
         });
 
         decorations.forEach(decoration => {
-            this.addDecoration(road, decoration.position, decoration.assetKey);
+            this.addDecoration(road, decoration.position, decoration.assetKey, decoration.scale);
         });
 
         return road;

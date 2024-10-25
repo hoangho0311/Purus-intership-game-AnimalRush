@@ -26,6 +26,9 @@ await new Promise((resolve) => {
 const canvas = document.createElement("canvas");
 document.body.appendChild(canvas);
 
+const device = await pc.createGraphicsDevice(canvas);
+device.maxPixelRatio = Math.min(window.devicePixelRatio, 2);
+
 const app = new pc.Application(canvas, {
   keyboard: new pc.Keyboard(window),
   mouse: new pc.Mouse(canvas),
@@ -69,6 +72,10 @@ const assetManager = AssetManager.getInstance();
 assetManager.on("assetsLoaded", onAssetsLoaded, this);
 assetManager.loadAssets(app);
 
+const assets = {
+  snowflake: new pc.Asset('snowflake', 'texture', { url: '../../assets/sprites/Particle/snowflake.png' }, { srgb: true })
+};
+
 function onAssetsLoaded() {
   const inputHandler = new InputHandler(app);
   const gameManager = GameManager.getInstance();
@@ -76,7 +83,7 @@ function onAssetsLoaded() {
   const cameraEntity = createCamera(app, character.entity);
   cameraEntity.name = 'Camera';
   const lightEntity = createLight(app);
-  const roadManager = new RoadManager(app, character, 8, 1, 30);
+  const roadManager = new RoadManager(app, character, 7, 1, 70);
   gameManager.setRoadManager(roadManager);
   gameManager.setPlayer(character);
   const uiManager = new UIManager(app);
@@ -278,14 +285,12 @@ function SetupSkybox(app: pc.Application) {
 
     const skyboxAsset = assetManager.getAsset(SafeKeyAsset.SkyboxAsset) as pc.Asset;
 
-    console.log(skyboxAsset.resources[1])
-
     if (skyboxAsset && skyboxAsset.resources[1]) {
-        app.scene.skyboxMip = 1;
+        app.scene.skyboxMip = 20;
         app.scene.skybox = skyboxAsset.resources[1];
 
-        app.scene.skyboxIntensity = 4;
-        app.scene.skyboxRotation = new pc.Quat().setFromEulerAngles(0, 90, 0);
+        app.scene.skyboxIntensity = 2;
+        app.scene.skyboxRotation = new pc.Quat().setFromEulerAngles(0, 0, 0);
 
     }
 }

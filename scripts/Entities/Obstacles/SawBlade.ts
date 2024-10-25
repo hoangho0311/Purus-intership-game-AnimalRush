@@ -12,12 +12,14 @@ export class SawBlade extends Obstacle {
         rotationSpeed: number
     ) {
         super(app, asset, position, scale, collisionConfig);
+
         this.rotationSpeed = rotationSpeed;
     }
 
     setupBehavior() {
         this.app.on("update", (dt) => {
-            
+            const angle = this.rotationSpeed * dt;
+            this.entity.rotate(0, angle , 0);
         });
     }
 }
