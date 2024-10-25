@@ -33,4 +33,7 @@ export const SafeKeyAsset = {
     IMGTimeLabel: 'imgTimeLabel',
     IMGDistanceLabel: 'imgDistanceLabel',
     //#endregion
+
+    //Sky
+    SkyboxAsset: 'skyAsset',
 };

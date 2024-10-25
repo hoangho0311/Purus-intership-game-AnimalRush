@@ -33,6 +33,7 @@ export class RoadPrefab {
 
         const material = road.model?.meshInstances[0].material as pc.StandardMaterial;
         material.diffuseMap = groundTexture.resource;
+        this.assetManager.addMaterial(material);
 
         road.addComponent("rigidbody", {
             type: "static",

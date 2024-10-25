@@ -5,6 +5,7 @@ export class AssetManager {
     private static instance: AssetManager;
     private holderAsset: Map<string, pc.Asset> = new Map<string, pc.Asset>();
     private eventHandler: pc.EventHandler;
+    private materials: pc.StandardMaterial[] = [];
 
     private constructor() {
         this.eventHandler = new pc.EventHandler();
@@ -108,6 +109,11 @@ export class AssetManager {
             [SafeKeyAsset.IMGTimeLabel]: new pc.Asset("imgTimeLabel", "texture", {
                 url: "../../assets/sprites/InGame/TimeText.png",
             }),
+
+            //Sky
+            [SafeKeyAsset.SkyboxAsset]: new pc.Asset("skyAsset", "cubemap", {
+                url: "../../assets/sprites/Sky/sky.png",
+            }),
         };
 
         const assetLoader = new pc.AssetListLoader(Object.values(listAsset), app.assets);
@@ -121,5 +127,13 @@ export class AssetManager {
 
     public on(eventName: string, callback: (...args: any[]) => void, scope?: any) {
         this.eventHandler.on(eventName, callback, scope);
+    }
+
+    public getMaterials(): pc.StandardMaterial[] {
+        return this.materials;
+    }
+
+    public addMaterial(material: pc.StandardMaterial) {
+        this.materials.push(material);
     }
 }
