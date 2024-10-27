@@ -34,7 +34,7 @@ export class Character {
         
         const scale = 1.4;
         this.entity.setLocalScale(scale, scale, scale);
-        this.entity.setPosition(0, 0, -5);
+        this.entity.setPosition(0, 0, 0);
 
         const charModel = assetManager.getAsset(SafeKeyAsset.CharModelAsset);
         const charIdleAnimation = assetManager.getAsset(SafeKeyAsset.CharIdleAnimationAsset);
@@ -153,12 +153,12 @@ export class Character {
     }
 
     reset() {
-        this.entity.setPosition(0,1,-5);
+        this.entity.setPosition(0,0,0);
         this.isPlayerDead = false;
         this.isGrounded = true;
         this.isJumpping = false;
         this.jumpCooldown = 0;
 
-        this.changeState('idle');
+        this.changeState('run');
     }
 }

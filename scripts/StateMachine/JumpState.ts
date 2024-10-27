@@ -17,15 +17,16 @@ export class JumpState extends State {
         const velocity = this.character.entity.rigidbody!.linearVelocity.clone();
         const jumpImpulse = new pc.Vec3(0, 200, 0);
         velocity.x = 0;
-        velocity.y = 0;
+        velocity.y = 0;0
         this.character.entity.rigidbody!.linearVelocity = velocity;
         this.character.entity.rigidbody!.applyImpulse(jumpImpulse);
     }
 
     update(dt: number) {
         this.jumpTime += dt;
-
-        if (this.jumpTime > 0.8 && this.checkIfGrounded()) {
+        console.log(this.checkIfGrounded())
+        console.log(this.jumpTime)
+        if (this.jumpTime > 0.6 && this.checkIfGrounded()) {
             this.character.changeState("run");
         }
 
@@ -55,25 +56,23 @@ export class JumpState extends State {
 
     checkIfGrounded(): boolean {
         const rayOrigin = this.character.entity.getPosition().clone();
-        rayOrigin.y += 0.2;
     
         const rayEnd = new pc.Vec3(rayOrigin.x, rayOrigin.y - 1.0, rayOrigin.z);
     
         const results = this.character.app.systems.rigidbody!.raycastAll(rayOrigin, rayEnd);
     
-        let minDistance = 0.3;
+        let minDistance = 0.03;
     
         for (let i = 0; i < results.length; i++) {
             if (results[i].entity.tags.has("ground")) {
                 const hitPoint = results[i].point;
                 const distance = rayOrigin.distance(hitPoint);
-    
                 if (distance < minDistance) {
-                    minDistance = distance;
+                    return true;
                 }
             }
         }
     
-        return minDistance <= 0.3;
+        return false;
     }
 }

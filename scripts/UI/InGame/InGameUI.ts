@@ -1,100 +1,119 @@
 import * as pc from "playcanvas";
-import { BasePanelUI } from "../Common/BasePanelUI";
 import { UIText } from "../Common/UIText";
 import { AssetManager } from "../../Manager/AssetManager";
 import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
 import { SettingButton } from "./SettingButton";
 import { UIManager } from "../../Manager/UIManager";
 import { GameManager } from "../../Manager/GameManager";
+import { IUIController } from '../../Interface//IUIController'
 
-export class InGameUI extends BasePanelUI {
+export class InGameUI extends pc.Entity implements IUIController{
+    private app: pc.Application;
+    private assetManager: AssetManager;
+    private uiManager: UIManager;
     private scoreText: UIText;
     private distanceText: UIText;
     private timeText: UIText;
-    private assetManager: AssetManager;
-    
+    private screenWidth:number;
+    private screenHeight:number;
 
-    constructor(app: pc.Application) {
-        super(app, 0.65, 0.6, undefined, false);
+    constructor(app: pc.Application, uiManager: UIManager) {
+        super();
+        this.app = app;
+        this.screenWidth = this.app.graphicsDevice.width;
+        this.screenHeight = this.app.graphicsDevice.height;
         this.assetManager = AssetManager.getInstance();
-        
+        this.uiManager = uiManager;
+        this.setElement();
         this.setupText();
         this.setupButtons();
     }
 
+    private setElement() {
+        this.addComponent('element', {
+            anchor: [0.5, 0.5, 0.5, 0.5],
+            pivot: [0.5, 0.5],
+            width: this.screenWidth,
+            height: this.screenHeight,
+            type: pc.ELEMENTTYPE_GROUP
+        });
+    }
+
     private setupText() {
-        const fontSize = 30;
+        const fontSize = this.screenWidth/19;
         const scorePosition = new pc.Vec2(0, 0);
         const scoreTexture = this.assetManager.getAsset(SafeKeyAsset.IMGCoinLabel);
         const distanceTexture = this.assetManager.getAsset(SafeKeyAsset.IMGDistanceLabel);
         const timeTexture = this.assetManager.getAsset(SafeKeyAsset.IMGTimeLabel);
-
+        const lableSize = new pc.Vec2(this.screenWidth / 3, this.screenHeight / 17);
+        const textColor = new pc.Color(0, 0, 0);
+        const textPosition = new pc.Vec2(15, 0);
         //Score Text
         this.scoreText = new UIText(
             this.app,
             this.assetManager,
             "",
-            new pc.Vec2(180, 70),
+            lableSize,
             scorePosition,
             fontSize,
-            new pc.Color(0, 0, 0),
+            textColor,
             scoreTexture,
-            new pc.Vec2(20, 0),
+            textPosition,
         );
 
-        this.scoreText.entity.element!.anchor = new pc.Vec4(0.03, 0.88, 0.03, 0.88);
+        this.scoreText.entity.element!.anchor = new pc.Vec4(0.03, 0.92, 0.03, 0.92);
         this.scoreText.entity.element!.pivot = new pc.Vec2(0, 0);
 
-        this.screen.addChild(this.scoreText.entity);
+        this.addChild(this.scoreText.entity);
 
         //Distance Text
         this.distanceText = new UIText(
             this.app,
             this.assetManager,
             "",
-            new pc.Vec2(180, 70),
+            lableSize,
             scorePosition,
             fontSize,
-            new pc.Color(0, 0, 0),
+            textColor,
             distanceTexture,
-            new pc.Vec2(20, 0),
+            textPosition,
         );
 
-        this.distanceText.entity.element!.anchor = new pc.Vec4(0.03, 0.81, 0.03, 0.81);
+        this.distanceText.entity.element!.anchor = new pc.Vec4(0.03, 0.86, 0.03, 0.86);
         this.distanceText.entity.element!.pivot = new pc.Vec2(0, 0);
 
-        this.screen.addChild(this.distanceText.entity);
+        this.addChild(this.distanceText.entity);
 
         //Time Text
         this.timeText = new UIText(
             this.app,
             this.assetManager,
             "",
-            new pc.Vec2(180, 70),
+            lableSize,
             scorePosition,
             fontSize,
-            new pc.Color(0, 0, 0),
+            textColor,
             timeTexture,
-            new pc.Vec2(20, 0),
+            textPosition,
         );
 
-        this.timeText.entity.element!.anchor = new pc.Vec4(0.03, 0.74, 0.03, 0.74);
+        this.timeText.entity.element!.anchor = new pc.Vec4(0.03, 0.8, 0.03, 0.8);
         this.timeText.entity.element!.pivot = new pc.Vec2(0, 0);
 
-        this.screen.addChild(this.timeText.entity);
+        this.addChild(this.timeText.entity);
     }
 
     private setupButtons() {
         const settingButton = new SettingButton(this.app, new pc.Vec2(0, 0), this.assetManager);
-       
-        settingButton.entity.element!.anchor = [0.8, 0.88, 0.8, 0.88];
-        settingButton.entity.element!.pivot = [0, 0];
 
-        this.screen.addChild(settingButton.entity);
+        settingButton.entity.element!.anchor = [0.9, 0.95, 0.9, 0.95];
+        settingButton.entity.element!.pivot = [0.5, 0.5];
+
+        this.addChild(settingButton.entity);
     }
 
     public updateScore() {
-        const score = GameManager.getInstance().getScore();
+        const score = GameManager.getInstance().getCoin();
         this.scoreText.setText(`${score}`);
     }
 
@@ -106,5 +125,21 @@ export class InGameUI extends BasePanelUI {
     public updateTime() {
         const time = GameManager.getInstance().getTime();
         this.timeText.setText(`${Math.floor(time)}`+"s");
+    }
+
+    private onUpdate = () => {
+        this.updateScore();
+        this.updateDistance();
+        this.updateTime();
+    }
+
+    Open(): void {
+        this.enabled = true;
+        this.app.on("update", this.onUpdate);
+    }
+
+    Close(): void {
+        this.enabled = false;
+        this.app.off("update", this.onUpdate);
     }
 }

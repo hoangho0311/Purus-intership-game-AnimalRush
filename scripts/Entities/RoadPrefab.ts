@@ -160,7 +160,7 @@ export class RoadPrefab {
 
         item.collision!.on('triggerenter', function (result) {
             if (result.tags.has('player')) {
-                gameManager.addScore(1);
+                gameManager.addCoin(1);
                 item.destroy();
             }
         });

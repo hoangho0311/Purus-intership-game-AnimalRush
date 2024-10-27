@@ -3,6 +3,7 @@ import { UIButton } from "../Common/UIButton";
 import { AssetManager } from "../../Manager/AssetManager";
 import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
 import { UIManager } from "../../Manager/UIManager";
+import { GameManager } from "../../Manager/GameManager";
 
 export class BackToHomeButton extends UIButton {
     constructor(
@@ -16,7 +17,7 @@ export class BackToHomeButton extends UIButton {
         super(
             app,
             position,
-            new pc.Vec2(240, 100),
+            new pc.Vec2(app.graphicsDevice.width / 3, app.graphicsDevice.width / 7),
             "HOME",
             fontAsset!,
             buttonTexture,
@@ -28,8 +29,8 @@ export class BackToHomeButton extends UIButton {
 
     private setupClickListener() {
         this.entity.button?.on('click', () => {
-           // UIManager.getInstance(this.app).showInGameUI();
-            console.log("Back Home");
+            GameManager.getInstance().stopGame();
+            this.app.fire("UI:OpenMainMenu");
         });
     }
 }

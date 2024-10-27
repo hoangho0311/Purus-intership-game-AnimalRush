@@ -6,7 +6,7 @@ export class RunState extends State {
     enter() {
         const assetManager = AssetManager.getInstance();
         const charRunAnimationAsset = assetManager.getAsset(SafeKeyAsset.CharRunAnimationAsset);
-        this.character.playAnimation(charRunAnimationAsset!, 0, true, 1);
+        this.character.playAnimation(charRunAnimationAsset!, 0, true, 1.2);
         this.character.isGrounded = true;
     }
 

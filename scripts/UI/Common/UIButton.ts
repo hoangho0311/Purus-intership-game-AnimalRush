@@ -40,7 +40,7 @@ export class UIButton {
             anchor: [0.5, 0.5, 0.5, 0.5],
             color: new pc.Color(1, 1, 1),
             fontAsset: fontAsset.id,
-            fontSize: 32,
+            fontSize: this.app.graphicsDevice.width/18,
             height: 64,
             pivot: [0.5, 0.5],
             text: text,

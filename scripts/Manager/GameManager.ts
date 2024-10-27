@@ -2,19 +2,20 @@ import * as pc from "playcanvas";
 import { RoadManager } from "./RoadManager";
 import { Character } from "../Entities/Character";
 import { TimeManager } from "./TimeManager";
-import { ScoreManager } from "./ScoreManager";
+import { CoinManager } from "./CoinManager";
 import { DistanceManager } from "./DistanceManager";
 
 export class GameManager {
     private static instance: GameManager;
     private roadManager!: RoadManager;
+    private player: Character;
 
     private isGamePaused: boolean;
     private isGameStarted: boolean;
     private isGameOver: boolean;
 
     private timeManager: TimeManager;
-    private scoreManager: ScoreManager;
+    private coinManager: CoinManager;
     private distanceManager: DistanceManager;
 
     private constructor() {
@@ -23,7 +24,7 @@ export class GameManager {
         this.isGameOver = false;
 
         this.timeManager = new TimeManager();
-        this.scoreManager = new ScoreManager();
+        this.coinManager = CoinManager.getInstance();
         this.distanceManager = new DistanceManager();
     }
 
@@ -38,20 +39,18 @@ export class GameManager {
         this.roadManager = roadManager;
     }
 
-
     public startGame(): void {
         this.isGameStarted = true;
         this.isGamePaused = false;
         this.isGameOver = false;
         this.timeManager.resetTime();
-        this.scoreManager.resetScore();
+        this.coinManager.resetSessionCoins();
         this.distanceManager.resetDistance();
     }
 
     public pauseGame(): void {
         if (this.isGameStarted && !this.isGameOver) {
             this.isGamePaused = true;
-            console.log("Game paused.");
         }
     }
 
@@ -67,7 +66,23 @@ export class GameManager {
             this.isGameStarted = false;
             this.isGameOver = true;
             this.isGamePaused = false;
-            console.log("Game over.");
+            this.coinManager.finalizeSession();
+
+            console.log("Game over. Total coins:", this.coinManager.getTotalCoins());
+        }
+    }
+
+    public stopGame(){
+        this.isGameStarted = false;
+        this.isGamePaused = false;
+        this.isGameOver = false;
+        this.timeManager.resetTime();
+        this.coinManager.resetSessionCoins();
+        this.distanceManager.resetDistance();
+        this.roadManager.resetRoads();
+        if (this.player) {
+            this.player.reset();
+            this.player.changeState("idle");
         }
     }
 
@@ -81,14 +96,14 @@ export class GameManager {
         return this.timeManager.getTime();
     }
 
-    public addScore(points: number): void {
+    public addCoin(points: number): void {
         if (this.isGameStarted && !this.isGameOver) {
-            this.scoreManager.addScore(points);
+            this.coinManager.addSessionCoins(points);
         }
     }
 
-    public getScore(): number {
-        return this.scoreManager.getScore();
+    public getCoin(): number {
+        return this.coinManager.getSessionCoins();
     }
 
     public updateDistance(delta: number): void {
@@ -103,7 +118,6 @@ export class GameManager {
 
     public replayGame(): void {
         this.startGame();
-
         if (this.roadManager) {
             this.roadManager.resetRoads();
         }
@@ -111,6 +125,10 @@ export class GameManager {
             this.player.reset();
         }
         console.log("Game replayed.");
+    }
+
+    SetPlayer(player: Character){
+        this.player = player;
     }
 
     public isPaused(): boolean {

@@ -8,6 +8,7 @@ export class ResumeButton extends UIButton {
     constructor(
         app: pc.Application,
         position: pc.Vec2,
+        sizeButton: pc.Vec2,
         assetManager: AssetManager
     ) {
         const buttonTexture = assetManager.getAsset(SafeKeyAsset.IMGButtonResume);
@@ -16,7 +17,7 @@ export class ResumeButton extends UIButton {
         super(
             app,
             position,
-            new pc.Vec2(240, 100),
+            sizeButton,
             "RESUME",
             fontAsset!,
             buttonTexture,

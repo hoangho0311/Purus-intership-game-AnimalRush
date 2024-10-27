@@ -20,7 +20,6 @@ export class Obstacle {
         this.collisionConfig = collisionConfig;
         this.entity = new pc.Entity("Obstacle");
         this.gameManager = GameManager.getInstance();
-        this.uiManager = UIManager.getInstance(app);
 
         this.setupModel();
         this.setupCollision();
@@ -59,7 +58,7 @@ export class Obstacle {
         const character = result.other.script?.characterInstance;
 
             if (!character.isPlayerDead) {
-                this.uiManager.showLoseUI();
+                this.app.fire("UI:OpenLoseGame");
                 this.gameManager.endGame();
                 character.changeState('death');
             }

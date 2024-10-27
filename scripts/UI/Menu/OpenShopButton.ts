@@ -2,26 +2,25 @@ import * as pc from "playcanvas";
 import { UIButton } from "../Common/UIButton";
 import { AssetManager } from "../../Manager/AssetManager";
 import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
-import { UIManager } from "../../Manager/UIManager";
-import { GameManager } from "../../Manager/GameManager";
 
-export class ReplayButton extends UIButton {
+export class OpenShopButton extends UIButton {
     constructor(
         app: pc.Application,
         position: pc.Vec2,
+        sizeButton: pc.Vec2,
         assetManager: AssetManager
     ) {
-        const buttonTexture = assetManager.getAsset(SafeKeyAsset.IMGGrayButton);
+        const buttonTexture = assetManager.getAsset(SafeKeyAsset.IMGShopButton);
         const fontAsset = assetManager.getAsset(SafeKeyAsset.Font);
 
         super(
             app,
             position,
-            new pc.Vec2(app.graphicsDevice.width / 3, app.graphicsDevice.width / 7),
-            "REPLAY",
+            sizeButton,
+            "SHOP",
             fontAsset!,
             buttonTexture,
-            new pc.Vec2(0, 0)
+            new pc.Vec2(20, 0) 
         );
 
         this.setupClickListener();
@@ -29,8 +28,7 @@ export class ReplayButton extends UIButton {
 
     private setupClickListener() {
         this.entity.button?.on('click', () => {
-            this.app.fire("UI:OpenInGame");
-            GameManager.getInstance().replayGame();
+            this.app.fire("UI:OpenShop");
         });
     }
 }

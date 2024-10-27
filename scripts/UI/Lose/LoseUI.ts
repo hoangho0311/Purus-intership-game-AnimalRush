@@ -1,83 +1,129 @@
 import * as pc from "playcanvas";
-import { BasePanelUI } from "../Common/BasePanelUI";
 import { UIText } from "../Common/UIText";
 import { AssetManager } from "../../Manager/AssetManager";
 import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
 import { GameManager } from "../../Manager/GameManager";
 import { ReplayButton } from "./ReplayButton";
 import { BackToHomeButton } from "./BackToHomeButton";
+import { IUIController } from '../../Interface//IUIController'
+import { UIManager } from "../../Manager/UIManager";
+import { UIPanel } from "../Common/UIPanel";
 
-export class LoseUI extends BasePanelUI {
-    private isMobile: boolean;
+export class LoseUI extends pc.Entity implements IUIController {
+    private app: pc.Application;
     private assetManager: AssetManager;
+    private uiManager: UIManager;
+    private screenWidth:number;
+    private screenHeight:number;
     private scoreText: UIText;
     private distanceText: UIText;
     private timeText: UIText;
 
-    constructor(app: pc.Application) {
-        const assetManager = AssetManager.getInstance();
-        const backgroundTexture = assetManager.getAsset(SafeKeyAsset.IMGBackGroundLose);
-        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-        super(app, isMobile ? 0.6 : 1.2, isMobile ? 0.5 : 1.2, backgroundTexture, true);
-
-        this.assetManager = assetManager;
-        this.isMobile = isMobile;
-
+    constructor(app: pc.Application, uiManager: UIManager) {
+        super();
+        this.app = app;
+        this.screenWidth = this.app.graphicsDevice.width;
+        this.screenHeight = this.app.graphicsDevice.height;
+        this.assetManager = AssetManager.getInstance();
+        this.uiManager = uiManager;
+        this.setElement();
+        this.setupOverlay();
+        this.setUpPanel();
         this.setupText();
         this.setupButtons();
+
+        this.app.on("UI:OpenLoseGame", this.updateLoseUI, this);
+    }
+
+    private setElement() {
+        this.addComponent('element', {
+            anchor: [0.5, 0.5, 0.5, 0.5],
+            pivot: [0.5, 0.5],
+            width: this.app.graphicsDevice.width,
+            height: this.app.graphicsDevice.height,
+            type: pc.ELEMENTTYPE_GROUP
+        });
+    }
+
+    private setupOverlay() {
+        const overlay = new pc.Entity("Overlay");
+        overlay.addComponent("element", {
+            anchor: [0.5, 0.5, 0.5, 0.5],
+            pivot: [0.5, 0.5],
+            width:  this.screenWidth,
+            height: this.screenHeight,
+            type: pc.ELEMENTTYPE_IMAGE,
+            color: new pc.Color(0, 0, 0),
+            opacity: 0.5,
+        });
+
+        this.addChild(overlay);
+    }
+
+    private setUpPanel(){
+        const backgroundTexture = this.assetManager.getAsset(SafeKeyAsset.IMGBackGroundLose);
+        const pausePanel = new UIPanel(new pc.Vec2(this.screenWidth * 0.8, this.screenHeight*0.6), backgroundTexture);
+
+        this.addChild(pausePanel.entity);
     }
 
     private setupText() {
-        const screenHeight = this.app.graphicsDevice.height;
-        const textPositionY = screenHeight * (this.isMobile ? 0.046 : 0.1);
 
         //Lose Title
         const loseTitle = new UIText(
             this.app,
             this.assetManager,
             "YOU LOST",
-            new pc.Vec2(0, textPositionY),
-            new pc.Vec2(0, textPositionY),
-            this.isMobile ? 50 : 50,
+            new pc.Vec2(0, 0),
+            new pc.Vec2(0, 0),
+            this.app.graphicsDevice.width/15,
             new pc.Color(1, 1, 1)
         );
-        this.panel.addChild(loseTitle.entity);
+        loseTitle.entity.element!.anchor =  new pc.Vec4(0.5, 0.55, 0.5, 0.55);
+        loseTitle.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
+        this.addChild(loseTitle.entity);
 
         //Distance Text
         this.distanceText = new UIText(
             this.app,
             this.assetManager,
             "100m",
-            new pc.Vec2(0, textPositionY),
-            new pc.Vec2(10, textPositionY - 120),
-            this.isMobile ? 50 : 50,
+            new pc.Vec2(0, 0),
+            new pc.Vec2(0, 0),
+            this.app.graphicsDevice.width/15,
             new pc.Color(0, 0, 0)
         );
-        this.panel.addChild(this.distanceText.entity);     
+        this.distanceText.entity.element!.anchor =  new pc.Vec4(0.5, 0.48, 0.5, 0.48);
+        this.distanceText.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
+        this.addChild(this.distanceText.entity);     
         
         //Coin Text
         this.scoreText = new UIText(
             this.app,
             this.assetManager,
             "100",
-            new pc.Vec2(0, textPositionY),
-            new pc.Vec2(10, textPositionY - 210),
-            this.isMobile ? 50 : 50,
+            new pc.Vec2(0, 0),
+            new pc.Vec2(0, 0),
+            this.app.graphicsDevice.width/15,
             new pc.Color(0, 0, 0)
         );
-        this.panel.addChild(this.scoreText.entity);     
+        this.scoreText.entity.element!.anchor =  new pc.Vec4(0.5, 0.42, 0.5, 0.42);
+        this.scoreText.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
+        this.addChild(this.scoreText.entity);     
 
         //Time Text
         this.timeText = new UIText(
             this.app,
             this.assetManager,
             "10s",
-            new pc.Vec2(0, textPositionY),
-            new pc.Vec2(10, textPositionY - 300),
-            this.isMobile ? 50 : 50,
+            new pc.Vec2(0, 0),
+            new pc.Vec2(0, 0),
+            this.app.graphicsDevice.width/15,
             new pc.Color(0, 0, 0)
         );
-        this.panel.addChild(this.timeText.entity);     
+        this.timeText.entity.element!.anchor =  new pc.Vec4(0.5, 0.36, 0.5, 0.36);
+        this.timeText.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
+        this.addChild(this.timeText.entity);     
     }
 
     private setupButtons() {
@@ -85,22 +131,28 @@ export class LoseUI extends BasePanelUI {
         //Replay Button
         const replayButton = new ReplayButton(this.app, new pc.Vec2(0, 0), this.assetManager);
        
-        replayButton.entity.element!.anchor = this.isMobile ? [0.1, 0.1, 0.1, 0.1] : [0.1, 0, 0.1, 0];
-        replayButton.entity.element!.pivot = this.isMobile ? [0, 0] : [0, -0.6];
+        replayButton.entity.element!.anchor = new pc.Vec4(0.3, 0.27, 0.3, 0.27);
+        replayButton.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
 
-        this.panel.addChild(replayButton.entity);
+        this.addChild(replayButton.entity);
 
         //Back To Home Button
         const backToHomeButton = new BackToHomeButton(this.app, new pc.Vec2(0, 0), this.assetManager);
        
-        backToHomeButton.entity.element!.anchor = this.isMobile ? [0.55, 0.1, 0.55, 0.1] : [0.55, 0, 0.55, 0];
-        backToHomeButton.entity.element!.pivot = this.isMobile ? [0, 0] : [0, -0.6];
+        backToHomeButton.entity.element!.anchor =  new pc.Vec4(0.7, 0.27, 0.7, 0.27);
+        backToHomeButton.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
 
-        this.panel.addChild(backToHomeButton.entity);
+        this.addChild(backToHomeButton.entity);
+    }
+
+    private updateLoseUI(): void {
+        this.updateScoreText();
+        this.updateDistanceText();
+        this.updateTimeText();
     }
 
     public updateScoreText() {
-        const score = GameManager.getInstance().getScore();
+        const score = GameManager.getInstance().getCoin();
         this.scoreText.setText(`${score}`);
     }
 
@@ -112,5 +164,13 @@ export class LoseUI extends BasePanelUI {
     public updateTimeText() {
         const time = GameManager.getInstance().getTime();
         this.timeText.setText(`${Math.floor(time)}`+"s");
+    }
+
+    Open(): void {
+        this.enabled = true;
+    }
+
+    Close(): void {
+        this.enabled = false;
     }
 }

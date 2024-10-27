@@ -46,7 +46,7 @@ const setCanvasSize = () => {
   const screenHeight = window.innerHeight;
   const isMobile = /Mobi|Android/i.test(navigator.userAgent);
   if (!isMobile) {
-    const canvasWidth = screenWidth / 2.8;
+    const canvasWidth = screenWidth / 3;
     const canvasHeight = screenHeight;
     canvas.style.width = `${canvasWidth}px`;
     canvas.style.height = `${canvasHeight}px`;
@@ -83,6 +83,7 @@ function onAssetsLoaded() {
   
   const roadManager = new RoadManager(app, character, 7, 1, 72);
   gameManager.setRoadManager(roadManager);
+  gameManager.SetPlayer(character);
 
   const uiManager = new UIManager(app);
 
@@ -92,6 +93,7 @@ function onAssetsLoaded() {
   const skybox = new Skybox(app);
 
   app.on("update", (dt) => {
+    uiManager.registerEvents();
     if (gameManager.isPaused() || gameManager.isOver()) return;
     character.update(dt);
     gameManager.updateTime(dt);

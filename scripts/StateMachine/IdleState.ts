@@ -16,6 +16,9 @@ export class IdleState extends State {
         const gameManager = GameManager.getInstance();
 
         if (keyboard.isPressed(pc.KEY_W) || this.character.inputHandler.isTouching) {
+            this.character.app.fire("switchLight", "game");
+            this.character.app.fire("switchCamera", "game");
+            this.character.app.fire("UI:OpenInGame");
             gameManager.startGame();
             this.character.changeState("run");
         }

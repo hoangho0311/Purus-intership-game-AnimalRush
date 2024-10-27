@@ -16,14 +16,14 @@ export class UIPanel {
 
         const background = new pc.Entity("PanelBackground");
 
+        background.addComponent("element", {
+            type: "image",
+            pivot: new pc.Vec2(0.5, 0.5),
+            anchor: new pc.Vec4(0.5, 0.5, 0.5, 0.5),
+            width: size.x,
+            height: size.y,
+        });
         if (backgroundTexture) {
-            background.addComponent("element", {
-                type: "image",
-                pivot: new pc.Vec2(0.5, 0.5),
-                anchor: new pc.Vec4(0.5, 0.5, 0.5, 0.5),
-                width: size.x,
-                height: size.y,
-            });
             background.element!.texture = backgroundTexture.resource;
         }
 

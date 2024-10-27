@@ -10,9 +10,9 @@ export class RoadManager {
     roadLength: number;
     roadWidth: number;
     playerEntity: any;
-    roadSpeed: number = 15;
+    roadSpeed: number = 50;
     speedIncrement: number = 0.1;
-    maxRoadSpeed: number = 40;
+    maxRoadSpeed: number = 200;
     roadPrefabManager: RoadPrefab;
     gameManager: GameManager;
     assetManager: AssetManager;
@@ -224,7 +224,6 @@ export class RoadManager {
             this.roadPool.push(road);
         }
     
-        // Đặt lại vận tốc của đường
-        this.roadSpeed = 10;
+        this.roadSpeed = 50;
     }
 }

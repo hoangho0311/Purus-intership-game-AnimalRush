@@ -8,22 +8,43 @@ export function createCamera(app: pc.Application, character: pc.Entity): pc.Enti
         clearColor: new pc.Color(66 / 255, 135 / 255, 245 / 255),
     });
 
-    const initialPosition = new pc.Vec3(0, 10, -20);
-    cameraEntity.setPosition(initialPosition);
+    const positions = {
+        menu: new pc.Vec3(-2, 2, 10), 
+        shop: new pc.Vec3(0, 0, 15),
+        game: new pc.Vec3(0, 7, -20)
+    };
 
-    app.on("update", () => {
+    let targetPosition = positions.menu.clone();
+    let currentPosition = positions.menu.clone();
+    const transitionSpeed = 0.05;
+
+    function switchCameraPosition(mode: "menu" | "shop" | "game") {
+        targetPosition = positions[mode].clone();
+    }
+
+    app.on("switchCamera", switchCameraPosition);
+    const characterPosition = character.getPosition();
+    const py = characterPosition.y;
+    app.on("update", (dt) => {
         if (character) {
-            const characterPosition = character.getPosition();
+           
+            currentPosition.lerp(currentPosition, targetPosition, transitionSpeed);
 
             const cameraPosition = new pc.Vec3(
-              initialPosition.x,
-              initialPosition.y,
-              characterPosition.z + initialPosition.z
+                currentPosition.x,
+                currentPosition.y,
+                characterPosition.z + currentPosition.z
             );
 
             cameraEntity.setPosition(cameraPosition);
 
-            cameraEntity.lookAt(0, 3, characterPosition.z);
+            const lookAtPosition = new pc.Vec3(
+                characterPosition.x,
+                py + 2,
+                characterPosition.z
+            );
+
+            cameraEntity.lookAt(0, lookAtPosition.y, lookAtPosition.z);
         }
     });
 

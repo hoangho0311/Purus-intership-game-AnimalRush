@@ -17,7 +17,7 @@ export class SettingButton extends UIButton {
         super(
             app,
             position,
-            new pc.Vec2(100, 100),
+            new pc.Vec2(app.graphicsDevice.width/ 8, app.graphicsDevice.width/ 8),
             "",
             fontAsset!,
             buttonTexture,
@@ -29,7 +29,7 @@ export class SettingButton extends UIButton {
 
     private setupClickListener() {
         this.entity.button?.on('click', () => {
-            UIManager.getInstance(this.app).showPauseUI();
+            this.app.fire("UI:OpenPauseGame");
             GameManager.getInstance().pauseGame();
         });
     }

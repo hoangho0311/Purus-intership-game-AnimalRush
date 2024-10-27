@@ -26,6 +26,10 @@ export const SafeKeyAsset = {
     IMGButtonSetting: 'imgButtonSetting',
     IMGGrayButton: 'imgGrayButton',
     IMGBlueButton: 'imgBlueButton',
+    IMGBarTop: 'imgBarTop',
+    IMGBackHomeIcon: 'imgBackHomeIcon',
+    IMGClickToPlay: 'imgClickToPlay',
+    IMGShopButton: 'imgShopButton',
 
     IMGCoinLabel: 'imgCoinLabel',
     IMGTimeLabel: 'imgTimeLabel',

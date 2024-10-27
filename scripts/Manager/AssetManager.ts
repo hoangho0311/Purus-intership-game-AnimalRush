@@ -81,6 +81,18 @@ export class AssetManager {
             [SafeKeyAsset.IMGBackGroundLose]: new pc.Asset("backgroundLose", "texture", {
                 url: "../../assets/sprites/Panel/LosePanel.png",
             }),
+            [SafeKeyAsset.IMGBarTop]: new pc.Asset("imgBarTop", "texture", {
+                url: "../../assets/sprites/Shop/barTopBG.png",
+            }),
+            [SafeKeyAsset.IMGBackHomeIcon]: new pc.Asset("imgBackHomeIcon", "texture", {
+                url: "../../assets/sprites/Button/BackHomeIcon.png",
+            }),
+            [SafeKeyAsset.IMGClickToPlay]: new pc.Asset("imgClickToPlay", "texture", {
+                url: "../../assets/sprites/Button/CLICKTOPLAY.png",
+            }),
+            [SafeKeyAsset.IMGShopButton]: new pc.Asset("imgShopButton", "texture", {
+                url: "../../assets/sprites/Button/ShopButton.png",
+            }),
 
             //#region Button
             [SafeKeyAsset.IMGButtonClose]: new pc.Asset("imgButtonClose", "texture", {
