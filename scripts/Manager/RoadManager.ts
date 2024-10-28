@@ -57,6 +57,8 @@ export class RoadManager {
                 decorations: [
                     { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
                     { position: new pc.Vec3(15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(-2, 15, 3), assetKey: "cloudAsset", scale: new pc.Vec3(0.5, 0.5, 0.5), },
+                    { position: new pc.Vec3(4, 15, -8), assetKey: "cloudAsset", scale: new pc.Vec3(0.5, 0.5, 0.5), },
                     { position: new pc.Vec3(-15, 3, 0), assetKey: "airBalloonAsset", scale: new pc.Vec3(1, 1, 1), }
                 ]
             },
@@ -65,7 +67,7 @@ export class RoadManager {
                     {
                         position: new pc.Vec3(-5, 15, 0),
                         assetKey: "hammerObstacleAsset",
-                        type: "Barrier",
+                        type: "Hammer",
                         scale: new pc.Vec3(3, 3, 3),
                         collisionConfig: {
                             type: "box",
@@ -79,6 +81,8 @@ export class RoadManager {
                 decorations: [
                     { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
                     { position: new pc.Vec3(15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(-6, 15, 3), assetKey: "cloudAsset", scale: new pc.Vec3(0.5, 0.5, 0.5), },
+                    { position: new pc.Vec3(2, 15, -6), assetKey: "cloudAsset", scale: new pc.Vec3(0.5, 0.5, 0.5), },
                     { position: new pc.Vec3(-15, 3, 0), assetKey: "airBalloonAsset", scale: new pc.Vec3(1, 1, 1), }
                 ]
             },
@@ -102,6 +106,8 @@ export class RoadManager {
                 decorations: [
                     { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
                     { position: new pc.Vec3(15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(6, 15, 3), assetKey: "cloudAsset", scale: new pc.Vec3(0.5, 0.5, 0.5), },
+                    { position: new pc.Vec3(-4, 15, -6), assetKey: "cloudAsset", scale: new pc.Vec3(0.5, 0.5, 0.5), },
                     { position: new pc.Vec3(10, 0, 0), assetKey: "lollipop34Asset", scale: new pc.Vec3(1.5, 1.5, 1.5), },
                     { position: new pc.Vec3(-10, 0, 0), assetKey: "iceCreamAsset", scale: new pc.Vec3(1, 1, 1), },
 
@@ -148,6 +154,8 @@ export class RoadManager {
         const road = this.roadPrefabManager.createCustomRoad([], [], [
             { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
             { position: new pc.Vec3(15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+           
+
         ]);
         road.setPosition(0, 0, zPos);
         return road;
@@ -198,12 +206,21 @@ export class RoadManager {
         const oldRoad = this.roadPool.shift();
         const lastRoad = this.roadPool[this.roadPool.length - 1];
 
-        if (lastRoad && oldRoad) {
+        if (oldRoad) {
+            oldRoad.children.forEach((child) => {
+                child.destroy();
+            });
+    
+            this.app.root.removeChild(oldRoad);
+            oldRoad.destroy();
+        }
+    
+        if (lastRoad) {
             const lastRoadPos = lastRoad.getPosition();
             const newRoad = this.respawnCount < this.noObstacleRespawnThreshold
                 ? this.createEmptyRoad(lastRoadPos.z + this.roadLength)
                 : this.createRandomRoad(lastRoadPos.z + this.roadLength);
-
+    
             this.app.root.addChild(newRoad);
             this.roadPool.push(newRoad);
             this.respawnCount++;

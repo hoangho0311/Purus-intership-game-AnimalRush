@@ -4,6 +4,7 @@ import { Obstacle } from "../Entities/Obstacle";
 import { SawBlade } from "../Entities/Obstacles/SawBlade";
 import { Scythe } from "../Entities/Obstacles/Scythe";
 import { Barrier } from "../Entities/Obstacles/Barrier";
+import { Hammer } from "./Obstacles/Hammer";
 import { AssetManager } from "../Manager/AssetManager";
 import { SafeKeyAsset } from "../Helper/SafeKeyAsset";
 import { SoundManager } from "../Manager/SoundManager";
@@ -105,7 +106,7 @@ export class RoadPrefab {
                     position,
                     scale,
                     collisionConfig,
-                    20
+                    30
                 );
                 break;
             case "Scythe":
@@ -127,6 +128,16 @@ export class RoadPrefab {
                     collisionConfig
                 );
                 break;
+            case "Hammer":
+                obstacle = new Hammer(
+                    this.app,
+                    obstacleAsset,
+                    position,
+                    scale,
+                    collisionConfig, 
+                    30,
+                );
+            break;
             default:
                 obstacle = new Obstacle(this.app, obstacleAsset, position, scale, collisionConfig);
         }

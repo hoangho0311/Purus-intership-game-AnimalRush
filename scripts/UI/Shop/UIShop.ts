@@ -111,13 +111,25 @@ export class UIShop extends pc.Entity implements IUIController {
     content.addComponent("layoutgroup", {
       orientation: pc.ORIENTATION_HORIZONTAL,
       alignment: new pc.Vec2(0, 0),
-      spacing: new pc.Vec2(20, 20),
+      spacing: new pc.Vec2(15, 15),
       widthFitting: pc.FITTING_NONE,
       heightFitting: pc.FITTING_WRAP,
       wrap: true,
     });
 
-    for (let i = 0; i < 12; i++) {
+    const textureKeys = [
+      SafeKeyAsset.CharColorTextureAsset,
+      SafeKeyAsset.CharColorTexture1Asset,
+      SafeKeyAsset.CharColorTexture2Asset,
+      SafeKeyAsset.CharColorTexture3Asset,
+      SafeKeyAsset.CharColorTexture4Asset,
+      SafeKeyAsset.CharColorTexture5Asset,
+      SafeKeyAsset.CharColorTexture6Asset,
+      SafeKeyAsset.CharColorTexture7Asset,
+      SafeKeyAsset.CharColorTexture8Asset,
+    ];
+
+    for (let i = 0; i < 8; i++) {
       const box = new pc.Entity(`Box-${i}`);
       box.addComponent("element", {
         type: pc.ELEMENTTYPE_IMAGE,
@@ -132,15 +144,19 @@ export class UIShop extends pc.Entity implements IUIController {
         transitionMode: pc.BUTTON_TRANSITION_MODE_SPRITE_CHANGE,
       });
 
+      const material = new pc.StandardMaterial();
+      const textureAsset = this.assetManager.getAsset(textureKeys[i]);
+      material.diffuseMap = textureAsset.resource;
+      material.update();
       box.element!.on("click", () => {
-        console.log("ok")
+        this.uiManager.character.applySkinMaterial(material)
       });
       content.addChild(box);
     }
 
     content.addComponent("element", {
       anchor: new pc.Vec4(0.05, 1, 0.05, 1),
-      height: 800,
+      height: 400,
       pivot: new pc.Vec2(0, 1),
       type: pc.ELEMENTTYPE_GROUP,
       useInput: true,
@@ -169,11 +185,11 @@ export class UIShop extends pc.Entity implements IUIController {
     scrollview.addComponent("element", {
       anchor: new pc.Vec4(
         0.5,
-        pc.platform.mobile ? 0.25 : 0.45,
+        pc.platform.mobile ? 0.25 : 0.4,
         0.5,
-        pc.platform.mobile ? 0.25 : 0.45
+        pc.platform.mobile ? 0.25 : 0.4
       ),
-      height: 800,
+      height: 400,
       pivot: new pc.Vec2(0.5, 0.5),
       type: pc.ELEMENTTYPE_GROUP,
       useInput: false,

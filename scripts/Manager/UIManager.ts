@@ -5,6 +5,7 @@ import { InGameUI } from'..//UI/InGame/InGameUI'
 import { LoseUI } from '../UI/Lose/LoseUI';
 import { UIMainMenu } from '../UI/Menu/UIMainMenu';
 import { UIShop } from '../UI/Shop/UIShop';
+import { Character } from '../Entities/Character';
 
 export class UIManager extends pc.Entity {
     private app: pc.Application;
@@ -14,10 +15,12 @@ export class UIManager extends pc.Entity {
     private uiMainMenu!: UIMainMenu;
     private uiShop!: UIShop;
     private currentUI!: IUIController;
+    character: Character;
 
-    constructor(app: pc.Application) {
+    constructor(app: pc.Application, character: Character) {
         super();
         this.app = app;
+        this.character = character;
         this.setupUI();
     }
 

@@ -106,10 +106,12 @@ export class UIMainMenu extends pc.Entity implements IUIController {
   private setupButtons() {
     const startGameButton = new StartGameButton(
       this.app,
-      new pc.Vec2(0, -100),
+      new pc.Vec2(0, 0),
       new pc.Vec2(this.screenWidth * 0.9, this.screenHeight * 0.11),
       this.assetManager
     );
+    startGameButton.entity.element!.anchor = new pc.Vec4(0.5, 0.2, 0.5, 0.2);
+    startGameButton.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
     this.addChild(startGameButton.entity);
 
     const openShopButton = new OpenShopButton(

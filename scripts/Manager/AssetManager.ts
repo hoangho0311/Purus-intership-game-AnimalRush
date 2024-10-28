@@ -27,8 +27,32 @@ export class AssetManager {
             [SafeKeyAsset.CharModelAsset]: new pc.Asset("model_purus", "model", {
                 url: "../../assets/models/Chibi_Cat.glb",
             }),
-            [SafeKeyAsset.CharColorTextureAsset]: new pc.Asset("tex_purus", "texture", {
+            [SafeKeyAsset.CharColorTextureAsset]: new pc.Asset("charColorTextureAsset", "texture", {
                 url: "../../assets/textures/CatColor/T_Chibi_Cat_02.png",
+            }),
+            [SafeKeyAsset.CharColorTexture1Asset]: new pc.Asset("charColorTexture1Asset", "texture", {
+                url: "../../assets/textures/CatColor/T_Chibi_Cat_01.png",
+            }),
+            [SafeKeyAsset.CharColorTexture2Asset]: new pc.Asset("charColorTexture2Asset", "texture", {
+                url: "../../assets/textures/CatColor/T_Chibi_Cat_03.png",
+            }),
+            [SafeKeyAsset.CharColorTexture3Asset]: new pc.Asset("charColorTexture3Asset", "texture", {
+                url: "../../assets/textures/CatColor/T_Chibi_Cat_04.png",
+            }),
+            [SafeKeyAsset.CharColorTexture4Asset]: new pc.Asset("charColorTexture4Asset", "texture", {
+                url: "../../assets/textures/CatColor/T_Chibi_Cat_05.png",
+            }),
+            [SafeKeyAsset.CharColorTexture5Asset]: new pc.Asset("charColorTexture5Asset", "texture", {
+                url: "../../assets/textures/CatColor/T_Chibi_Cat_06.png",
+            }),
+            [SafeKeyAsset.CharColorTexture6Asset]: new pc.Asset("charColorTexture6Asset", "texture", {
+                url: "../../assets/textures/CatColor/T_Chibi_Cat_07.png",
+            }),
+            [SafeKeyAsset.CharColorTexture7Asset]: new pc.Asset("charColorTexture7Asset", "texture", {
+                url: "../../assets/textures/CatColor/T_Chibi_Cat_08.png",
+            }),
+            [SafeKeyAsset.CharColorTexture8Asset]: new pc.Asset("charColorTexture8Asset", "texture", {
+                url: "../../assets/textures/CatColor/T_Chibi_Cat_09.png",
             }),
             [SafeKeyAsset.CharEmotionsTextureAsset]: new pc.Asset("tex_purus", "texture", {
                 url: "../../assets/textures/Emotions/T_Chibi_Emo_01.png",
@@ -139,35 +163,39 @@ export class AssetManager {
             //#region Decorate
             [SafeKeyAsset.AirBalloonAsset]: new pc.Asset("airBalloonAsset", "model", {
                 url: "../../assets/models/Decorate/air_balloon_001.glb",
-            }, { srgb: true }),
+            }),
             [SafeKeyAsset.IceCreamAsset]: new pc.Asset("iceCreamAsset", "model", {
                 url: "../../assets/models/Decorate/ice_cream_001.glb",
-            }, { srgb: true }),
+            }),
             [SafeKeyAsset.Lollipop24Asset]: new pc.Asset("lollipop24Asset", "model", {
                 url: "../../assets/models/Decorate/lollipop_024.glb",
-            }, { srgb: true }),
+            }),
             [SafeKeyAsset.Lollipop34Asset]: new pc.Asset("lollipop34Asset", "model", {
                 url: "../../assets/models/Decorate/lollipop_034.glb",
-            }, { srgb: true }),
+            }),
             [SafeKeyAsset.GrassGroundAsset]: new pc.Asset("grassGroundAsset", "model", {
                 url: "../../assets/models/Decorate/ground_011.glb",
-            }, { srgb: true }),
+            }),
             //#endregion
 
             //#region Sound
             [SafeKeyAsset.JumpSoundEffect]: new pc.Asset("jumpSoundEffect", "audio", {
                 url: "../../assets/sound/jumpSoundEF.mp3",
-            }, { srgb: true }),
+            }),
             [SafeKeyAsset.CoinSoundEffect]: new pc.Asset("coinSoundEffect", "audio", {
                 url: "../../assets/sound/coinSoundEF.mp3",
-            }, { srgb: true }),
+            }),
             [SafeKeyAsset.BackGroundMusic]: new pc.Asset("backGroundMusic", "audio", {
                 url: "../../assets/sound/MusicBG.mp3",
-            }, { srgb: true }),
+            }),
             [SafeKeyAsset.LoseGameSoundEffect]: new pc.Asset("loseGameSoundEffect", "audio", {
                 url: "../../assets/sound/LoseGameSoundEF.mp3",
-            }, { srgb: true }),
+            }),
             //#endregion
+
+            [SafeKeyAsset.CloudAsset]: new pc.Asset("cloudAsset", "model", {
+                url: "../../assets/models/Map/candy_001.glb",
+            }),
         };
 
         const assetLoader = new pc.AssetListLoader(Object.values(listAsset), app.assets);

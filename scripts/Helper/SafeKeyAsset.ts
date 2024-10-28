@@ -1,6 +1,14 @@
 export const SafeKeyAsset = {
     CharModelAsset: 'charModelAsset',
     CharColorTextureAsset: 'charColorTextureAsset',
+    CharColorTexture1Asset: 'charColorTexture1Asset',
+    CharColorTexture2Asset: 'charColorTexture2Asset',
+    CharColorTexture3Asset: 'charColorTexture3Asset',
+    CharColorTexture4Asset: 'charColorTexture4Asset',
+    CharColorTexture5Asset: 'charColorTexture5Asset',
+    CharColorTexture6Asset: 'charColorTextur6Asset',
+    CharColorTexture7Asset: 'charColorTexture7Asset',
+    CharColorTexture8Asset: 'charColorTexture8Asset',
     CharEmotionsTextureAsset: 'charEmotionsTextureAsset',
     CharIdleAnimationAsset: 'charIdleAnimationAsset',
     CharDeathAnimationAsset: 'charDeathAnimationAsset',
@@ -11,7 +19,7 @@ export const SafeKeyAsset = {
     GroundAsset: 'groundAsset',
     GroundTextureAsset: 'groundTextureAsset',
     DecorationAsset1: 'decorationAsset1',
-
+    CloudAsset: 'cloudAsset',
     //#region Font
     Font: 'font',
     //#endregion

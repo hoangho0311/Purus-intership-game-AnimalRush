@@ -86,7 +86,7 @@ function onAssetsLoaded() {
   gameManager.setRoadManager(roadManager);
   gameManager.SetPlayer(character);
 
-  const uiManager = new UIManager(app);
+  const uiManager = new UIManager(app, character);
 
   const curvedWorld = new CurvedWorld(app);
   curvedWorld.setupCurvedWorld();

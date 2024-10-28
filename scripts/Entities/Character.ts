@@ -142,8 +142,8 @@ export class Character {
 
     applySkinMaterial(newMaterial: pc.StandardMaterial) {
         const meshInstances = this.entity.model!.meshInstances;
-        for (let i = 0; i < meshInstances.length; i++) {
-            meshInstances[i].material = newMaterial;
+        if (meshInstances.length >= 2) {
+            meshInstances[0].material = newMaterial;
         }
         console.log("Character material updated.");
     }
@@ -167,7 +167,7 @@ export class Character {
     }
 
     reset() {
-        this.entity.setPosition(0,1,0);
+        this.entity.rigidbody.teleport(0,1,0);
         this.isPlayerDead = false;
         this.isGrounded = true;
         this.jumpCooldown = 0;
