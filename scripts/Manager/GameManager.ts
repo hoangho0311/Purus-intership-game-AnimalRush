@@ -4,6 +4,7 @@ import { Character } from "../Entities/Character";
 import { TimeManager } from "./TimeManager";
 import { CoinManager } from "./CoinManager";
 import { DistanceManager } from "./DistanceManager";
+import { SoundManager } from "./SoundManager";
 
 export class GameManager {
     private static instance: GameManager;
@@ -46,6 +47,7 @@ export class GameManager {
         this.timeManager.resetTime();
         this.coinManager.resetSessionCoins();
         this.distanceManager.resetDistance();
+        this.player.changeState("run");
     }
 
     public pauseGame(): void {
@@ -79,7 +81,9 @@ export class GameManager {
         this.timeManager.resetTime();
         this.coinManager.resetSessionCoins();
         this.distanceManager.resetDistance();
-        this.roadManager.resetRoads();
+        if (this.roadManager) {
+            this.roadManager.resetRoads();
+        }
         if (this.player) {
             this.player.reset();
             this.player.changeState("idle");

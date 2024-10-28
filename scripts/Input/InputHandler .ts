@@ -51,6 +51,12 @@ export class InputHandler {
         return 0;
     }
 
+    getJumpDelta(): number{
+        if(this.deltaY !=0)
+            return this.deltaY;
+        return 0;
+    }
+
     onTouchEnd() {
         this.deltaY = 0;
         this.deltaX = 0;

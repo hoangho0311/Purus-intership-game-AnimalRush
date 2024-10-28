@@ -4,6 +4,7 @@ import { AssetManager } from "../../Manager/AssetManager";
 import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
 import { UIManager } from "../../Manager/UIManager";
 import { GameManager } from "../../Manager/GameManager";
+import { SoundManager } from "../../Manager/SoundManager";
 
 export class ReplayButton extends UIButton {
     constructor(
@@ -30,6 +31,7 @@ export class ReplayButton extends UIButton {
     private setupClickListener() {
         this.entity.button?.on('click', () => {
             this.app.fire("UI:OpenInGame");
+            SoundManager.getInstance().playSoundByKey(SafeKeyAsset.BackGroundMusic);
             GameManager.getInstance().replayGame();
         });
     }

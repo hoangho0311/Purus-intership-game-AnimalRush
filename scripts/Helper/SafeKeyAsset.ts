@@ -57,4 +57,11 @@ export const SafeKeyAsset = {
     ObstacleAsset12: 'obstacleAsset12',
     HammerObstacleAsset: 'hammerObstacleAsset',
     //#endregion
+
+    //#region sound
+    JumpSoundEffect: 'jumpSoundEffect',
+    CoinSoundEffect: 'coinSoundEffect',
+    BackGroundMusic: 'backGroundMusic',
+    LoseGameSoundEffect: 'loseGameSoundEffect',
+    //#endregion
 };

@@ -7,6 +7,8 @@ import { JumpState } from "../StateMachine/JumpState";
 import { InputHandler } from "../Input/InputHandler ";
 import { AssetManager } from "../Manager/AssetManager";
 import { SafeKeyAsset } from "../Helper/SafeKeyAsset";
+import { SoundManager } from "../Manager/SoundManager";
+import { GameManager } from "../Manager/GameManager";
 
 export class Character {
     app: pc.Application;
@@ -14,10 +16,12 @@ export class Character {
     currentState: State;
     states: { [key: string]: State };
     isGrounded: boolean;
-    isJumpping: boolean;
     jumpCooldown: number;
     isPlayerDead: boolean;
     inputHandler: InputHandler;
+    soundManager: SoundManager;
+    gameManager: GameManager;
+    assetManager: AssetManager;
     startX: number;
 
     constructor(app: pc.Application, assetManager: AssetManager, inputHandler: InputHandler) {
@@ -25,10 +29,12 @@ export class Character {
         this.inputHandler = inputHandler;
         this.entity = new pc.Entity("Character");
         this.isGrounded = true;
-        this.isJumpping = false;
         this.isPlayerDead = false;
         this.jumpCooldown = 0;
         this.startX = inputHandler.startX;
+        this.soundManager = SoundManager.getInstance(app);
+        this.assetManager = assetManager;
+        this.gameManager = GameManager.getInstance();
 
         this.entity.script = { characterInstance: this };
         
@@ -153,10 +159,9 @@ export class Character {
     }
 
     reset() {
-        this.entity.setPosition(0,0,0);
+        this.entity.setPosition(0,1,0);
         this.isPlayerDead = false;
         this.isGrounded = true;
-        this.isJumpping = false;
         this.jumpCooldown = 0;
 
         this.changeState('run');

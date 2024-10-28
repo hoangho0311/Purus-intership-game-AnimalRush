@@ -1,11 +1,9 @@
 import * as pc from "playcanvas";
 import { State } from "./State";
-import { AssetManager } from "../Manager/AssetManager";
 import { SafeKeyAsset } from "../Helper/SafeKeyAsset";
 export class RunState extends State {
     enter() {
-        const assetManager = AssetManager.getInstance();
-        const charRunAnimationAsset = assetManager.getAsset(SafeKeyAsset.CharRunAnimationAsset);
+        const charRunAnimationAsset = this.character.assetManager.getAsset(SafeKeyAsset.CharRunAnimationAsset);
         this.character.playAnimation(charRunAnimationAsset!, 0, true, 1.2);
         this.character.isGrounded = true;
     }
@@ -29,7 +27,7 @@ export class RunState extends State {
  
         this.character.entity.rigidbody!.teleport(position);
 
-        if ((this.character.app.keyboard.wasPressed(pc.KEY_SPACE) || this.character.inputHandler.deltaY < -300) && this.character.isGrounded) {
+        if ((this.character.app.keyboard.wasPressed(pc.KEY_SPACE) || this.character.inputHandler.getJumpDelta() < -300) && this.character.isGrounded) {
             this.character.changeState("jump");
         }
     }

@@ -42,10 +42,10 @@ export class UIShop extends pc.Entity implements IUIController {
 
     private setUpPanel(){
         const backgroundTexture = this.assetManager.getAsset(SafeKeyAsset.IMGBarTop);
-        const pausePanel = new UIPanel(new pc.Vec2(this.screenWidth, this.screenHeight*0.2), backgroundTexture);
-        pausePanel.entity.element!.anchor = new pc.Vec4(0.5, 1, 0.5, 1);
-        pausePanel.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
-        this.addChild(pausePanel.entity);
+        const barTopPanel = new UIPanel(new pc.Vec2(this.screenWidth, this.screenHeight*0.2), backgroundTexture);
+        barTopPanel.entity.element!.anchor = new pc.Vec4(0.5, 1, 0.5, 1);
+        barTopPanel.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
+        this.addChild(barTopPanel.entity);
 
         const scrollView = new UIPanel(new pc.Vec2(this.screenWidth, this.screenHeight), backgroundTexture);
         scrollView.entity.element!.anchor = new pc.Vec4(0.5, 0, 0.5, 0.05);

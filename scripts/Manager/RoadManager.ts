@@ -10,7 +10,7 @@ export class RoadManager {
     roadLength: number;
     roadWidth: number;
     playerEntity: any;
-    roadSpeed: number = 50;
+    roadSpeed: number = 40;
     speedIncrement: number = 0.1;
     maxRoadSpeed: number = 200;
     roadPrefabManager: RoadPrefab;
@@ -224,6 +224,6 @@ export class RoadManager {
             this.roadPool.push(road);
         }
     
-        this.roadSpeed = 50;
+        this.roadSpeed = 40;
     }
 }

@@ -6,6 +6,7 @@ import { Scythe } from "../Entities/Obstacles/Scythe";
 import { Barrier } from "../Entities/Obstacles/Barrier";
 import { AssetManager } from "../Manager/AssetManager";
 import { SafeKeyAsset } from "../Helper/SafeKeyAsset";
+import { SoundManager } from "../Manager/SoundManager";
 
 export class RoadPrefab {
     app: pc.Application;
@@ -54,7 +55,6 @@ export class RoadPrefab {
             });
     
             roadSegment.setPosition(0, 0, i * segmentLength);
-    
             roadParent.addChild(roadSegment);
         }
     
@@ -161,6 +161,7 @@ export class RoadPrefab {
         item.collision!.on('triggerenter', function (result) {
             if (result.tags.has('player')) {
                 gameManager.addCoin(1);
+                SoundManager.getInstance(this.app).playSoundByKey(SafeKeyAsset.CoinSoundEffect);
                 item.destroy();
             }
         });

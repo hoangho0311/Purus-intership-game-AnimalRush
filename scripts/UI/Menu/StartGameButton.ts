@@ -2,6 +2,7 @@ import * as pc from "playcanvas";
 import { UIButton } from "../Common/UIButton";
 import { AssetManager } from "../../Manager/AssetManager";
 import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
+import { GameManager } from "../../Manager/GameManager";
 
 export class StartGameButton extends UIButton {
     constructor(
@@ -27,6 +28,9 @@ export class StartGameButton extends UIButton {
     }
 
     private setupClickListener() {
-        
+        this.entity.button?.on('click', () => {
+            GameManager.getInstance().startGame();
+            this.app.fire("UI:OpenInGame");
+        });
     }
 }

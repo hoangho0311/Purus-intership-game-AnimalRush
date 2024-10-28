@@ -10,6 +10,7 @@ import { AssetManager } from "./scripts/Manager/AssetManager.ts";
 import { SafeKeyAsset } from "./scripts/Helper/SafeKeyAsset";
 import { CurvedWorld } from "./scripts/Core/CurvedWorld.ts";
 import { Skybox } from "./scripts/Core/Skybox.ts";
+import { SoundManager } from "./scripts/Manager/SoundManager.ts";
 
 const rootPath = "./scr/lib/AmmoJS/Utils";
 window.focus();
@@ -91,6 +92,9 @@ function onAssetsLoaded() {
   curvedWorld.setupCurvedWorld();
 
   const skybox = new Skybox(app);
+
+  const soundManager = SoundManager.getInstance(app);
+  soundManager.playSoundByKey(SafeKeyAsset.BackGroundMusic, true)
 
   app.on("update", (dt) => {
     uiManager.registerEvents();

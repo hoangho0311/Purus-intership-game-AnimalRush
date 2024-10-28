@@ -42,15 +42,30 @@ export class UIMainMenu extends pc.Entity implements IUIController {
 
   private setUpPanel() {
     const backgroundTexture = this.assetManager.getAsset(
-      SafeKeyAsset.IMGBackGroundPaper
+      SafeKeyAsset.IMGBarTop
     );
-    const pausePanel = new UIPanel(
+    const barTopPanel = new UIPanel(
+      new pc.Vec2(this.screenWidth, this.screenHeight * 0.2),
+      backgroundTexture
+    );
+    barTopPanel.entity.element!.anchor = new pc.Vec4(0.5, 1, 0.5, 1);
+    barTopPanel.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
+    this.addChild(barTopPanel.entity);
+
+    const startPanel = new UIPanel(
       new pc.Vec2(this.screenWidth, this.screenHeight * 0.2),
       undefined
     );
-    pausePanel.entity.element!.anchor = new pc.Vec4(0.5, 1, 0.5, 1);
-    pausePanel.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
-    this.addChild(pausePanel.entity);
+    startPanel.entity.addComponent("button", {
+      active: true,
+      transitionMode: pc.BUTTON_TRANSITION_MODE_SPRITE_CHANGE
+    });
+    // startPanel.entity.element!.anchor = new pc.Vec4(0.5, 0, 0.5, 0.5);
+    // startPanel.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
+    startPanel.entity.element!.on("click", () => {
+      console.log("ok")
+    });
+    this.addChild(startPanel.entity);
   }
 
   private setupText() {
@@ -95,7 +110,6 @@ export class UIMainMenu extends pc.Entity implements IUIController {
       new pc.Vec2(this.screenWidth * 0.9, this.screenHeight * 0.11),
       this.assetManager
     );
-
     this.addChild(startGameButton.entity);
 
     const openShopButton = new OpenShopButton(

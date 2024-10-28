@@ -4,6 +4,7 @@ import { AssetManager } from "../../Manager/AssetManager";
 import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
 import { UIManager } from "../../Manager/UIManager";
 import { GameManager } from "../../Manager/GameManager";
+import { SoundManager } from "../../Manager/SoundManager";
 
 export class BackToHomeButton extends UIButton {
     constructor(
@@ -30,6 +31,7 @@ export class BackToHomeButton extends UIButton {
     private setupClickListener() {
         this.entity.button?.on('click', () => {
             GameManager.getInstance().stopGame();
+            SoundManager.getInstance().playSoundByKey(SafeKeyAsset.BackGroundMusic);
             this.app.fire("UI:OpenMainMenu");
         });
     }

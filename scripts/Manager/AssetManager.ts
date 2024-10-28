@@ -153,6 +153,21 @@ export class AssetManager {
                 url: "../../assets/models/Decorate/ground_011.glb",
             }, { srgb: true }),
             //#endregion
+
+            //#region Sound
+            [SafeKeyAsset.JumpSoundEffect]: new pc.Asset("jumpSoundEffect", "audio", {
+                url: "../../assets/sound/jumpSoundEF.mp3",
+            }, { srgb: true }),
+            [SafeKeyAsset.CoinSoundEffect]: new pc.Asset("coinSoundEffect", "audio", {
+                url: "../../assets/sound/coinSoundEF.mp3",
+            }, { srgb: true }),
+            [SafeKeyAsset.BackGroundMusic]: new pc.Asset("backGroundMusic", "audio", {
+                url: "../../assets/sound/MusicBG.mp3",
+            }, { srgb: true }),
+            [SafeKeyAsset.LoseGameSoundEffect]: new pc.Asset("loseGameSoundEffect", "audio", {
+                url: "../../assets/sound/LoseGameSoundEF.mp3",
+            }, { srgb: true }),
+            //#endregion
         };
 
         const assetLoader = new pc.AssetListLoader(Object.values(listAsset), app.assets);
