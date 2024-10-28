@@ -140,6 +140,14 @@ export class Character {
         }
     }
 
+    applySkinMaterial(newMaterial: pc.StandardMaterial) {
+        const meshInstances = this.entity.model!.meshInstances;
+        for (let i = 0; i < meshInstances.length; i++) {
+            meshInstances[i].material = newMaterial;
+        }
+        console.log("Character material updated.");
+    }
+
     update(dt: number) {
         this.currentState.update(dt);
     }
