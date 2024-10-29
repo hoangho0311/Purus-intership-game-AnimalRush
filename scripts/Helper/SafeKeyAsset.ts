@@ -72,4 +72,15 @@ export const SafeKeyAsset = {
     BackGroundMusic: 'backGroundMusic',
     LoseGameSoundEffect: 'loseGameSoundEffect',
     //#endregion
+
+    //#region item shop
+    IMGItemShop1: 'imgItemShop1',
+    IMGItemShop2: 'imgItemShop2',
+    IMGItemShop3: 'imgItemShop3',
+    IMGItemShop4: 'imgItemShop4',
+    IMGItemShop5: 'imgItemShop5',
+    IMGItemShop6: 'imgItemShop6',
+    IMGItemShop7: 'imgItemShop7',
+    IMGItemShop8: 'imgItemShop8',
+    //#endregion
 };
