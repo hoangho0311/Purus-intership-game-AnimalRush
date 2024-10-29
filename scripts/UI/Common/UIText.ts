@@ -53,7 +53,7 @@ export class UIText {
     }
 
     setText(newText: string) {
-        this.textEntity.element.text = newText;
+        this.textEntity.element!.text = newText;
     }
 }
 

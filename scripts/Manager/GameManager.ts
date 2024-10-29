@@ -29,18 +29,18 @@ export class GameManager {
         this.distanceManager = new DistanceManager();
     }
 
-    public static getInstance(): GameManager {
+    static getInstance(): GameManager {
         if (!GameManager.instance) {
             GameManager.instance = new GameManager();
         }
         return GameManager.instance;
     }
 
-    public setRoadManager(roadManager: RoadManager): void {
+    setRoadManager(roadManager: RoadManager): void {
         this.roadManager = roadManager;
     }
 
-    public startGame(): void {
+    startGame(): void {
         this.isGameStarted = true;
         this.isGamePaused = false;
         this.isGameOver = false;
@@ -50,20 +50,20 @@ export class GameManager {
         this.player.changeState("run");
     }
 
-    public pauseGame(): void {
+    pauseGame(): void {
         if (this.isGameStarted && !this.isGameOver) {
             this.isGamePaused = true;
         }
     }
 
-    public resumeGame(): void {
+    resumeGame(): void {
         if (this.isGameStarted && this.isGamePaused && !this.isGameOver) {
             this.isGamePaused = false;
             console.log("Game resumed.");
         }
     }
 
-    public endGame(): void {
+    endGame(): void {
         if (this.isGameStarted) {
             this.isGameStarted = false;
             this.isGameOver = true;
@@ -74,7 +74,7 @@ export class GameManager {
         }
     }
 
-    public stopGame(){
+    stopGame(){
         this.isGameStarted = false;
         this.isGamePaused = false;
         this.isGameOver = false;
@@ -90,37 +90,41 @@ export class GameManager {
         }
     }
 
-    public updateTime(delta: number): void {
+    updateTime(delta: number): void {
         if (this.isGameStarted && !this.isGameOver && !this.isGamePaused) {
             this.timeManager.updateTime(delta);
         }
     }
 
-    public getTime(): number {
+    getTime(): number {
         return this.timeManager.getTime();
     }
 
-    public addCoin(points: number): void {
+    addCoin(points: number): void {
         if (this.isGameStarted && !this.isGameOver) {
             this.coinManager.addSessionCoins(points);
         }
     }
 
-    public getCoin(): number {
+    getCoin(): number {
         return this.coinManager.getSessionCoins();
     }
 
-    public updateDistance(delta: number): void {
+    getTotalCoin():number{
+        return this.coinManager.loadTotalCoins();
+    }
+
+    updateDistance(delta: number): void {
         if (this.isGameStarted && !this.isGameOver && !this.isGamePaused) {
             this.distanceManager.updateDistance(delta);
         }
     }
 
-    public getDistance(): number {
+    getDistance(): number {
         return this.distanceManager.getDistance();
     }
 
-    public replayGame(): void {
+    replayGame(): void {
         this.startGame();
         if (this.roadManager) {
             this.roadManager.resetRoads();
@@ -135,15 +139,15 @@ export class GameManager {
         this.player = player;
     }
 
-    public isPaused(): boolean {
+    isPaused(): boolean {
         return this.isGamePaused;
     }
 
-    public isStarted(): boolean {
+    isStarted(): boolean {
         return this.isGameStarted;
     }
 
-    public isOver(): boolean {
+    isOver(): boolean {
         return this.isGameOver;
     }
 }

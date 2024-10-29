@@ -90,7 +90,7 @@ export class UIShop extends pc.Entity implements IUIController {
 
     this.scoreText.entity.element!.anchor = new pc.Vec4(0.7, 0.92, 0.7, 0.92);
     this.scoreText.entity.element!.pivot = new pc.Vec2(0, 0);
-    this.scoreText.setText(CoinManager.getInstance().getTotalCoins());
+    this.scoreText.setText(CoinManager.getInstance().loadTotalCoins());
     this.addChild(this.scoreText.entity);
   }
 
@@ -212,6 +212,7 @@ export class UIShop extends pc.Entity implements IUIController {
   }
 
   Open(): void {
+    this.scoreText.setText(CoinManager.getInstance().loadTotalCoins());
     this.enabled = true;
   }
 

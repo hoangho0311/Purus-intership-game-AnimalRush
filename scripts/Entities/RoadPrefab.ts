@@ -73,7 +73,6 @@ export class RoadPrefab {
         roadParent.tags.add("ground");
         return roadParent;
     }
-    
 
     addDecoration(road: pc.Entity, position: pc.Vec3, assetKey: string, scale: pc.Vec3): pc.Entity {
         const decorationAsset = this.assetManager.getAsset(assetKey) as pc.Asset;

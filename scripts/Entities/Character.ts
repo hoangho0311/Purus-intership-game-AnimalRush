@@ -22,7 +22,6 @@ export class Character {
     soundManager: SoundManager;
     gameManager: GameManager;
     assetManager: AssetManager;
-    startX: number;
 
     constructor(app: pc.Application, assetManager: AssetManager, inputHandler: InputHandler) {
         this.app = app;
@@ -31,7 +30,6 @@ export class Character {
         this.isGrounded = true;
         this.isPlayerDead = false;
         this.jumpCooldown = 0;
-        this.startX = inputHandler.startX;
         this.soundManager = SoundManager.getInstance(app);
         this.assetManager = assetManager;
         this.gameManager = GameManager.getInstance();

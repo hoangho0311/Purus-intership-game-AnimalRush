@@ -100,7 +100,7 @@ export class UIMainMenu extends pc.Entity implements IUIController {
 
     this.addChild(this.scoreText.entity);
 
-    this.scoreText.setText(CoinManager.getInstance().getTotalCoins());
+    this.scoreText.setText(CoinManager.getInstance().loadTotalCoins());
   }
 
   private setupButtons() {
@@ -159,6 +159,7 @@ export class UIMainMenu extends pc.Entity implements IUIController {
   }
 
   Open(): void {
+    this.scoreText.setText(CoinManager.getInstance().loadTotalCoins());
     this.enabled = true;
   }
 

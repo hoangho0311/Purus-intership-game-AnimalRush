@@ -52,7 +52,12 @@ export class RoadManager {
                     }
                 ],
                 items: [
-                    { position: new pc.Vec3(-3, 1, 0), assetKey: "itemAsset1" }
+                    { position: new pc.Vec3(-3, 1, -5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 1, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 1, 5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(3, 1, -5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(3, 1, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(3, 1, 5), assetKey: "itemAsset1" }
                 ],
                 decorations: [
                     { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
@@ -77,6 +82,10 @@ export class RoadManager {
                     }
                 ],
                 items: [
+                    { position: new pc.Vec3(3, 1, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(3, 1, -5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(0, 1, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(0, 1, -5), assetKey: "itemAsset1" },
                 ],
                 decorations: [
                     { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
@@ -101,7 +110,16 @@ export class RoadManager {
                     }
                 ],
                 items: [
-                    { position: new pc.Vec3(0, 1, 0), assetKey: "itemAsset1" }
+                    { position: new pc.Vec3(3, 1, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(0, 1, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 1, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(3, 1, -5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(0, 1, -5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 1, -5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(3, 1, 5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(0, 1, 5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 1, 5), assetKey: "itemAsset1" }
+
                 ],
                 decorations: [
                     { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
@@ -128,6 +146,12 @@ export class RoadManager {
                     }
                 ],
                 items: [
+                    { position: new pc.Vec3(3, 3, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(3, 3, -5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(3, 3, 5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 3, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 3, -5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 3, 5), assetKey: "itemAsset1" },
                 ],
                 decorations: [
                     { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
