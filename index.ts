@@ -12,6 +12,8 @@ import { CurvedWorld } from "./scr/Core/CurvedWorld.ts";
 import { Skybox } from "./scr/Core/Skybox.ts";
 import { SoundManager } from "./scr/Manager/SoundManager.ts";
 
+
+async function main() {
 const rootPath = "./node_modules/lib/AmmoJS/Utils";
 window.focus();
 
@@ -106,3 +108,6 @@ function onAssetsLoaded() {
     }
   });
 }
+}
+
+main();
