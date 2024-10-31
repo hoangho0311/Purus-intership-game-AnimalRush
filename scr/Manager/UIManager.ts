@@ -22,6 +22,7 @@ export class UIManager extends pc.Entity {
         this.app = app;
         this.character = character;
         this.setupUI();
+        this.registerEvents();
     }
 
     private setupUI() {

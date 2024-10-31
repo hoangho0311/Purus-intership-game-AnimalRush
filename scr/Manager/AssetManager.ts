@@ -94,7 +94,7 @@ export class AssetManager {
                 url: "models/Map/ground_009.glb",
             }),
             [SafeKeyAsset.Font]: new pc.Asset("font", "font", {
-                url: "./node_modules/lib/AmmoJS/Utils/courier.json",
+                url: "AmmoJS/Utils/courier.json",
             }),
             [SafeKeyAsset.IMGBackGroundPaper]: new pc.Asset("backgroundPaper", "texture", {
                 url: "sprites/Shapes/Rectangle.png",

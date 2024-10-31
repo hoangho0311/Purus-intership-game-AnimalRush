@@ -15,6 +15,7 @@ export class UIShop extends pc.Entity implements IUIController {
   private scoreText: UIText;
   private screenWidth: number;
   private screenHeight: number;
+  private skinItems: { textureKey: string; textureItemKey: string; price: number; isUnlocked: boolean }[];
 
   constructor(app: pc.Application, uiManager: UIManager) {
     super();
@@ -23,6 +24,18 @@ export class UIShop extends pc.Entity implements IUIController {
     this.screenHeight = this.app.graphicsDevice.height;
     this.assetManager = AssetManager.getInstance();
     this.uiManager = uiManager;
+
+    this.skinItems = [
+      { textureKey: SafeKeyAsset.CharColorTextureAsset, textureItemKey: SafeKeyAsset.IMGItemShop1, price: 100, isUnlocked: true },
+      { textureKey: SafeKeyAsset.CharColorTexture1Asset, textureItemKey: SafeKeyAsset.IMGItemShop2, price: 10, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTexture2Asset, textureItemKey: SafeKeyAsset.IMGItemShop3, price: 10, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTexture3Asset, textureItemKey: SafeKeyAsset.IMGItemShop4, price: 400, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTexture4Asset, textureItemKey: SafeKeyAsset.IMGItemShop5, price: 500, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTexture5Asset, textureItemKey: SafeKeyAsset.IMGItemShop6, price: 600, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTexture6Asset, textureItemKey: SafeKeyAsset.IMGItemShop7, price: 700, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTexture7Asset, textureItemKey: SafeKeyAsset.IMGItemShop8, price: 800, isUnlocked: false },
+    ];
+
     this.setElement();
     this.setUpPanel();
     this.setupText();
@@ -39,7 +52,7 @@ export class UIShop extends pc.Entity implements IUIController {
     });
   }
 
-  private setUpPanel() {
+  setUpPanel() {
     const backgroundTexture = this.assetManager.getAsset(
       SafeKeyAsset.IMGBarTop
     );
@@ -106,8 +119,7 @@ export class UIShop extends pc.Entity implements IUIController {
     this.addChild(backHomeButton.entity);
   }
 
-  private setUpGridView(): pc.Entity {
-    // Tạo scrollView entity
+  setUpGridView(): pc.Entity {
     const scrollView = new pc.Entity("ScrollView");
 
     const viewport = new pc.Entity("Viewport");
@@ -132,28 +144,13 @@ export class UIShop extends pc.Entity implements IUIController {
       wrap: true,
     });
 
-    const textureKeys = [
-      SafeKeyAsset.CharColorTextureAsset,
-      SafeKeyAsset.CharColorTexture1Asset,
-      SafeKeyAsset.CharColorTexture2Asset,
-      SafeKeyAsset.CharColorTexture3Asset,
-      SafeKeyAsset.CharColorTexture4Asset,
-      SafeKeyAsset.CharColorTexture5Asset,
-      SafeKeyAsset.CharColorTexture6Asset,
-      SafeKeyAsset.CharColorTexture7Asset,
-      SafeKeyAsset.CharColorTexture8Asset,
-    ];
-
-    const textureItemKeys = [
-      SafeKeyAsset.IMGItemShop1,
-      SafeKeyAsset.IMGItemShop2,
-      SafeKeyAsset.IMGItemShop3,
-      SafeKeyAsset.IMGItemShop4,
-      SafeKeyAsset.IMGItemShop5,
-      SafeKeyAsset.IMGItemShop6,
-      SafeKeyAsset.IMGItemShop7,
-      SafeKeyAsset.IMGItemShop8,
-    ];
+    const unlockedSkins = this.loadUnlockedSkins();
+    if (unlockedSkins.length > 0) {
+      this.skinItems = this.skinItems.map((item, index) => ({
+        ...item,
+        isUnlocked: unlockedSkins[index],
+      }));
+    }
 
     for (let i = 0; i < 8; i++) {
       const box = new pc.Entity(`Box-${i}`);
@@ -165,21 +162,49 @@ export class UIShop extends pc.Entity implements IUIController {
         useInput: true,
       });
       box.element.texture = this.assetManager.getAsset(
-        textureItemKeys[i]
+        this.skinItems[i].textureItemKey
       ).resource;
+
+      if (!this.skinItems[i].isUnlocked) {
+        box.element.opacity = 0.5;
+      } else {
+        box.element.opacity = 1;
+      }
 
       box.addComponent("button", {
         active: true,
         transitionMode: pc.BUTTON_TRANSITION_MODE_SPRITE_CHANGE,
       });
 
+      const priceLabel = new pc.Entity(`PriceLabel-${i}`);
+      priceLabel.addComponent("element", {
+        type: pc.ELEMENTTYPE_TEXT,
+        text: `${this.skinItems[i].price}`,
+        fontAsset: this.assetManager.getAsset(SafeKeyAsset.Font)!.id,
+        fontSize: 18,
+        pivot: new pc.Vec2(0.5, 0.5),
+        anchor: new pc.Vec4(0.4, 0, 0.4, 0),
+        color: new pc.Color(0, 0, 0),
+      });
+
+      box.addChild(priceLabel);
+
       const material = new pc.StandardMaterial();
-      const textureAsset = this.assetManager.getAsset(textureKeys[i]);
+      const textureAsset = this.assetManager.getAsset(this.skinItems[i].textureKey);
       material.diffuseMap = textureAsset.resource;
       material.update();
 
       box.element!.on("click", () => {
-        this.uiManager.character.applySkinMaterial(material);
+        if(this.skinItems[i].isUnlocked){
+          this.uiManager.character.applySkinMaterial(material);
+          this.saveCurrentSkinName(this.skinItems[i].textureKey);
+        }else{
+          if(this.tryToUnlockSkin(this.skinItems[i])){
+            this.saveUnlockedSkins(this.skinItems);
+            this.scoreText.setText(CoinManager.getInstance().loadTotalCoins());
+            box.element.opacity = 1;
+          }
+        }
       });
 
       content.addChild(box);
@@ -219,6 +244,31 @@ export class UIShop extends pc.Entity implements IUIController {
 
     return scrollView;
   }
+
+  private tryToUnlockSkin(item: { price: number; isUnlocked: boolean }): boolean {
+    const currentCoins = CoinManager.getInstance().loadTotalCoins();
+    if (currentCoins >= item.price && !item.isUnlocked) {
+      CoinManager.getInstance().deductGlobalCoins(item.price);
+      item.isUnlocked = true;
+      return true;
+    }
+    return false;
+  }
+
+  private saveUnlockedSkins(skins: { isUnlocked: boolean }[]): void {
+    const unlockedStates = skins.map((skin) => skin.isUnlocked);
+    localStorage.setItem("unlockedSkins", JSON.stringify(unlockedStates));
+  }
+  
+  private loadUnlockedSkins(): boolean[] {
+    const savedSkins = localStorage.getItem("unlockedSkins");
+    return savedSkins ? JSON.parse(savedSkins) : [];
+  }
+
+  private saveCurrentSkinName(skinName: string) {
+    localStorage.setItem("currentSkinName", skinName);
+  }
+
 
   Open(): void {
     this.scoreText.setText(CoinManager.getInstance().loadTotalCoins());

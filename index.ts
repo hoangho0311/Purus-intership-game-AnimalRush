@@ -99,7 +99,6 @@ function onAssetsLoaded() {
   soundManager.playSoundByKey(SafeKeyAsset.BackGroundMusic, true)
 
   app.on("update", (dt) => {
-    uiManager.registerEvents();
     if (gameManager.isPaused() || gameManager.isOver()) return;
     character.update(dt);
     gameManager.updateTime(dt);

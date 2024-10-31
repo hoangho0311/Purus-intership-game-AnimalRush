@@ -25,6 +25,7 @@ export class CoinManager {
     }
 
     deductGlobalCoins(amount: number): boolean {
+        this.totalCoins = this.loadTotalCoins();
         if (this.totalCoins >= amount) {
             this.totalCoins -= amount;
             this.saveTotalCoins();

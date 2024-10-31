@@ -11,165 +11,205 @@ import { SoundManager } from "../Manager/SoundManager";
 import { GameManager } from "../Manager/GameManager";
 
 export class Character {
-    app: pc.Application;
-    entity: pc.Entity;
-    currentState: State;
-    states: { [key: string]: State };
-    isGrounded: boolean;
-    jumpCooldown: number;
-    isPlayerDead: boolean;
-    inputHandler: InputHandler;
-    soundManager: SoundManager;
-    gameManager: GameManager;
-    assetManager: AssetManager;
+  app: pc.Application;
+  entity: pc.Entity;
+  currentState: State;
+  states: { [key: string]: State };
+  isGrounded: boolean;
+  jumpCooldown: number;
+  isPlayerDead: boolean;
+  inputHandler: InputHandler;
+  soundManager: SoundManager;
+  gameManager: GameManager;
+  assetManager: AssetManager;
 
-    constructor(app: pc.Application, assetManager: AssetManager, inputHandler: InputHandler) {
-        this.app = app;
-        this.inputHandler = inputHandler;
-        this.entity = new pc.Entity("Character");
-        this.isGrounded = true;
-        this.isPlayerDead = false;
-        this.jumpCooldown = 0;
-        this.soundManager = SoundManager.getInstance(app);
-        this.assetManager = assetManager;
-        this.gameManager = GameManager.getInstance();
+  constructor(
+    app: pc.Application,
+    assetManager: AssetManager,
+    inputHandler: InputHandler
+  ) {
+    this.app = app;
+    this.inputHandler = inputHandler;
+    this.entity = new pc.Entity("Character");
+    this.isGrounded = true;
+    this.isPlayerDead = false;
+    this.jumpCooldown = 0;
+    this.soundManager = SoundManager.getInstance(app);
+    this.assetManager = assetManager;
+    this.gameManager = GameManager.getInstance();
 
-        this.entity.script = { characterInstance: this };
-        
-        const scale = 1.4;
-        this.entity.setLocalScale(scale, scale, scale);
-        this.entity.setPosition(0, 0, 0);
+    this.entity.script = { characterInstance: this };
 
-        const charModel = assetManager.getAsset(SafeKeyAsset.CharModelAsset);
-        const charIdleAnimation = assetManager.getAsset(SafeKeyAsset.CharIdleAnimationAsset);
-        const charRunAnimation = assetManager.getAsset(SafeKeyAsset.CharRunAnimationAsset);
-        const charJumpAnimation = assetManager.getAsset(SafeKeyAsset.CharJumpAnimationAsset);
-        const charDeathAnimation = assetManager.getAsset(SafeKeyAsset.CharDeathAnimationAsset);
+    const scale = 1.4;
+    this.entity.setLocalScale(scale, scale, scale);
+    this.entity.setPosition(0, 0, 0);
 
-        this.entity.addComponent("model", {
-            type: "asset",
-            asset: charModel,
-        });
+    const charModel = assetManager.getAsset(SafeKeyAsset.CharModelAsset);
+    const charIdleAnimation = assetManager.getAsset(
+      SafeKeyAsset.CharIdleAnimationAsset
+    );
+    const charRunAnimation = assetManager.getAsset(
+      SafeKeyAsset.CharRunAnimationAsset
+    );
+    const charJumpAnimation = assetManager.getAsset(
+      SafeKeyAsset.CharJumpAnimationAsset
+    );
+    const charDeathAnimation = assetManager.getAsset(
+      SafeKeyAsset.CharDeathAnimationAsset
+    );
 
-        this.entity.addComponent("animation", {
-            assets: [
-                charIdleAnimation,
-                charRunAnimation,
-                charJumpAnimation,
-                charDeathAnimation,
-            ],
-        });
+    this.entity.addComponent("model", {
+      type: "asset",
+      asset: charModel,
+    });
 
-        this.entity.addComponent("rigidbody", {
-            type: "dynamic",
-            mass: 30,
-        });
+    this.entity.addComponent("animation", {
+      assets: [
+        charIdleAnimation,
+        charRunAnimation,
+        charJumpAnimation,
+        charDeathAnimation,
+      ],
+    });
 
-        this.entity.addComponent("collision", {
-            type: "box",
-            halfExtents: [0.5, 0.8, 0.5],
-            linearOffset: new pc.Vec3(0, 1.4, 0),
-        });
+    this.entity.addComponent("rigidbody", {
+      type: "dynamic",
+      mass: 30,
+    });
 
-        this.entity.tags.add("player");
+    this.entity.addComponent("collision", {
+      type: "box",
+      halfExtents: [0.5, 0.8, 0.5],
+      linearOffset: new pc.Vec3(0, 1.4, 0),
+    });
 
-        this.applyMaterials(assetManager);
-        this.entity.rigidbody!.angularFactor = new pc.Vec3(0, 0, 0);
+    this.entity.tags.add("player");
 
-        app.root.addChild(this.entity);
+    this.applyMaterials(assetManager);
+    this.loadAndApplySavedSkin();
+    this.entity.rigidbody!.angularFactor = new pc.Vec3(0, 0, 0);
 
-        this.states = {
-            idle: new IdleState(this),
-            run: new RunState(this),
-            jump: new JumpState(this),
-            death: new DeathState(this),
-        };
+    app.root.addChild(this.entity);
 
-        this.currentState = this.states.idle;
-        this.currentState.enter();
+    this.states = {
+      idle: new IdleState(this),
+      run: new RunState(this),
+      jump: new JumpState(this),
+      death: new DeathState(this),
+    };
+
+    this.currentState = this.states.idle;
+    this.currentState.enter();
+  }
+
+  showColliderBox() {
+    const colliderBox = new pc.Entity("ColliderBox");
+
+    colliderBox.addComponent("model", {
+      type: "box",
+    });
+
+    colliderBox.setLocalScale(1, 1.6, 1);
+    colliderBox.setLocalPosition(0, 0.7, 0);
+
+    const material = new pc.StandardMaterial();
+    material.diffuse = new pc.Color(1, 0, 0);
+    material.opacity = 0.3;
+    material.blendType = pc.BLEND_NORMAL;
+    material.update();
+
+    colliderBox.model!.meshInstances[0].material = material;
+
+    this.entity.addChild(colliderBox);
+  }
+
+  applyMaterials(assetManager: AssetManager) {
+    const charColorTexture = assetManager.getAsset(
+      SafeKeyAsset.CharColorTextureAsset
+    );
+    const charEmotionsTexture = assetManager.getAsset(
+      SafeKeyAsset.CharEmotionsTextureAsset
+    );
+
+    if (!charColorTexture || !charEmotionsTexture) {
+      throw new Error("Missing required texture assets.");
     }
 
-    showColliderBox() {
-        const colliderBox = new pc.Entity("ColliderBox");
+    const materialFromTexture = new pc.StandardMaterial();
+    materialFromTexture.diffuseMap = charColorTexture.resource;
+    materialFromTexture.update();
 
-        colliderBox.addComponent("model", {
-            type: "box",
-        });
+    const materialFromEmotions = new pc.StandardMaterial();
+    materialFromEmotions.diffuseMap = charEmotionsTexture.resource;
+    materialFromEmotions.blendType = pc.BLEND_NORMAL;
+    materialFromEmotions.opacityMap = charEmotionsTexture.resource;
+    materialFromEmotions.alphaTest = 0.5;
+    materialFromEmotions.depthWrite = false;
+    materialFromEmotions.update();
 
-        colliderBox.setLocalScale(1, 1.6, 1);
-        colliderBox.setLocalPosition(0, 0.7, 0);
+    const meshInstances = this.entity.model!.meshInstances;
 
+    if (meshInstances.length >= 2) {
+      meshInstances[0].material = materialFromTexture;
+      meshInstances[1].material = materialFromEmotions;
+    }
+  }
+
+  applySkinMaterial(newMaterial: pc.StandardMaterial, skinName: string) {
+    const meshInstances = this.entity.model!.meshInstances;
+    if (meshInstances.length >= 2) {
+      meshInstances[0].material = newMaterial;
+    }
+    this.saveSelectedSkin(skinName);
+    console.log("Character material updated.");
+  }
+
+  private saveSelectedSkin(skinName: string) {
+    localStorage.setItem("currentSkinName", skinName);
+  }
+
+  loadAndApplySavedSkin() {
+    const savedSkinName = localStorage.getItem("currentSkinName");
+    if (savedSkinName) {
+      const textureAsset = this.assetManager.getAsset(savedSkinName);
+      if (textureAsset) {
         const material = new pc.StandardMaterial();
-        material.diffuse = new pc.Color(1, 0, 0);
-        material.opacity = 0.3;
-        material.blendType = pc.BLEND_NORMAL;
+        material.diffuseMap = textureAsset.resource;
         material.update();
-
-        colliderBox.model!.meshInstances[0].material = material;
-
-        this.entity.addChild(colliderBox);
+        this.applySkinMaterial(material, savedSkinName);
+      }
     }
+  }
 
-    applyMaterials(assetManager: AssetManager) {
-        const charColorTexture = assetManager.getAsset(SafeKeyAsset.CharColorTextureAsset);
-        const charEmotionsTexture = assetManager.getAsset(SafeKeyAsset.CharEmotionsTextureAsset);
+  update(dt: number) {
+    this.currentState.update(dt);
+  }
 
-        if (!charColorTexture || !charEmotionsTexture) {
-            throw new Error("Missing required texture assets.");
-        }
-
-        const materialFromTexture = new pc.StandardMaterial();
-        materialFromTexture.diffuseMap = charColorTexture.resource;
-        materialFromTexture.update();
-
-        const materialFromEmotions = new pc.StandardMaterial();
-        materialFromEmotions.diffuseMap = charEmotionsTexture.resource;
-        materialFromEmotions.blendType = pc.BLEND_NORMAL;
-        materialFromEmotions.opacityMap = charEmotionsTexture.resource;
-        materialFromEmotions.alphaTest = 0.5;
-        materialFromEmotions.depthWrite = false;
-        materialFromEmotions.update();
-
-        const meshInstances = this.entity.model!.meshInstances;
-
-        if (meshInstances.length >= 2) {
-            meshInstances[0].material = materialFromTexture;
-            meshInstances[1].material = materialFromEmotions;
-        }
+  playAnimation(
+    animationAsset: pc.Asset,
+    transitionTime: number,
+    loop: boolean,
+    speed: number
+  ) {
+    if (this.entity.animation) {
+      this.entity.animation.play(animationAsset.name, transitionTime);
+      this.entity.animation.loop = loop;
+      this.entity.animation.speed = speed;
     }
+  }
 
-    applySkinMaterial(newMaterial: pc.StandardMaterial) {
-        const meshInstances = this.entity.model!.meshInstances;
-        if (meshInstances.length >= 2) {
-            meshInstances[0].material = newMaterial;
-        }
-        console.log("Character material updated.");
-    }
+  changeState(newState: string) {
+    this.currentState.exit();
+    this.currentState = this.states[newState];
+    this.currentState.enter();
+  }
 
-    update(dt: number) {
-        this.currentState.update(dt);
-    }
+  reset() {
+    this.entity.rigidbody.teleport(0, 1, 0);
+    this.isPlayerDead = false;
+    this.isGrounded = true;
+    this.jumpCooldown = 0;
 
-    playAnimation(animationAsset: pc.Asset, transitionTime: number, loop: boolean, speed: number) {
-        if (this.entity.animation) {
-            this.entity.animation.play(animationAsset.name, transitionTime);
-            this.entity.animation.loop = loop;
-            this.entity.animation.speed = speed;
-        }
-    }
-
-    changeState(newState: string) {
-        this.currentState.exit();
-        this.currentState = this.states[newState];
-        this.currentState.enter();
-    }
-
-    reset() {
-        this.entity.rigidbody.teleport(0,1,0);
-        this.isPlayerDead = false;
-        this.isGrounded = true;
-        this.jumpCooldown = 0;
-
-        this.changeState('run');
-    }
+    this.changeState("run");
+  }
 }
