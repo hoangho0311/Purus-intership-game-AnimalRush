@@ -20,5 +20,5 @@ export default defineConfig({
     copyPublicDir: false,
     chunkSizeWarningLimit: 1024 * 2, // 2MB
   },
-  publicDir: "dist"
+  publicDir: "assets"
 });

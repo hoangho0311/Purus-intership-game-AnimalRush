@@ -27,7 +27,6 @@ export class UIShop extends pc.Entity implements IUIController {
     this.setUpPanel();
     this.setupText();
     this.setupButtons();
-    this.setUpScrollView();
   }
 
   private setElement() {
@@ -53,12 +52,13 @@ export class UIShop extends pc.Entity implements IUIController {
     this.addChild(barTopPanel.entity);
 
     const scrollView = new UIPanel(
-      new pc.Vec2(this.screenWidth, this.screenHeight),
+      new pc.Vec2(this.screenWidth, this.screenHeight * 0.4),
       backgroundTexture
     );
-    scrollView.entity.element!.anchor = new pc.Vec4(0.5, 0, 0.5, 0);
-    scrollView.entity.element!.pivot = new pc.Vec2(0.5, 0.62);
+    scrollView.entity.element!.anchor = new pc.Vec4(0.5, 0, 0.5, 0.4);
+    scrollView.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
     this.addChild(scrollView.entity);
+    scrollView.addChild(this.setUpGridView());
   }
 
   private setupText() {
@@ -106,8 +106,23 @@ export class UIShop extends pc.Entity implements IUIController {
     this.addChild(backHomeButton.entity);
   }
 
-  private setUpScrollView() {
+  private setUpGridView(): pc.Entity {
+    // Tạo scrollView entity
+    const scrollView = new pc.Entity("ScrollView");
+
+    const viewport = new pc.Entity("Viewport");
+    scrollView.addChild(viewport);
+    viewport.addComponent("element", {
+      anchor: new pc.Vec4(0, 0, 1, 1),
+      color: new pc.Color(0.2, 0.2, 0.2),
+      mask: true,
+      pivot: new pc.Vec2(0.5, 0.5),
+      rect: new pc.Vec4(0, 0, 1, 1),
+      type: pc.ELEMENTTYPE_IMAGE,
+    });
+
     const content = new pc.Entity("Content");
+
     content.addComponent("layoutgroup", {
       orientation: pc.ORIENTATION_HORIZONTAL,
       alignment: new pc.Vec2(0, 0),
@@ -129,16 +144,30 @@ export class UIShop extends pc.Entity implements IUIController {
       SafeKeyAsset.CharColorTexture8Asset,
     ];
 
+    const textureItemKeys = [
+      SafeKeyAsset.IMGItemShop1,
+      SafeKeyAsset.IMGItemShop2,
+      SafeKeyAsset.IMGItemShop3,
+      SafeKeyAsset.IMGItemShop4,
+      SafeKeyAsset.IMGItemShop5,
+      SafeKeyAsset.IMGItemShop6,
+      SafeKeyAsset.IMGItemShop7,
+      SafeKeyAsset.IMGItemShop8,
+    ];
+
     for (let i = 0; i < 8; i++) {
       const box = new pc.Entity(`Box-${i}`);
       box.addComponent("element", {
         type: pc.ELEMENTTYPE_IMAGE,
-        color: new pc.Color(0.8, 0.5 + i * 0.05, 0.2 + i * 0.05),
-        width: this.app.graphicsDevice.width * 0.2,
-        height: this.app.graphicsDevice.width * 0.2,
+        width: this.app.graphicsDevice.width * 0.3,
+        height: this.app.graphicsDevice.width * 0.3,
         pivot: new pc.Vec2(0.5, 0.5),
         useInput: true,
       });
+      box.element.texture = this.assetManager.getAsset(
+        textureItemKeys[i]
+      ).resource;
+
       box.addComponent("button", {
         active: true,
         transitionMode: pc.BUTTON_TRANSITION_MODE_SPRITE_CHANGE,
@@ -148,67 +177,47 @@ export class UIShop extends pc.Entity implements IUIController {
       const textureAsset = this.assetManager.getAsset(textureKeys[i]);
       material.diffuseMap = textureAsset.resource;
       material.update();
+
       box.element!.on("click", () => {
-        this.uiManager.character.applySkinMaterial(material)
+        this.uiManager.character.applySkinMaterial(material);
       });
+
       content.addChild(box);
     }
 
     content.addComponent("element", {
-      anchor: new pc.Vec4(0.05, 1, 0.05, 1),
-      height: 400,
-      pivot: new pc.Vec2(0, 1),
+      anchor: new pc.Vec4(0.5, 0.2, 0.5, 0.2),
+      pivot: new pc.Vec2(0.5, 0.5),
+      height: pc.platform.mobile ? 1000 : 550,
+      width: this.app.graphicsDevice.width,
+      type: pc.ELEMENTTYPE_GROUP,
+      useInput: true,
+    });
+
+    viewport.addChild(content);
+
+    scrollView.addComponent("element", {
+      anchor: new pc.Vec4(0.5, 0.5, 0.5, 0.5),
+      height: pc.platform.mobile ? 550 : 220,
+      pivot: new pc.Vec2(0.5, 0.5),
       type: pc.ELEMENTTYPE_GROUP,
       useInput: true,
       width: this.app.graphicsDevice.width,
     });
 
-    const viewport = new pc.Entity("Viewport");
-    viewport.addChild(content);
-    viewport.addComponent("element", {
-      anchor: new pc.Vec4(0, 0, 1, 1),
-      color: new pc.Color(0.2, 0.2, 0.2),
-      margin: new pc.Vec4(0, 20, 20, 0),
-      mask: true,
-      opacity: 1,
-      pivot: new pc.Vec2(0, 0),
-      rect: new pc.Vec4(0, 0, 1, 1),
-      type: pc.ELEMENTTYPE_IMAGE,
-      useInput: false,
-    });
-
-    const scrollview = new pc.Entity("ScrollView");
-    scrollview.addChild(viewport);
-
-    this.addChild(scrollview);
-
-    scrollview.addComponent("element", {
-      anchor: new pc.Vec4(
-        0.5,
-        pc.platform.mobile ? 0.25 : 0.4,
-        0.5,
-        pc.platform.mobile ? 0.25 : 0.4
-      ),
-      height: 400,
-      pivot: new pc.Vec2(0.5, 0.5),
-      type: pc.ELEMENTTYPE_GROUP,
-      useInput: false,
-      width: this.app.graphicsDevice.width,
-    });
-
-    scrollview.addComponent("scrollview", {
+    scrollView.addComponent("scrollview", {
       bounceAmount: 0.1,
       contentEntity: content,
       friction: 0.05,
       useMouseWheel: true,
       mouseWheelSensitivity: pc.Vec2.ONE,
-      horizontal: true,
-      horizontalScrollbarVisibility: pc.SCROLLBAR_VISIBILITY_SHOW_WHEN_REQUIRED,
-      scrollMode: pc.SCROLL_MODE_BOUNCE,
+      horizontal: false,
       vertical: true,
-      verticalScrollbarVisibility: pc.SCROLLBAR_VISIBILITY_SHOW_WHEN_REQUIRED,
       viewportEntity: viewport,
+      scrollMode: pc.SCROLL_MODE_CLAMP,
     });
+
+    return scrollView;
   }
 
   Open(): void {

@@ -1,18 +1,18 @@
 import * as pc from "playcanvas";
-import { createCamera } from "./scripts/Core/Camera.ts";
-import { createLight } from "./scripts/Core/Light.ts";
-import { Character } from "./scripts/Entities/Character.ts";
-import { RoadManager } from "./scripts/Manager/RoadManager.ts";
-import { UIManager } from "./scripts/Manager/UIManager.ts";
-import { InputHandler } from "./scripts/Input/InputHandler .ts";
-import { GameManager } from "./scripts/Manager/GameManager.ts";
-import { AssetManager } from "./scripts/Manager/AssetManager.ts";
-import { SafeKeyAsset } from "./scripts/Helper/SafeKeyAsset";
-import { CurvedWorld } from "./scripts/Core/CurvedWorld.ts";
-import { Skybox } from "./scripts/Core/Skybox.ts";
-import { SoundManager } from "./scripts/Manager/SoundManager.ts";
+import { createCamera } from "./scr/Core/Camera.ts";
+import { createLight } from "./scr/Core/Light.ts";
+import { Character } from "./scr/Entities/Character.ts";
+import { RoadManager } from "./scr/Manager/RoadManager.ts";
+import { UIManager } from "./scr/Manager/UIManager.ts";
+import { InputHandler } from "./scr/Input/InputHandler .ts";
+import { GameManager } from "./scr/Manager/GameManager.ts";
+import { AssetManager } from "./scr/Manager/AssetManager.ts";
+import { SafeKeyAsset } from "./scr/Helper/SafeKeyAsset";
+import { CurvedWorld } from "./scr/Core/CurvedWorld.ts";
+import { Skybox } from "./scr/Core/Skybox.ts";
+import { SoundManager } from "./scr/Manager/SoundManager.ts";
 
-const rootPath = "./scr/lib/AmmoJS/Utils";
+const rootPath = "./node_modules/lib/AmmoJS/Utils";
 window.focus();
 
 //#region Ammo

@@ -2,22 +2,22 @@ import * as pc from "playcanvas";
 import { UIButton } from "../Common/UIButton";
 import { AssetManager } from "../../Manager/AssetManager";
 import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
+import { UIManager } from "../../Manager/UIManager";
 import { GameManager } from "../../Manager/GameManager";
 
-export class StartGameButton extends UIButton {
+export class SettingButton extends UIButton {
     constructor(
         app: pc.Application,
         position: pc.Vec2,
-        sizeButton: pc.Vec2,
         assetManager: AssetManager
     ) {
-        const buttonTexture = assetManager.getAsset(SafeKeyAsset.IMGClickToPlay);
+        const buttonTexture = assetManager.getAsset(SafeKeyAsset.IMGButtonSetting);
         const fontAsset = assetManager.getAsset(SafeKeyAsset.Font);
 
         super(
             app,
             position,
-            sizeButton,
+            new pc.Vec2(app.graphicsDevice.width/ 8, app.graphicsDevice.width/ 8),
             "",
             fontAsset!,
             buttonTexture,
@@ -29,8 +29,8 @@ export class StartGameButton extends UIButton {
 
     private setupClickListener() {
         this.entity.button?.on('click', () => {
-            GameManager.getInstance().startGame();
-            this.app.fire("UI:OpenInGame");
+            // this.app.fire("UI:OpenPauseGame");
+            // GameManager.getInstance().pauseGame();
         });
     }
 }

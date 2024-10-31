@@ -8,6 +8,8 @@ import { UIManager } from "../../Manager/UIManager";
 import { StartGameButton } from "./StartGameButton";
 import { OpenShopButton } from "./OpenShopButton";
 import { CoinManager } from "../../Manager/CoinManager";
+import { OpenRankButton } from "./OpenRankButton";
+import { SettingButton } from "./SettingButton";
 
 export class UIMainMenu extends pc.Entity implements IUIController {
   private app: pc.Application;
@@ -51,21 +53,6 @@ export class UIMainMenu extends pc.Entity implements IUIController {
     barTopPanel.entity.element!.anchor = new pc.Vec4(0.5, 1, 0.5, 1);
     barTopPanel.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
     this.addChild(barTopPanel.entity);
-
-    const startPanel = new UIPanel(
-      new pc.Vec2(this.screenWidth, this.screenHeight * 0.2),
-      undefined
-    );
-    startPanel.entity.addComponent("button", {
-      active: true,
-      transitionMode: pc.BUTTON_TRANSITION_MODE_SPRITE_CHANGE
-    });
-    // startPanel.entity.element!.anchor = new pc.Vec4(0.5, 0, 0.5, 0.5);
-    // startPanel.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
-    startPanel.entity.element!.on("click", () => {
-      console.log("ok")
-    });
-    this.addChild(startPanel.entity);
   }
 
   private setupText() {
@@ -77,7 +64,7 @@ export class UIMainMenu extends pc.Entity implements IUIController {
     );
     const timeTexture = this.assetManager.getAsset(SafeKeyAsset.IMGTimeLabel);
     const lableSize = new pc.Vec2(
-      this.screenWidth / 2.7,
+      this.screenWidth / 3,
       this.screenHeight / 16
     );
     const textColor = new pc.Color(0, 0, 0);
@@ -95,7 +82,7 @@ export class UIMainMenu extends pc.Entity implements IUIController {
       textPosition
     );
 
-    this.scoreText.entity.element!.anchor = new pc.Vec4(0.6, 0.92, 0.6, 0.92);
+    this.scoreText.entity.element!.anchor = new pc.Vec4(0.5, 0.92, 0.5, 0.92);
     this.scoreText.entity.element!.pivot = new pc.Vec2(0, 0);
 
     this.addChild(this.scoreText.entity);
@@ -114,7 +101,7 @@ export class UIMainMenu extends pc.Entity implements IUIController {
     startGameButton.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
     this.addChild(startGameButton.entity);
 
-    const openShopButton = new OpenShopButton(
+    const openShopButton = new OpenRankButton(
       this.app,
       new pc.Vec2(0, 0),
       new pc.Vec2(this.screenWidth * 0.3, this.screenWidth * 0.12),
@@ -126,36 +113,28 @@ export class UIMainMenu extends pc.Entity implements IUIController {
 
     this.addChild(openShopButton.entity);
 
-    let scaleUp = true;
-    const maxScale = 1.2;
-    const minScale = 1.0;
-    const scaleSpeed = 0.5;
+    const openRankButton = new OpenShopButton(
+      this.app,
+      new pc.Vec2(0, 0),
+      new pc.Vec2(this.screenWidth * 0.3, this.screenWidth * 0.12),
+      this.assetManager
+    );
 
-    this.app.on("update", (dt) => {
-      const currentScale = startGameButton.entity.getLocalScale();
+    openRankButton.entity.element!.anchor = new pc.Vec4(0.03, 0.7, 0.03, 0.7);
+    openRankButton.entity.element!.pivot = new pc.Vec2(0, 0);
 
-      if (scaleUp) {
-        startGameButton.entity.setLocalScale(
-          Math.min(currentScale.x + dt * scaleSpeed, maxScale),
-          Math.min(currentScale.y + dt * scaleSpeed, maxScale),
-          1
-        );
+    this.addChild(openRankButton.entity);
 
-        if (currentScale.x >= maxScale) {
-          scaleUp = false;
-        }
-      } else {
-        startGameButton.entity.setLocalScale(
-          Math.max(currentScale.x - dt * scaleSpeed, minScale),
-          Math.max(currentScale.y - dt * scaleSpeed, minScale),
-          1
-        );
+    const settingButton = new SettingButton(
+      this.app,
+      new pc.Vec2(0, 0),
+      this.assetManager
+    );
 
-        if (currentScale.x <= minScale) {
-          scaleUp = true;
-        }
-      }
-    });
+    settingButton.entity.element!.anchor = [0.9, 0.95, 0.9, 0.95];
+    settingButton.entity.element!.pivot = [0.5, 0.5];
+
+    this.addChild(settingButton.entity);
   }
 
   Open(): void {

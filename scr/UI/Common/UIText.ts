@@ -45,6 +45,7 @@ export class UIText {
             wrapLines: true,
             text: text,
             color: color,
+            alignment: new pc.Vec2(1, 1),
         });
         this.textEntity.setLocalPosition(textPosition.x, textPosition.y, 0);
 

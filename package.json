@@ -4,9 +4,13 @@
   "license": "UNLICENSED",
   "author": "Purus Hai",
   "scripts": {
-    "start": "vite serve --host --open"
+    "start": "vite serve --host --open",
+    "preview": "vite preview --port 9000",
+    "build": "vite build"
+
   },
   "dependencies": {
+    "@tweenjs/tween.js": "^25.0.0",
     "playcanvas": "1.71.5"
   },
   "devDependencies": {

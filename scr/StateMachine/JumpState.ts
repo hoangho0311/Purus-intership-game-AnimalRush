@@ -4,7 +4,7 @@ import { SafeKeyAsset } from "../Helper/SafeKeyAsset";
 
 export class JumpState extends State {
   private jumpTime = 0;
-  private readonly JUMP_IMPULSE = new pc.Vec3(0, 200, 0);
+  private readonly JUMP_IMPULSE = new pc.Vec3(0, 250, 0);
   private readonly CHAR_SPEED = 15;
   private readonly MIN_X = -5;
   private readonly MAX_X = 5;
@@ -33,12 +33,12 @@ export class JumpState extends State {
 
   exit() {
     this.jumpTime = 0;
-    this.character.isJumpping = false;
+    this.resetVerticalVelocity();
   }
 
   private resetVerticalVelocity() {
     const velocity = this.character.entity.rigidbody!.linearVelocity.clone();
-    velocity.set(0, 0, 0);
+    velocity.y = 0;
     this.character.entity.rigidbody!.linearVelocity = velocity;
   }
 

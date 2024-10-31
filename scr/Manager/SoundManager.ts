@@ -1,5 +1,5 @@
 import * as pc from "playcanvas";
-import { AssetManager } from "../Manager/AssetManager";
+import { AssetManager } from "./AssetManager";
 import { SafeKeyAsset } from "../Helper/SafeKeyAsset";
 
 export class SoundManager extends pc.Entity {

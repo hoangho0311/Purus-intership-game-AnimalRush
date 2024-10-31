@@ -1,9 +1,9 @@
 import * as pc from "playcanvas";
 import { GameManager } from "../Manager/GameManager";
-import { Obstacle } from "../Entities/Obstacle";
-import { SawBlade } from "../Entities/Obstacles/SawBlade";
-import { Scythe } from "../Entities/Obstacles/Scythe";
-import { Barrier } from "../Entities/Obstacles/Barrier";
+import { Obstacle } from "./Obstacle";
+import { SawBlade } from "./Obstacles/SawBlade";
+import { Scythe } from "./Obstacles/Scythe";
+import { Barrier } from "./Obstacles/Barrier";
 import { Hammer } from "./Obstacles/Hammer";
 import { AssetManager } from "../Manager/AssetManager";
 import { SafeKeyAsset } from "../Helper/SafeKeyAsset";

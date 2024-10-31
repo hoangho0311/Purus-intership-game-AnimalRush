@@ -38,10 +38,13 @@ export const SafeKeyAsset = {
     IMGBackHomeIcon: 'imgBackHomeIcon',
     IMGClickToPlay: 'imgClickToPlay',
     IMGShopButton: 'imgShopButton',
+    IMGRankButton: 'imgRankButton',
 
     IMGCoinLabel: 'imgCoinLabel',
     IMGTimeLabel: 'imgTimeLabel',
     IMGDistanceLabel: 'imgDistanceLabel',
+
+    IMGHandWhite: 'imgHandWhite',
     //#endregion
 
     //Sky
@@ -83,4 +86,7 @@ export const SafeKeyAsset = {
     IMGItemShop7: 'imgItemShop7',
     IMGItemShop8: 'imgItemShop8',
     //#endregion
+
+    //tween
+    TweenScript: 'script',
 };
