@@ -14,7 +14,7 @@ import { SoundManager } from "./scr/Manager/SoundManager.ts";
 
 
 async function main() {
-const rootPath = "./node_modules/lib/AmmoJS/Utils";
+const rootPath = "AmmoJS/Utils";
 window.focus();
 
 //#region Ammo
