@@ -18,7 +18,7 @@ export default defineConfig({
     assetsDir: "",
     minify: false,
     emptyOutDir: false,
-    copyPublicDir: false,
+    copyPublicDir: true,
     chunkSizeWarningLimit: 1024 * 2, // 2MB
   },
   publicDir: "assets"
