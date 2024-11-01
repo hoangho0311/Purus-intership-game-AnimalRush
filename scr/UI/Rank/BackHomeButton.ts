@@ -3,21 +3,21 @@ import { UIButton } from "../Common/UIButton";
 import { AssetManager } from "../../Manager/AssetManager";
 import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
 
-export class OpenRankButton extends UIButton {
+export class BackHomeButton extends UIButton {
     constructor(
         app: pc.Application,
         position: pc.Vec2,
         sizeButton: pc.Vec2,
         assetManager: AssetManager
     ) {
-        const buttonTexture = assetManager.getAsset(SafeKeyAsset.IMGRankButton);
+        const buttonTexture = assetManager.getAsset(SafeKeyAsset.IMGBackHomeIcon);
         const fontAsset = assetManager.getAsset(SafeKeyAsset.Font);
 
         super(
             app,
             position,
             sizeButton,
-            "RANK",
+            "",
             fontAsset!,
             buttonTexture,
             new pc.Vec2(25, 0) 
@@ -28,7 +28,7 @@ export class OpenRankButton extends UIButton {
 
     private setupClickListener() {
         this.entity.button?.on('click', () => {
-            this.app.fire("UI:OpenRank");
+            this.app.fire("UI:OpenMainMenu");
         });
     }
 }

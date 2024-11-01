@@ -137,8 +137,15 @@ export class AssetManager {
             [SafeKeyAsset.IMGBlueButton]: new pc.Asset("imgBlueButton", "texture", {
                 url: "sprites/Button/BlueButton.png",
             }),
+
             [SafeKeyAsset.IMGRankButton]: new pc.Asset("imgRankButton", "texture", {
                 url: "sprites/Button/rankButton.png",
+            }),
+            [SafeKeyAsset.IMGRankPanel]: new pc.Asset("imgRankPanel", "texture", {
+                url: "sprites/Panel/RankPanel.png",
+            }),
+            [SafeKeyAsset.IMGRankItem]: new pc.Asset("imgRankItem", "texture", {
+                url: "sprites/Button/RankItem.png",
             }),
             //#endregion
 

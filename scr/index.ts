@@ -1,16 +1,16 @@
 import * as pc from "playcanvas";
-import { createCamera } from "./scr/Core/Camera.ts";
-import { createLight } from "./scr/Core/Light.ts";
-import { Character } from "./scr/Entities/Character.ts";
-import { RoadManager } from "./scr/Manager/RoadManager.ts";
-import { UIManager } from "./scr/Manager/UIManager.ts";
-import { InputHandler } from "./scr/Input/InputHandler .ts";
-import { GameManager } from "./scr/Manager/GameManager.ts";
-import { AssetManager } from "./scr/Manager/AssetManager.ts";
-import { SafeKeyAsset } from "./scr/Helper/SafeKeyAsset";
-import { CurvedWorld } from "./scr/Core/CurvedWorld.ts";
-import { Skybox } from "./scr/Core/Skybox.ts";
-import { SoundManager } from "./scr/Manager/SoundManager.ts";
+import { createCamera } from "./Core/Camera.ts";
+import { createLight } from "./Core/Light.ts";
+import { Character } from "./Entities/Character.ts";
+import { RoadManager } from "./Manager/RoadManager.ts";
+import { UIManager } from "./Manager/UIManager.ts";
+import { InputHandler } from "./Input/InputHandler .ts";
+import { GameManager } from "./Manager/GameManager.ts";
+import { AssetManager } from "./Manager/AssetManager.ts";
+import { SafeKeyAsset } from "./Helper/SafeKeyAsset.ts";
+import { CurvedWorld } from "./Core/CurvedWorld.ts";
+import { Skybox } from "./Core/Skybox.ts";
+import { SoundManager } from "./Manager/SoundManager.ts";
 
 
 async function main() {

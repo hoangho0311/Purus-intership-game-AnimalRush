@@ -6,6 +6,7 @@ export class SoundManager extends pc.Entity {
     private static instance: SoundManager;
     private app: pc.Application;
     private assetManager: AssetManager;
+    private isMuted: boolean = false;
 
     constructor(app: pc.Application) {
         super();
@@ -23,6 +24,8 @@ export class SoundManager extends pc.Entity {
     }
 
     public playSoundByKey(assetKey: string, loop: boolean = false, volume: number = 1, pitch: number = 1): void {
+        if (this.isMuted) return;
+        
         const soundAsset = this.assetManager.getAsset(assetKey);
         if (soundAsset && soundAsset.resource) {
             if (!this.sound.slot(assetKey)) { 
@@ -42,6 +45,16 @@ export class SoundManager extends pc.Entity {
     public stopSoundByKey(assetKey: string): void {
         if (this.sound.slot(assetKey)) {
             this.sound.slot(assetKey)!.stop();
+        }
+    }
+
+    public toggleMute(): void {
+        this.isMuted = !this.isMuted;
+
+        if (this.isMuted) {
+            for (let slotName in this.sound.slots) {
+                this.sound.slots[slotName].stop();
+            }
         }
     }
 }

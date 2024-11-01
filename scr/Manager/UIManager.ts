@@ -5,6 +5,7 @@ import { InGameUI } from'..//UI/InGame/InGameUI'
 import { LoseUI } from '../UI/Lose/LoseUI';
 import { UIMainMenu } from '../UI/Menu/UIMainMenu';
 import { UIShop } from '../UI/Shop/UIShop';
+import { UIRank } from '../UI/Rank/UIRank';
 import { Character } from '../Entities/Character';
 
 export class UIManager extends pc.Entity {
@@ -14,6 +15,7 @@ export class UIManager extends pc.Entity {
     private loseGameUI!: LoseUI;
     private uiMainMenu!: UIMainMenu;
     private uiShop!: UIShop;
+    private uiRank!: UIRank;
     private currentUI!: IUIController;
     character: Character;
 
@@ -55,6 +57,10 @@ export class UIManager extends pc.Entity {
         this.addChild(this.uiShop);
         this.uiShop.Close();
 
+        this.uiRank = new UIRank(this.app, this);
+        this.addChild(this.uiRank);
+        this.uiRank.Close();
+
         this.currentUI = this.uiMainMenu;
     }
 
@@ -85,12 +91,17 @@ export class UIManager extends pc.Entity {
         this.switchUI(this.uiShop);
     }
 
+    openUIRank() {
+        this.switchUI(this.uiRank);
+    }
+
     registerEvents() {
         this.app.on("UI:OpenMainMenu", this.openUIMainMenu, this);
         this.app.on("UI:OpenInGame", this.openUIInGame, this);
         this.app.on("UI:OpenPauseGame", this.openUIPauseGame, this);
         this.app.on("UI:OpenLoseGame", this.openUILoseGame, this);
         this.app.on("UI:OpenShop", this.openUIShop, this);
+        this.app.on("UI:OpenRank", this.openUIRank, this);
     }
 
     private switchUI(newUI: IUIController) {

@@ -38,7 +38,10 @@ export const SafeKeyAsset = {
     IMGBackHomeIcon: 'imgBackHomeIcon',
     IMGClickToPlay: 'imgClickToPlay',
     IMGShopButton: 'imgShopButton',
+
     IMGRankButton: 'imgRankButton',
+    IMGRankPanel: 'imgRankPanel',
+    IMGRankItem: 'imgRankItem',
 
     IMGCoinLabel: 'imgCoinLabel',
     IMGTimeLabel: 'imgTimeLabel',
