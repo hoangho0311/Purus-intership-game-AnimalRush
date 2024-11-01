@@ -12,15 +12,15 @@ import { CurvedWorld } from "./Core/CurvedWorld.ts";
 import { Skybox } from "./Core/Skybox.ts";
 import { SoundManager } from "./Manager/SoundManager.ts";
 
-//#region Ammo
-pc.WasmModule.setConfig("Ammo", {
-  glueUrl: "AmmoJS/Utils/ammo.js",
-  wasmUrl: "AmmoJS/Utils/ammo.wasm.wasm",
-  fallbackUrl: "AmmoJS/Utils/ammo.wasm.js",
-});
-
 async function main() {
 window.focus();
+
+//#region Ammo
+pc.WasmModule.setConfig("Ammo", {
+  glueUrl: "AmmoJS/Utils/ammo.wasm.js",
+  wasmUrl: "AmmoJS/Utils/ammo.wasm.wasm",
+  fallbackUrl: "AmmoJS/Utils/ammo.js",
+});
 await new Promise((resolve) => {
   pc.WasmModule.getInstance("Ammo", () => resolve());
 });
