@@ -161,7 +161,7 @@ export class AssetManager {
 
             //Sky
             [SafeKeyAsset.SkyboxAsset]: new pc.Asset("skyAsset", "cubemap", {
-                url: "sprites/Sky/Sky.png",
+                url: "textures/Map/Sky.png",
             }),
 
             //#region particle
