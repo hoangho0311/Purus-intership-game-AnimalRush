@@ -6,7 +6,8 @@ export default defineConfig({
     del({ targets: "dist/*", ignore: ["dist/assets"], runOnce: true }),
     del({ targets: "dist/*", ignore: ["dist/assets", "dist/index"], runOnce: true, hook: "buildEnd" }),
   ],
-  base:"/Purus-intership-game-AnimalRush/",
+  base: "/Purus-intership-game-AnimalRush/",
+  mode: "development",
   server: {
     port: 8080,
     watch: {
