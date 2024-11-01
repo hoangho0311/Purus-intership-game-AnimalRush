@@ -14,9 +14,9 @@ import { SoundManager } from "./Manager/SoundManager.ts";
 
 //#region Ammo
 pc.WasmModule.setConfig("Ammo", {
-  glueUrl: "./AmmoJS/Utils/ammo.wasm.js",
-  wasmUrl: "./AmmoJS/Utils/ammo.wasm.wasm",
-  fallbackUrl: "./AmmoJS/Utils/ammo.js",
+  glueUrl: "AmmoJS/Utils/ammo.js",
+  wasmUrl: "AmmoJS/Utils/ammo.wasm.wasm",
+  fallbackUrl: "AmmoJS/Utils/ammo.wasm.js",
 });
 
 async function main() {
