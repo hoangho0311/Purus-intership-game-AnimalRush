@@ -29,7 +29,7 @@ export class ResumeButton extends UIButton {
 
     private setupClickListener() {
         this.entity.button?.on('click', () => {
-            GameManager.getInstance().resumeGame();
+            this.app.fire("UI:OpenUICountDown");
         });
     }
 }

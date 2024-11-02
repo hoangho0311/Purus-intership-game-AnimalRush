@@ -3,6 +3,7 @@ import { IUIController } from '..//Interface//IUIController'
 import { PauseUI } from'..//UI/Pause/PauseUI'
 import { InGameUI } from'..//UI/InGame/InGameUI'
 import { LoseUI } from '../UI/Lose/LoseUI';
+import { CountDownUI } from '../UI/CountDown/CountDownUI';
 import { UIMainMenu } from '../UI/Menu/UIMainMenu';
 import { UIShop } from '../UI/Shop/UIShop';
 import { UIRank } from '../UI/Rank/UIRank';
@@ -13,6 +14,7 @@ export class UIManager extends pc.Entity {
     private uiInGame!: InGameUI;
     private uiPauseGame!: PauseUI;
     private loseGameUI!: LoseUI;
+    private countdownUI!: CountDownUI;
     private uiMainMenu!: UIMainMenu;
     private uiShop!: UIShop;
     private uiRank!: UIRank;
@@ -61,6 +63,10 @@ export class UIManager extends pc.Entity {
         this.addChild(this.uiRank);
         this.uiRank.Close();
 
+        this.countdownUI = new CountDownUI(this.app, this);
+        this.addChild(this.countdownUI);
+        this.countdownUI.Close();
+
         this.currentUI = this.uiMainMenu;
     }
 
@@ -95,6 +101,11 @@ export class UIManager extends pc.Entity {
         this.switchUI(this.uiRank);
     }
 
+    openUICountDown() {
+        this.switchUI(this.countdownUI);
+        this.countdownUI.startCountdown();
+    }
+
     registerEvents() {
         this.app.on("UI:OpenMainMenu", this.openUIMainMenu, this);
         this.app.on("UI:OpenInGame", this.openUIInGame, this);
@@ -102,6 +113,7 @@ export class UIManager extends pc.Entity {
         this.app.on("UI:OpenLoseGame", this.openUILoseGame, this);
         this.app.on("UI:OpenShop", this.openUIShop, this);
         this.app.on("UI:OpenRank", this.openUIRank, this);
+        this.app.on("UI:OpenUICountDown", this.openUICountDown, this);
     }
 
     private switchUI(newUI: IUIController) {

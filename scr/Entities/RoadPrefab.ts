@@ -171,7 +171,7 @@ export class RoadPrefab {
         item.collision!.on('triggerenter', function (result) {
             if (result.tags.has('player')) {
                 gameManager.addCoin(1);
-                SoundManager.getInstance(this.app).playSoundByKey(SafeKeyAsset.CoinSoundEffect);
+                SoundManager.getInstance(this.app).playSoundEffect("earn");
                 item.destroy();
             }
         });

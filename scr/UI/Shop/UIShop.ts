@@ -26,14 +26,14 @@ export class UIShop extends pc.Entity implements IUIController {
     this.uiManager = uiManager;
 
     this.skinItems = [
-      { textureKey: SafeKeyAsset.CharColorTextureAsset, textureItemKey: SafeKeyAsset.IMGItemShop1, price: 100, isUnlocked: true },
-      { textureKey: SafeKeyAsset.CharColorTexture1Asset, textureItemKey: SafeKeyAsset.IMGItemShop2, price: 10, isUnlocked: false },
-      { textureKey: SafeKeyAsset.CharColorTexture2Asset, textureItemKey: SafeKeyAsset.IMGItemShop3, price: 10, isUnlocked: false },
-      { textureKey: SafeKeyAsset.CharColorTexture3Asset, textureItemKey: SafeKeyAsset.IMGItemShop4, price: 400, isUnlocked: false },
-      { textureKey: SafeKeyAsset.CharColorTexture4Asset, textureItemKey: SafeKeyAsset.IMGItemShop5, price: 500, isUnlocked: false },
-      { textureKey: SafeKeyAsset.CharColorTexture5Asset, textureItemKey: SafeKeyAsset.IMGItemShop6, price: 600, isUnlocked: false },
-      { textureKey: SafeKeyAsset.CharColorTexture6Asset, textureItemKey: SafeKeyAsset.IMGItemShop7, price: 700, isUnlocked: false },
-      { textureKey: SafeKeyAsset.CharColorTexture7Asset, textureItemKey: SafeKeyAsset.IMGItemShop8, price: 800, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTextureAsset, textureItemKey: SafeKeyAsset.IMGItemShop1, price: 0, isUnlocked: true },
+      { textureKey: SafeKeyAsset.CharColorTexture1Asset, textureItemKey: SafeKeyAsset.IMGItemShop2, price: 100, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTexture2Asset, textureItemKey: SafeKeyAsset.IMGItemShop3, price: 200, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTexture3Asset, textureItemKey: SafeKeyAsset.IMGItemShop4, price: 300, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTexture4Asset, textureItemKey: SafeKeyAsset.IMGItemShop5, price: 400, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTexture5Asset, textureItemKey: SafeKeyAsset.IMGItemShop6, price: 500, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTexture6Asset, textureItemKey: SafeKeyAsset.IMGItemShop7, price: 600, isUnlocked: false },
+      { textureKey: SafeKeyAsset.CharColorTexture7Asset, textureItemKey: SafeKeyAsset.IMGItemShop8, price: 700, isUnlocked: false },
     ];
 
     this.setElement();
@@ -138,7 +138,7 @@ export class UIShop extends pc.Entity implements IUIController {
     content.addComponent("layoutgroup", {
       orientation: pc.ORIENTATION_HORIZONTAL,
       alignment: new pc.Vec2(0, 0),
-      spacing: new pc.Vec2(15, 15),
+      spacing: new pc.Vec2(10, 15),
       widthFitting: pc.FITTING_NONE,
       heightFitting: pc.FITTING_WRAP,
       wrap: true,
@@ -211,9 +211,9 @@ export class UIShop extends pc.Entity implements IUIController {
     }
 
     content.addComponent("element", {
-      anchor: new pc.Vec4(0.5, 0.2, 0.5, 0.2),
-      pivot: new pc.Vec2(0.5, 0.5),
-      height: pc.platform.mobile ? 1000 : 550,
+      anchor: new pc.Vec4(0.5, 0.5, 0.5, 0.5),
+      pivot: new pc.Vec2(0.52, 0.5),
+      height: this.app.graphicsDevice.height * 0.66,
       width: this.app.graphicsDevice.width,
       type: pc.ELEMENTTYPE_GROUP,
       useInput: true,
@@ -223,7 +223,7 @@ export class UIShop extends pc.Entity implements IUIController {
 
     scrollView.addComponent("element", {
       anchor: new pc.Vec4(0.5, 0.5, 0.5, 0.5),
-      height: pc.platform.mobile ? 550 : 220,
+      height: this.app.graphicsDevice.height * 0.30,
       pivot: new pc.Vec2(0.5, 0.5),
       type: pc.ELEMENTTYPE_GROUP,
       useInput: true,

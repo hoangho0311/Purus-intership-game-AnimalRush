@@ -95,7 +95,6 @@ function onAssetsLoaded() {
   const skybox = new Skybox(app);
 
   const soundManager = SoundManager.getInstance(app);
-  soundManager.playSoundByKey(SafeKeyAsset.BackGroundMusic, true)
 
   app.on("update", (dt) => {
     if (gameManager.isPaused() || gameManager.isOver()) return;

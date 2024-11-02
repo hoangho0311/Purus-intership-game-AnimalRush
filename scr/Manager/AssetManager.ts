@@ -102,6 +102,9 @@ export class AssetManager {
             [SafeKeyAsset.IMGBackGroundPause]: new pc.Asset("backgroundPause", "texture", {
                 url: "sprites/Panel/PausePanel.png",
             }),
+            [SafeKeyAsset.IMGBackGroundTransparent]: new pc.Asset("imgTransparentBG", "texture", {
+                url: "sprites/Panel/TransparentBG.png",
+            }),
             [SafeKeyAsset.IMGBackGroundLose]: new pc.Asset("backgroundLose", "texture", {
                 url: "sprites/Panel/LosePanel.png",
             }),
@@ -238,10 +241,14 @@ export class AssetManager {
                 url: "sprites/Icons/Hand-White-256.png",
             }),
 
-            // //tween
-            // [SafeKeyAsset.TweenScript]: new pc.Asset("script", "script", {
-            //     url: "./scr/lib/Tween/tween.js",
-            // }),
+            //#region Sound button
+            [SafeKeyAsset.IMGButtonSoundOn]: new pc.Asset("imgButtonSoundOn", "texture", {
+                url: "sprites/Button/SoundOn.png",
+            }),
+            [SafeKeyAsset.IMGButtonSoundOff]: new pc.Asset("imgButtonSoundOff", "texture", {
+                url: "sprites/Button/SoundOff.png",
+            }),
+            //#endregion
         };
 
         const assetLoader = new pc.AssetListLoader(Object.values(listAsset), app.assets);

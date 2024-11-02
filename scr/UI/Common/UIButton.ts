@@ -22,16 +22,16 @@ export class UIButton {
             transitionMode: pc.BUTTON_TRANSITION_MODE_SPRITE_CHANGE
         });
 
-        this.entity.addComponent("element", {
-            anchor: [0.5, 0.5, 0.5, 0.5],
-            height: size.y,
-            pivot: [0.5, 0.5],
-            type: pc.ELEMENTTYPE_IMAGE,
-            width: size.x,
-            useInput: true,
-        });
 
         if (texture) {
+            this.entity.addComponent("element", {
+                anchor: [0.5, 0.5, 0.5, 0.5],
+                height: size.y,
+                pivot: [0.5, 0.5],
+                type: pc.ELEMENTTYPE_IMAGE,
+                width: size.x,
+                useInput: true,
+            });
             this.entity.element!.texture = texture.resource;
         }
 

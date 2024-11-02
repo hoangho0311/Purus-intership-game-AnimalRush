@@ -4,9 +4,11 @@ import { AssetManager } from "../../Manager/AssetManager";
 import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
 import { ResumeButton } from "./ResumeButton";
 import { BackHomeButton } from "./BackHomeButton";
+import { SoundButton } from "./SoundButton";
 import { UIText } from "../Common/UIText";
 import { UIPanel } from "../Common/UIPanel";
 import { UIManager } from "../../Manager/UIManager";
+import { MusicBGButton } from "./MusicBGButton";
 
 export class PauseUI extends pc.Entity implements IUIController {
     private app: pc.Application;
@@ -14,6 +16,7 @@ export class PauseUI extends pc.Entity implements IUIController {
     private uiManager: UIManager;
     private screenWidth:number;
     private screenHeight:number;
+    private pausePanel: any;
 
     constructor(app: pc.Application, uiManager: UIManager) {
         super();
@@ -56,9 +59,9 @@ export class PauseUI extends pc.Entity implements IUIController {
 
     private setUpPanel(){
         const backgroundTexture = this.assetManager.getAsset(SafeKeyAsset.IMGBackGroundPause);
-        const pausePanel = new UIPanel(new pc.Vec2(this.screenWidth * 0.8, this.screenHeight*0.6), backgroundTexture);
+        this.pausePanel = new UIPanel(new pc.Vec2(this.screenWidth * 0.8, this.screenHeight*0.6), backgroundTexture);
 
-        this.addChild(pausePanel.entity);
+        this.addChild(this.pausePanel.entity);
     }
 
     private setupText() {
@@ -78,15 +81,31 @@ export class PauseUI extends pc.Entity implements IUIController {
     }
 
     private setupButtons() {
-        const resumeButton = new ResumeButton(this.app, new pc.Vec2(0, this.screenHeight*0.05),
+        const resumeButton = new ResumeButton(this.app, new pc.Vec2(0, 0),
         new pc.Vec2(this.screenWidth *0.4, this.screenHeight*0.09), this.assetManager);
         resumeButton.onClick(() => this.uiManager.openUIInGame());
+        resumeButton.entity.element!.anchor = new pc.Vec4(0.5, 0.27, 0.5, 0.27);
+        resumeButton.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
 
-        const backHomeButton = new BackHomeButton(this.app, new pc.Vec2(0, this.screenHeight*-0.05),
+        const backHomeButton = new BackHomeButton(this.app, new pc.Vec2(0, 0),
         new pc.Vec2(this.screenWidth *0.4, this.screenHeight*0.09), this.assetManager);
+        backHomeButton.entity.element!.anchor = new pc.Vec4(0.5, 0.1, 0.5, 0.1);
+        backHomeButton.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
 
-        this.addChild(resumeButton.entity);
-        this.addChild(backHomeButton.entity);
+        const musicButton = new MusicBGButton(this.app, new pc.Vec2(0, 0),
+        new pc.Vec2(this.screenWidth *0.15, this.screenWidth *0.15), this.assetManager);
+        musicButton.entity.element!.anchor = new pc.Vec4(0.35, 0.5, 0.35, 0.5);
+        musicButton.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
+
+        const soundButton = new SoundButton(this.app, new pc.Vec2(0, 0),
+        new pc.Vec2(this.screenWidth *0.15, this.screenWidth *0.15), this.assetManager);
+        soundButton.entity.element!.anchor = new pc.Vec4(0.65, 0.5, 0.65, 0.5);
+        soundButton.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
+
+        this.pausePanel.addChild(musicButton.entity);
+        this.pausePanel.addChild(soundButton.entity);
+        this.pausePanel.addChild(resumeButton.entity);
+        this.pausePanel.addChild(backHomeButton.entity);
     }
 
     Open(): void {

@@ -28,6 +28,7 @@ export const SafeKeyAsset = {
     IMGBackGroundPaper: 'imgBG',
     IMGBackGroundPause: 'imgPauseBG',
     IMGBackGroundLose: 'imgLoseBG',
+    IMGBackGroundTransparent: 'imgTransparentBG',
     IMGButtonClose: 'imgButtonClose',
     IMGButtonResume: 'imgButtonResume',
     IMGButtonBackHome: 'imgButtonBackHome',
@@ -90,6 +91,8 @@ export const SafeKeyAsset = {
     IMGItemShop8: 'imgItemShop8',
     //#endregion
 
-    //tween
-    TweenScript: 'script',
+    //#region Sound
+    IMGButtonSoundOn: 'imgButtonSoundOn',
+    IMGButtonSoundOff: 'imgButtonSoundOff',
+    //#endregion
 };

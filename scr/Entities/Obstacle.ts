@@ -56,11 +56,12 @@ export class Obstacle {
     onCollisionStart(result: pc.ContactResult) {
         if (result.other.tags.has('player')) {
         const character = result.other.script?.characterInstance;
-
             if (!character.isPlayerDead) {
-                this.app.fire("UI:OpenLoseGame");
                 this.gameManager.endGame();
                 character.changeState('death');
+                setTimeout(() => {
+                    this.app.fire("UI:OpenLoseGame");
+                }, 1300);
             }
         }
     }

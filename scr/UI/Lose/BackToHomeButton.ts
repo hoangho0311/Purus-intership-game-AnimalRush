@@ -7,32 +7,35 @@ import { GameManager } from "../../Manager/GameManager";
 import { SoundManager } from "../../Manager/SoundManager";
 
 export class BackToHomeButton extends UIButton {
-    constructor(
-        app: pc.Application,
-        position: pc.Vec2,
-        assetManager: AssetManager
-    ) {
-        const buttonTexture = assetManager.getAsset(SafeKeyAsset.IMGBlueButton);
-        const fontAsset = assetManager.getAsset(SafeKeyAsset.Font);
+  constructor(
+    app: pc.Application,
+    position: pc.Vec2,
+    assetManager: AssetManager
+  ) {
+    const buttonTexture = assetManager.getAsset(SafeKeyAsset.IMGBlueButton);
+    const fontAsset = assetManager.getAsset(SafeKeyAsset.Font);
 
-        super(
-            app,
-            position,
-            new pc.Vec2(app.graphicsDevice.width / 3, app.graphicsDevice.width / 7),
-            "HOME",
-            fontAsset!,
-            buttonTexture,
-            new pc.Vec2(0, 0)
-        );
+    super(
+      app,
+      position,
+      new pc.Vec2(app.graphicsDevice.width / 3, app.graphicsDevice.width / 7),
+      "HOME",
+      fontAsset!,
+      buttonTexture,
+      new pc.Vec2(0, 0)
+    );
 
-        this.setupClickListener();
-    }
+    this.setupClickListener();
+  }
 
-    private setupClickListener() {
-        this.entity.button?.on('click', () => {
-            GameManager.getInstance().stopGame();
-            SoundManager.getInstance().playSoundByKey(SafeKeyAsset.BackGroundMusic);
-            this.app.fire("UI:OpenMainMenu");
-        });
-    }
+  private setupClickListener() {
+    this.entity.button?.on("click", () => {
+      SoundManager.getInstance().isMusicMuted = false;
+      GameManager.getInstance().stopGame();
+      SoundManager.getInstance().playMusic();
+      setTimeout(() => {
+        this.app.fire("UI:OpenMainMenu");
+      }, 100);
+    });
+  }
 }

@@ -30,9 +30,12 @@ export class BackHomeButton extends UIButton {
 
   private setupClickListener() {
     this.entity.button?.on("click", () => {
-      SoundManager.getInstance().playSoundByKey(SafeKeyAsset.BackGroundMusic);
+      SoundManager.getInstance().isMusicMuted = false;
+      SoundManager.getInstance().playMusic();
       GameManager.getInstance().stopGame();
-      this.app.fire("UI:OpenMainMenu");
+      setTimeout(() => {
+        this.app.fire("UI:OpenMainMenu");
+      }, 100);
     });
   }
 }

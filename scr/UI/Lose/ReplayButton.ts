@@ -31,7 +31,8 @@ export class ReplayButton extends UIButton {
     private setupClickListener() {
         this.entity.button?.on('click', () => {
             this.app.fire("UI:OpenInGame");
-            SoundManager.getInstance().playSoundByKey(SafeKeyAsset.BackGroundMusic);
+            SoundManager.getInstance().isMusicMuted = false;
+            SoundManager.getInstance().playMusic();
             GameManager.getInstance().replayGame();
         });
     }

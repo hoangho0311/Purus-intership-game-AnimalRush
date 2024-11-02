@@ -10,6 +10,7 @@ import { OpenShopButton } from "./OpenShopButton";
 import { CoinManager } from "../../Manager/CoinManager";
 import { OpenRankButton } from "./OpenRankButton";
 import { SettingButton } from "./SettingButton";
+import { PanelStartGame } from "./PanelStartGame";
 
 export class UIMainMenu extends pc.Entity implements IUIController {
   private app: pc.Application;
@@ -91,15 +92,26 @@ export class UIMainMenu extends pc.Entity implements IUIController {
   }
 
   private setupButtons() {
+    const panelStartGame = new PanelStartGame(
+      this.app,
+      new pc.Vec2(0, 0),
+      new pc.Vec2(this.screenWidth, this.screenHeight*0.6),
+      this.assetManager
+    );
+    panelStartGame.entity.element!.anchor = new pc.Vec4(0, 0, 1, 0.6); 
+    panelStartGame.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
+    this.addChild(panelStartGame.entity);
+
+
     const startGameButton = new StartGameButton(
       this.app,
       new pc.Vec2(0, 0),
       new pc.Vec2(this.screenWidth * 0.9, this.screenHeight * 0.11),
       this.assetManager
     );
-    startGameButton.entity.element!.anchor = new pc.Vec4(0.5, 0.2, 0.5, 0.2);
+    startGameButton.entity.element!.anchor = new pc.Vec4(0.5, 0.5, 0.5, 0.5); 
     startGameButton.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
-    this.addChild(startGameButton.entity);
+    panelStartGame.entity.addChild(startGameButton.entity);
 
     const openShopButton = new OpenRankButton(
       this.app,
@@ -107,10 +119,8 @@ export class UIMainMenu extends pc.Entity implements IUIController {
       new pc.Vec2(this.screenWidth * 0.3, this.screenWidth * 0.12),
       this.assetManager
     );
-
     openShopButton.entity.element!.anchor = new pc.Vec4(0.03, 0.6, 0.03, 0.6);
     openShopButton.entity.element!.pivot = new pc.Vec2(0, 0);
-
     this.addChild(openShopButton.entity);
 
     const openRankButton = new OpenShopButton(
@@ -119,10 +129,8 @@ export class UIMainMenu extends pc.Entity implements IUIController {
       new pc.Vec2(this.screenWidth * 0.3, this.screenWidth * 0.12),
       this.assetManager
     );
-
     openRankButton.entity.element!.anchor = new pc.Vec4(0.03, 0.7, 0.03, 0.7);
     openRankButton.entity.element!.pivot = new pc.Vec2(0, 0);
-
     this.addChild(openRankButton.entity);
 
     const settingButton = new SettingButton(
@@ -130,10 +138,8 @@ export class UIMainMenu extends pc.Entity implements IUIController {
       new pc.Vec2(0, 0),
       this.assetManager
     );
-
-    settingButton.entity.element!.anchor = [0.9, 0.95, 0.9, 0.95];
-    settingButton.entity.element!.pivot = [0.5, 0.5];
-
+    settingButton.entity.element!.anchor = new pc.Vec4(0.9, 0.95, 0.9, 0.95);
+    settingButton.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
     this.addChild(settingButton.entity);
   }
 

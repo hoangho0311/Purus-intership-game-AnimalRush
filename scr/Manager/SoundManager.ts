@@ -6,7 +6,9 @@ export class SoundManager extends pc.Entity {
     private static instance: SoundManager;
     private app: pc.Application;
     private assetManager: AssetManager;
-    private isMuted: boolean = false;
+    
+    isSoundMuted: boolean = false;
+    isMusicMuted: boolean = false;
 
     constructor(app: pc.Application) {
         super();
@@ -14,6 +16,8 @@ export class SoundManager extends pc.Entity {
         this.assetManager = AssetManager.getInstance();
         this.addComponent("sound");
         this.app.root.addChild(this);
+
+        this.setupSoundSlots();
     }
 
     public static getInstance(app?: pc.Application): SoundManager {
@@ -23,39 +27,72 @@ export class SoundManager extends pc.Entity {
         return SoundManager.instance;
     }
 
-    public playSoundByKey(assetKey: string, loop: boolean = false, volume: number = 1, pitch: number = 1): void {
-        if (this.isMuted) return;
+    private setupSoundSlots() {
+        this.sound!.addSlot("backgroundMusic", {
+            asset: this.assetManager.getAsset(SafeKeyAsset.BackGroundMusic)?.id,
+            loop: true,
+            volume: 1,
+            autoPlay: true
+        });
+
+        this.sound!.addSlot("jump", {
+            asset: this.assetManager.getAsset(SafeKeyAsset.JumpSoundEffect)?.id,
+            loop: false,
+            volume: 1,
+        });
+
+        this.sound!.addSlot("earn", {
+            asset: this.assetManager.getAsset(SafeKeyAsset.CoinSoundEffect)?.id,
+            loop: false,
+            volume: 1,
+        });
+
+        this.sound!.addSlot("lose", {
+            asset: this.assetManager.getAsset(SafeKeyAsset.LoseGameSoundEffect)?.id,
+            loop: false,
+            volume: 1,
+        });
+    }
+
+    public playSoundEffect(key: string): void {
+        if (this.isSoundMuted) return;
         
-        const soundAsset = this.assetManager.getAsset(assetKey);
-        if (soundAsset && soundAsset.resource) {
-            if (!this.sound.slot(assetKey)) { 
-                this.sound.addSlot(assetKey, {
-                    asset: soundAsset.id,
-                    loop,
-                    volume,
-                    pitch,
-                    autoPlay: true,
-                });
-            } else {
-                this.sound.slot(assetKey)!.play();
-            }
+        const soundSlot = this.sound!.slot(key);
+        if (soundSlot) {
+            soundSlot.play();
         }
     }
 
-    public stopSoundByKey(assetKey: string): void {
-        if (this.sound.slot(assetKey)) {
-            this.sound.slot(assetKey)!.stop();
+    public playMusic(): void {
+        if (this.isMusicMuted) return;
+        
+        const musicSlot = this.sound!.slot("backgroundMusic");
+        if (musicSlot) {
+            musicSlot.play();
         }
     }
 
-    public toggleMute(): void {
-        this.isMuted = !this.isMuted;
+    public stopMusic(): void {
+        const musicSlot = this.sound!.slot("backgroundMusic");
+        if (musicSlot) {
+            musicSlot.stop();
+        }
+    }
 
-        if (this.isMuted) {
-            for (let slotName in this.sound.slots) {
-                this.sound.slots[slotName].stop();
+    public toggleSoundEffects(): void {
+        this.isSoundMuted = !this.isSoundMuted;
+        Object.keys(this.sound!.slots).forEach(slotName => {
+            if (slotName !== "backgroundMusic") {
+                this.sound!.slot(slotName)!.volume = this.isSoundMuted ? 0 : 1;
             }
+        });
+    }
+
+    public toggleMusic(): void {
+        this.isMusicMuted = !this.isMusicMuted;
+        const musicSlot = this.sound!.slot("backgroundMusic");
+        if (musicSlot) {
+            musicSlot.volume = this.isMusicMuted ? 0 : 1;
         }
     }
 }
-

@@ -12,7 +12,7 @@ export class JumpState extends State {
   enter() {
     this.jumpTime = 0;
     this.character.isGrounded = false;
-    this.character.soundManager.playSoundByKey(SafeKeyAsset.JumpSoundEffect);
+    this.character.soundManager.playSoundEffect("jump");
     const jumpAnimation = this.character.assetManager.getAsset(SafeKeyAsset.CharJumpAnimationAsset);
     this.character.playAnimation(jumpAnimation!, 0, false, 1.13);
 
