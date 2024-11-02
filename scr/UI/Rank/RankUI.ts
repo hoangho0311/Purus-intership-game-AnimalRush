@@ -7,7 +7,7 @@ import { UIPanel } from "../Common/UIPanel";
 import { UIManager } from "../../Manager/UIManager";
 import { BackHomeButton } from "./BackHomeButton";
 
-export class UIRank extends pc.Entity implements IUIController {
+export class RankUI extends pc.Entity implements IUIController {
   private app: pc.Application;
   private assetManager: AssetManager;
   private uiManager: UIManager;

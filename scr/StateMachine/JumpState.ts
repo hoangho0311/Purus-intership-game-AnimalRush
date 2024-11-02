@@ -16,7 +16,6 @@ export class JumpState extends State {
     const jumpAnimation = this.character.assetManager.getAsset(SafeKeyAsset.CharJumpAnimationAsset);
     this.character.playAnimation(jumpAnimation!, 0, false, 1.13);
 
-    this.resetVerticalVelocity();
     this.character.entity.rigidbody!.applyImpulse(this.JUMP_IMPULSE);
   }
 
@@ -28,7 +27,7 @@ export class JumpState extends State {
       return;
     }
 
-    this.updateHorizontalPosition(dt);
+    // this.updateHorizontalPosition(dt);
   }
 
   exit() {
@@ -47,7 +46,7 @@ export class JumpState extends State {
     const direction = this.character.inputHandler.getMovementDirection(dt, this.CHAR_SPEED, this.MIN_X, this.MAX_X);
 
     if (!this.character.inputHandler.isTouching) {
-      position.x += direction;
+      position.x -= direction;
     }
 
     const deltaX = -this.character.inputHandler.getMovementDelta() * this.character.inputHandler.touchSpeed;
@@ -60,7 +59,7 @@ export class JumpState extends State {
     const rayOrigin = this.character.entity.getPosition().clone().add(new pc.Vec3(0, 1, 0));
     const rayEnd = new pc.Vec3(rayOrigin.x, rayOrigin.y - 1, rayOrigin.z);
     const results = this.character.app.systems.rigidbody!.raycastAll(rayOrigin, rayEnd);
-    const minDistance = 0.5;
+    const minDistance = 0.4;
 
     return results.some(result => 
       result.entity.tags.has("ground") &&

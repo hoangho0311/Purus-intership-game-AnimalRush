@@ -4,7 +4,7 @@ import { AssetManager } from "../../Manager/AssetManager";
 import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
 import { SoundManager } from "../../Manager/SoundManager";
 
-export class MusicBGButton extends UIButton {
+export class SoundButton extends UIButton {
     private buttonTextureOn: pc.Asset;
     private buttonTextureOff: pc.Asset;
     private soundManager: SoundManager;
@@ -15,8 +15,8 @@ export class MusicBGButton extends UIButton {
         sizeButton: pc.Vec2,
         assetManager: AssetManager
     ) {
-        const buttonTextureOn = assetManager.getAsset(SafeKeyAsset.IMGButtonMusicOn)!;
-        const buttonTextureOff = assetManager.getAsset(SafeKeyAsset.IMGButtonMusicOff)!;
+        const buttonTextureOn = assetManager.getAsset(SafeKeyAsset.IMGButtonSoundOn)!;
+        const buttonTextureOff = assetManager.getAsset(SafeKeyAsset.IMGButtonSoundOff)!;
 
         const fontAsset = assetManager.getAsset(SafeKeyAsset.Font);
 
@@ -39,13 +39,13 @@ export class MusicBGButton extends UIButton {
 
     private setupClickListener() {
         this.entity.button?.on("click", () => {
-            this.soundManager.toggleMusic();
+            this.soundManager.toggleSoundEffects();
             this.changeIcon();
         });
     }
 
     private changeIcon() {
-        const isMuted = this.soundManager.isMusicMuted;
+        const isMuted = this.soundManager.isSoundMuted;
         const newTexture = isMuted ? this.buttonTextureOff.resource : this.buttonTextureOn.resource;
         
         this.entity.element!.texture = newTexture;

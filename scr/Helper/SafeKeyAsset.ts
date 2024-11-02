@@ -28,6 +28,7 @@ export const SafeKeyAsset = {
     IMGBackGroundPaper: 'imgBG',
     IMGBackGroundPause: 'imgPauseBG',
     IMGBackGroundLose: 'imgLoseBG',
+    IMGBackGroundSetting: 'imgSettingBG',
     IMGBackGroundTransparent: 'imgTransparentBG',
     IMGButtonClose: 'imgButtonClose',
     IMGButtonResume: 'imgButtonResume',
@@ -94,5 +95,8 @@ export const SafeKeyAsset = {
     //#region Sound
     IMGButtonSoundOn: 'imgButtonSoundOn',
     IMGButtonSoundOff: 'imgButtonSoundOff',
+
+    IMGButtonMusicOn: 'imgButtonMusicOn',
+    IMGButtonMusicOff: 'imgButtonMusicOff',
     //#endregion
 };

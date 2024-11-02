@@ -12,7 +12,7 @@ import { OpenRankButton } from "./OpenRankButton";
 import { SettingButton } from "./SettingButton";
 import { PanelStartGame } from "./PanelStartGame";
 
-export class UIMainMenu extends pc.Entity implements IUIController {
+export class MainMenuUI extends pc.Entity implements IUIController {
   private app: pc.Application;
   private assetManager: AssetManager;
   private uiManager: UIManager;

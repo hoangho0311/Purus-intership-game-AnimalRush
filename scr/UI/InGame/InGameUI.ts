@@ -44,9 +44,9 @@ export class InGameUI extends pc.Entity implements IUIController {
 
   private setupTutorial() {
     const tutorialButton = new TutorialButton(
-        this.app,
-        new pc.Vec2(0, 0),
-        this.assetManager
+      this.app,
+      new pc.Vec2(0, 0),
+      this.assetManager
     );
     tutorialButton.entity.element!.anchor = new pc.Vec4(0.5, 0.4, 0.5, 0.4);
     tutorialButton.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
@@ -148,8 +148,16 @@ export class InGameUI extends pc.Entity implements IUIController {
   }
 
   public updateTime() {
-    const time = GameManager.getInstance().getTime();
-    this.timeText.setText(`${Math.floor(time)}` + "s");
+    const timeInSeconds = Math.floor(GameManager.getInstance().getTime());
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+
+    const formattedTime = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
+    this.timeText.setText(formattedTime);
+  }
+
+  private padZero(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
   }
 
   private onUpdate = () => {

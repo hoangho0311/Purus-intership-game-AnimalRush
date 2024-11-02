@@ -8,7 +8,7 @@ import { UIManager } from "../../Manager/UIManager";
 import { BackHomeButton } from "./BackHomeButton";
 import { CoinManager } from "../../Manager/CoinManager";
 
-export class UIShop extends pc.Entity implements IUIController {
+export class ShopUI extends pc.Entity implements IUIController {
   private app: pc.Application;
   private assetManager: AssetManager;
   private uiManager: UIManager;

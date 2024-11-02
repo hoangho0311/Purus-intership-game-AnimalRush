@@ -4,9 +4,10 @@ import { PauseUI } from'..//UI/Pause/PauseUI'
 import { InGameUI } from'..//UI/InGame/InGameUI'
 import { LoseUI } from '../UI/Lose/LoseUI';
 import { CountDownUI } from '../UI/CountDown/CountDownUI';
-import { UIMainMenu } from '../UI/Menu/UIMainMenu';
-import { UIShop } from '../UI/Shop/UIShop';
-import { UIRank } from '../UI/Rank/UIRank';
+import { MainMenuUI } from '../UI/Menu/MainMenuUI';
+import { ShopUI } from '../UI/Shop/ShopUI';
+import { RankUI } from '../UI/Rank/RankUI';
+import { SettingUI } from '../UI/MenuSetting/SettingUI';
 import { Character } from '../Entities/Character';
 
 export class UIManager extends pc.Entity {
@@ -15,9 +16,10 @@ export class UIManager extends pc.Entity {
     private uiPauseGame!: PauseUI;
     private loseGameUI!: LoseUI;
     private countdownUI!: CountDownUI;
-    private uiMainMenu!: UIMainMenu;
-    private uiShop!: UIShop;
-    private uiRank!: UIRank;
+    private mainMenuUI!: MainMenuUI;
+    private shopUI!: ShopUI;
+    private rankUI!: RankUI;
+    private settingUI: SettingUI;
     private currentUI!: IUIController;
     character: Character;
 
@@ -39,9 +41,9 @@ export class UIManager extends pc.Entity {
         });
         this.app.root.addChild(this);
 
-        this.uiMainMenu = new UIMainMenu(this.app, this);
-        this.addChild(this.uiMainMenu);
-        this.uiMainMenu.Open();
+        this.mainMenuUI = new MainMenuUI(this.app, this);
+        this.addChild(this.mainMenuUI);
+        this.mainMenuUI.Open();
 
         this.uiInGame = new InGameUI(this.app, this);
         this.addChild(this.uiInGame);
@@ -55,26 +57,30 @@ export class UIManager extends pc.Entity {
         this.addChild(this.loseGameUI);
         this.loseGameUI.Close();
 
-        this.uiShop = new UIShop(this.app, this);
-        this.addChild(this.uiShop);
-        this.uiShop.Close();
+        this.shopUI = new ShopUI(this.app, this);
+        this.addChild(this.shopUI);
+        this.shopUI.Close();
 
-        this.uiRank = new UIRank(this.app, this);
-        this.addChild(this.uiRank);
-        this.uiRank.Close();
+        this.rankUI = new RankUI(this.app, this);
+        this.addChild(this.rankUI);
+        this.rankUI.Close();
 
         this.countdownUI = new CountDownUI(this.app, this);
         this.addChild(this.countdownUI);
         this.countdownUI.Close();
 
-        this.currentUI = this.uiMainMenu;
+        this.settingUI = new SettingUI(this.app, this);
+        this.addChild(this.settingUI);
+        this.settingUI.Close();
+
+        this.currentUI = this.mainMenuUI;
     }
 
 
-    openUIMainMenu() {
+    openmainMenuUI() {
         this.app.fire("switchLight", "menu");
         this.app.fire("switchCamera", "menu");
-        this.switchUI(this.uiMainMenu);
+        this.switchUI(this.mainMenuUI);
     }
 
     openUIInGame() {
@@ -91,14 +97,14 @@ export class UIManager extends pc.Entity {
         this.switchUI(this.loseGameUI);
     }
 
-    openUIShop() {
+    openshopUI() {
         this.app.fire("switchLight", "shop");
         this.app.fire("switchCamera", "shop");
-        this.switchUI(this.uiShop);
+        this.switchUI(this.shopUI);
     }
 
-    openUIRank() {
-        this.switchUI(this.uiRank);
+    openrankUI() {
+        this.switchUI(this.rankUI);
     }
 
     openUICountDown() {
@@ -106,14 +112,19 @@ export class UIManager extends pc.Entity {
         this.countdownUI.startCountdown();
     }
 
+    opensettingsettingUIUI() {
+        this.switchUI(this.settingUI);
+    }
+
     registerEvents() {
-        this.app.on("UI:OpenMainMenu", this.openUIMainMenu, this);
+        this.app.on("UI:OpenMainMenu", this.openmainMenuUI, this);
         this.app.on("UI:OpenInGame", this.openUIInGame, this);
         this.app.on("UI:OpenPauseGame", this.openUIPauseGame, this);
         this.app.on("UI:OpenLoseGame", this.openUILoseGame, this);
-        this.app.on("UI:OpenShop", this.openUIShop, this);
-        this.app.on("UI:OpenRank", this.openUIRank, this);
+        this.app.on("UI:OpenShop", this.openshopUI, this);
+        this.app.on("UI:OpenRank", this.openrankUI, this);
         this.app.on("UI:OpenUICountDown", this.openUICountDown, this);
+        this.app.on("UI:OpenSettingMenu", this.opensettingsettingUIUI, this);
     }
 
     private switchUI(newUI: IUIController) {

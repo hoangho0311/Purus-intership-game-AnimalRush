@@ -102,6 +102,9 @@ export class AssetManager {
             [SafeKeyAsset.IMGBackGroundPause]: new pc.Asset("backgroundPause", "texture", {
                 url: "sprites/Panel/PausePanel.png",
             }),
+            [SafeKeyAsset.IMGBackGroundSetting]: new pc.Asset("imgSettingBG", "texture", {
+                url: "sprites/Panel/SettingPanel.png",
+            }),
             [SafeKeyAsset.IMGBackGroundTransparent]: new pc.Asset("imgTransparentBG", "texture", {
                 url: "sprites/Panel/TransparentBG.png",
             }),
@@ -247,6 +250,12 @@ export class AssetManager {
             }),
             [SafeKeyAsset.IMGButtonSoundOff]: new pc.Asset("imgButtonSoundOff", "texture", {
                 url: "sprites/Button/SoundOff.png",
+            }),
+            [SafeKeyAsset.IMGButtonMusicOn]: new pc.Asset("imgButtonMusicOn", "texture", {
+                url: "sprites/Button/MusicOn.png",
+            }),
+            [SafeKeyAsset.IMGButtonMusicOff]: new pc.Asset("imgButtonMusicOff", "texture", {
+                url: "sprites/Button/MusicOff.png",
             }),
             //#endregion
         };

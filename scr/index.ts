@@ -67,7 +67,7 @@ app.on('destroy', () => {
   window.removeEventListener('resize', resize);
 });
 app.start();
-app.systems.rigidbody!.gravity.set(0, -15.81, 0);
+app.systems.rigidbody!.gravity.set(0, -18, 0);
 
 const assetManager = AssetManager.getInstance();
 assetManager.on("assetsLoaded", onAssetsLoaded, this);

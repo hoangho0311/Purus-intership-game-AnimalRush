@@ -53,7 +53,7 @@ export class TutorialButton extends UIButton {
                 this.entity.setLocalPosition(positionState.x, this.entity.getLocalPosition().y, this.entity.getLocalPosition().z);
             })
             .yoyo(true)
-            .repeat(5)
+            .repeat(3)
             .repeatDelay(50)
             .onComplete(() => {
                 this.setUpTween();

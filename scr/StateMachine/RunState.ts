@@ -1,6 +1,7 @@
 import * as pc from "playcanvas";
 import { State } from "./State";
 import { SafeKeyAsset } from "../Helper/SafeKeyAsset";
+
 export class RunState extends State {
     enter() {
         const charRunAnimationAsset = this.character.assetManager.getAsset(SafeKeyAsset.CharRunAnimationAsset);
@@ -16,21 +17,20 @@ export class RunState extends State {
         const direction = this.character.inputHandler.getMovementDirection(dt, charSpeed, minX, maxX);
 
         const position = this.character.entity.getPosition();
-        if (!this.character.inputHandler.isTouching) {
-            position.x += direction;
-        }
+
+        position.x -= direction;
 
         const deltaX = this.character.inputHandler.getMovementDelta();
+        position.x += -deltaX * this.character.inputHandler.touchSpeed;
+        position.x = pc.math.clamp(position.x, minX, maxX);
 
-        position.x += -deltaX * this.character.inputHandler.touchSpeed; 
-        position.x = pc.math.clamp(position.x, minX, maxX); 
- 
         this.character.entity.rigidbody!.teleport(position);
 
-        if ((this.character.app.keyboard.wasPressed(pc.KEY_SPACE) || this.character.inputHandler.getJumpDelta() < -300) && this.character.isGrounded) {
+        if ((this.character.app.keyboard.wasPressed(pc.KEY_SPACE) || this.character.inputHandler.getJumpDelta() < -13) && this.character.isGrounded) {
             this.character.changeState("jump");
         }
     }
 
-    exit() {}
+    exit() {
+    }
 }

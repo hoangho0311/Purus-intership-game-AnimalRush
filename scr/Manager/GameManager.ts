@@ -79,7 +79,6 @@ export class GameManager {
         this.isGamePaused = false;
         this.isGameOver = false;
         this.timeManager.resetTime();
-        this.coinManager.resetSessionCoins();
         this.distanceManager.resetDistance();
         if (this.roadManager) {
             this.roadManager.resetRoads();

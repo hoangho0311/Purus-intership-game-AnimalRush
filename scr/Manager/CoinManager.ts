@@ -48,7 +48,6 @@ export class CoinManager {
 
     finalizeSession(): void {
         this.addGlobalCoins(this.sessionCoins);
-        this.resetSessionCoins();
     }
 
     saveTotalCoins(): void {
