@@ -13,6 +13,7 @@ export class JumpState extends State {
     this.jumpTime = 0;
     this.character.isGrounded = false;
     this.character.soundManager.playSoundEffect("jump");
+    this.resetVerticalVelocity();
     const jumpAnimation = this.character.assetManager.getAsset(SafeKeyAsset.CharJumpAnimationAsset);
     this.character.playAnimation(jumpAnimation!, 0, false, 1.13);
 

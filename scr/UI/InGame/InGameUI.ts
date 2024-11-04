@@ -63,7 +63,7 @@ export class InGameUI extends pc.Entity implements IUIController {
     const timeTexture = this.assetManager.getAsset(SafeKeyAsset.IMGTimeLabel);
     const lableSize = new pc.Vec2(this.screenWidth / 3, this.screenHeight / 17);
     const textColor = new pc.Color(0, 0, 0);
-    const textPosition = new pc.Vec2(35, 0);
+    const textPosition = new pc.Vec2(pc.platform.mobile?35:18, 0);
     //Score Text
     this.scoreText = new UIText(
       this.app,

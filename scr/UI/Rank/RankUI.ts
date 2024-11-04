@@ -115,7 +115,7 @@ export class RankUI extends pc.Entity implements IUIController {
         Math.round(topDistances[i]),
         new pc.Vec2(0, 0),
         new pc.Vec2(0, 0),
-        60,
+        pc.platform.mobile?60:30,
         new pc.Color(0, 0, 0)
       );
       distanceText.entity.element!.anchor = new pc.Vec4(0.65, 0.65, 0.65, 0.65);

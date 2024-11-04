@@ -20,7 +20,7 @@ export class OpenShopButton extends UIButton {
             "SHOP",
             fontAsset!,
             buttonTexture,
-            new pc.Vec2(40, 0) 
+            new pc.Vec2(pc.platform.mobile?40:20, 0) 
         );
 
         this.setupClickListener();
