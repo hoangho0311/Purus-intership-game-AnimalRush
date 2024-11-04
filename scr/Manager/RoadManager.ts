@@ -10,9 +10,9 @@ export class RoadManager {
     roadLength: number;
     roadWidth: number;
     playerEntity: any;
-    roadSpeed: number = 40;
-    speedIncrement: number = 0.1;
-    maxRoadSpeed: number = 200;
+    roadSpeed: number = 50;
+    speedIncrement: number = 0.15;
+    maxRoadSpeed: number = 80;
     roadPrefabManager: RoadPrefab;
     gameManager: GameManager;
     assetManager: AssetManager;
@@ -70,14 +70,14 @@ export class RoadManager {
             {
                 obstacles: [
                     {
-                        position: new pc.Vec3(-5, 15, 0),
+                        position: new pc.Vec3(0, 10, 0),
                         assetKey: "hammerObstacleAsset",
                         type: "Hammer",
-                        scale: new pc.Vec3(3, 3, 3),
+                        scale: new pc.Vec3(2, 2, 2),
                         collisionConfig: {
                             type: "box",
-                            halfExtents: new pc.Vec3(1, 2, 1),
-                            linearOffset: new pc.Vec3(0, 2, 0)
+                            halfExtents: new pc.Vec3(1.7, 1.7, 1.7),
+                            linearOffset: new pc.Vec3(0, -8, 0)
                         }
                     }
                 ],
@@ -136,12 +136,12 @@ export class RoadManager {
                     {
                         position: new pc.Vec3(0, 0, 0),
                         assetKey: "obstacleAsset12",
-                        type: "SawBlade",
+                        type: "Spindle",
                         scale: new pc.Vec3(1, 1, 1),
                         collisionConfig: {
                             type: "box",
                             halfExtents: new pc.Vec3(6, 0.6, 0.5),
-                            linearOffset: new pc.Vec3(0, 1, 0)
+                            linearOffset: new pc.Vec3(0, 1.5, 0)
                         }
                     }
                 ],
@@ -152,6 +152,68 @@ export class RoadManager {
                     { position: new pc.Vec3(-3, 3, 0), assetKey: "itemAsset1" },
                     { position: new pc.Vec3(-3, 3, -5), assetKey: "itemAsset1" },
                     { position: new pc.Vec3(-3, 3, 5), assetKey: "itemAsset1" },
+                ],
+                decorations: [
+                    { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(-10, 0, 0), assetKey: "lollipop24Asset", scale: new pc.Vec3(1, 1, 1),},
+                    { position: new pc.Vec3(10, 0, 0), assetKey: "lollipop34Asset", scale: new pc.Vec3(1.5, 1.5, 1.5), },
+                
+                ]
+            },
+            {
+                obstacles: [
+                    {
+                        position: new pc.Vec3(5, 0, 0),
+                        assetKey: "RHammerObstacleAsset",
+                        type: "SpinHammer",
+                        scale: new pc.Vec3(2, 2, 2),
+                        collisionConfig: {
+                            type: "box",
+                            halfExtents: new pc.Vec3(2, 1, 2),
+                            linearOffset: new pc.Vec3(0, 1, 2),
+                            rotateSpeed: -150,
+                        }
+                    }
+                ],
+                items: [
+                    { position: new pc.Vec3(0, 1, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(0, 1, -5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(0, 1, 5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 1, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 1, -5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 1, 5), assetKey: "itemAsset1" },
+                ],
+                decorations: [
+                    { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },
+                    { position: new pc.Vec3(-10, 0, 0), assetKey: "lollipop24Asset", scale: new pc.Vec3(1, 1, 1),},
+                    { position: new pc.Vec3(10, 0, 0), assetKey: "lollipop34Asset", scale: new pc.Vec3(1.5, 1.5, 1.5), },
+                
+                ]
+            },
+            {
+                obstacles: [
+                    {
+                        position: new pc.Vec3(0, 1, 0),
+                        assetKey: "rdObstacleAsset",
+                        type: "SawBlade",
+                        scale: new pc.Vec3(2, 2, 2),
+                        collisionConfig: {
+                            type: "box",
+                            halfExtents: new pc.Vec3(3, 0.8, 0.8),
+                            linearOffset: new pc.Vec3(0, 0, 0),
+                            rotateSpeed: -150,
+                        }
+                    }
+                ],
+                items: [
+                    { position: new pc.Vec3(0, 1, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(0, 1, -5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(0, 1, 5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 1, 0), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 1, -5), assetKey: "itemAsset1" },
+                    { position: new pc.Vec3(-3, 1, 5), assetKey: "itemAsset1" },
                 ],
                 decorations: [
                     { position: new pc.Vec3(-15, -3, 0), assetKey: "grassGroundAsset", scale: new pc.Vec3(1, 1, 4), },

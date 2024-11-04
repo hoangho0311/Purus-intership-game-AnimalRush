@@ -11,8 +11,8 @@ export class RunState extends State {
 
     update(dt: number) {
         const charSpeed = 15;
-        const minX = -5;
-        const maxX = 5;
+        const minX = -4;
+        const maxX = 4;
 
         const direction = this.character.inputHandler.getMovementDirection(dt, charSpeed, minX, maxX);
 
@@ -26,7 +26,7 @@ export class RunState extends State {
 
         this.character.entity.rigidbody!.teleport(position);
 
-        if ((this.character.app.keyboard.wasPressed(pc.KEY_SPACE) || this.character.inputHandler.getJumpDelta() < -13) && this.character.isGrounded) {
+        if ((this.character.app.keyboard.wasPressed(pc.KEY_SPACE) || this.character.inputHandler.getJumpDelta() < -10) && this.character.isGrounded) {
             this.character.changeState("jump");
         }
     }

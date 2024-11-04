@@ -72,6 +72,8 @@ export const SafeKeyAsset = {
     ObstacleAsset9: 'obstacleAsset9',
     ObstacleAsset12: 'obstacleAsset12',
     HammerObstacleAsset: 'hammerObstacleAsset',
+    RDObstacleAsset: 'rdObstacleAsset',
+    RHammerObstacleAsset: 'RHammerObstacleAsset',
     //#endregion
 
     //#region sound

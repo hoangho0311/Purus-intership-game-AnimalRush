@@ -81,6 +81,12 @@ export class AssetManager {
             [SafeKeyAsset.HammerObstacleAsset]: new pc.Asset("hammerObstacleAsset", "model", {
                 url: "models/Map/obstacle_8_002.glb",
             }),
+            [SafeKeyAsset.RDObstacleAsset]: new pc.Asset("rdObstacleAsset", "model", {
+                url: "models/Map/obstacle_RD.glb",
+            }),
+            [SafeKeyAsset.RHammerObstacleAsset]: new pc.Asset("RHammerObstacleAsset", "model", {
+                url: "models/Map/obstacle_RHammer.glb",
+            }),
             [SafeKeyAsset.ItemAsset1]: new pc.Asset("starModel", "model", {
                 url: "models/Map/coin_001.glb",
             }),

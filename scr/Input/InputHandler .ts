@@ -16,7 +16,7 @@ export class InputHandler {
         this.startY = 0;
         this.deltaY = 0;
         this.deltaX = 0;
-        this.touchSpeed = 0.025;
+        this.touchSpeed = 0.03;
 
         this.setupTouchEvents();
     }

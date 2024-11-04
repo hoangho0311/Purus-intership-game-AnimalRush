@@ -1,10 +1,12 @@
 import * as pc from "playcanvas";
 import { GameManager } from "../Manager/GameManager";
 import { Obstacle } from "./Obstacle";
-import { SawBlade } from "./Obstacles/SawBlade";
+import { Spindle } from "./Obstacles/Spindle";
 import { Scythe } from "./Obstacles/Scythe";
 import { Barrier } from "./Obstacles/Barrier";
 import { Hammer } from "./Obstacles/Hammer";
+import { SpinHammer } from "./Obstacles/SpinHammer";
+import { SawBlade } from "./Obstacles/SawBlade";
 import { AssetManager } from "../Manager/AssetManager";
 import { SafeKeyAsset } from "../Helper/SafeKeyAsset";
 import { SoundManager } from "../Manager/SoundManager";
@@ -98,14 +100,14 @@ export class RoadPrefab {
 
         let obstacle: Obstacle;
         switch (type) {
-            case "SawBlade":
-                obstacle = new SawBlade(
+            case "Spindle":
+                obstacle = new Spindle(
                     this.app,
                     obstacleAsset,
                     position,
                     scale,
                     collisionConfig,
-                    30
+                    50
                 );
                 break;
             case "Scythe":
@@ -135,6 +137,26 @@ export class RoadPrefab {
                     scale,
                     collisionConfig, 
                     30,
+                );
+            break;
+            case "SpinHammer":
+                obstacle = new SpinHammer(
+                    this.app,
+                    obstacleAsset,
+                    position,
+                    scale,
+                    collisionConfig, 
+                    collisionConfig.rotateSpeed,
+                );
+            break;
+            case "SawBlade":
+                obstacle = new SawBlade(
+                    this.app,
+                    obstacleAsset,
+                    position,
+                    scale,
+                    collisionConfig, 
+                    collisionConfig.rotateSpeed,
                 );
             break;
             default:

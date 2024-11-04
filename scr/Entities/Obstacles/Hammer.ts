@@ -1,7 +1,13 @@
 import * as pc from "playcanvas";
 import { Obstacle } from "../Obstacle";
+import { AssetManager } from "../../Manager/AssetManager";
+import { SafeKeyAsset } from "../../Helper/SafeKeyAsset";
+
 export class Hammer extends Obstacle {
     rotationSpeed: number;
+    swingAngle: number;
+    swingSpeed: number;
+    swingDirection: number;
 
     constructor(
         app: pc.Application,
@@ -14,12 +20,20 @@ export class Hammer extends Obstacle {
         super(app, asset, position, scale, collisionConfig);
 
         this.rotationSpeed = rotationSpeed;
+        this.swingAngle = 0;
+        this.swingSpeed = 100;
+        this.swingDirection = 1;
     }
 
     setupBehavior() {
         this.app.on("update", (dt) => {
-            // const angle = this.rotationSpeed * dt;
-            // this.entity.rotate(0, angle , 0);
+            this.swingAngle += this.swingSpeed * dt * this.swingDirection;
+
+            if (this.swingAngle > 45 || this.swingAngle < -45) {
+                this.swingDirection *= -1;
+            }
+
+            this.entity.setEulerAngles(this.swingAngle, 90, 0);
         });
     }
 }

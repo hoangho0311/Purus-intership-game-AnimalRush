@@ -1,6 +1,6 @@
 import * as pc from "playcanvas";
 import { Obstacle } from "../Obstacle";
-export class SawBlade extends Obstacle {
+export class SpinHammer extends Obstacle {
     rotationSpeed: number;
     collider2: pc.Entity;
 
@@ -20,7 +20,7 @@ export class SawBlade extends Obstacle {
     setupBehavior() {
         this.app.on("update", (dt) => {
             const angle = this.rotationSpeed * dt;
-            this.entity.rotate(angle, 0, 0);
+            this.entity.rotate(0, angle , 0);
         });
     }
 }
