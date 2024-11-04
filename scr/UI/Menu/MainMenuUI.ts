@@ -69,7 +69,7 @@ export class MainMenuUI extends pc.Entity implements IUIController {
       this.screenHeight / 16
     );
     const textColor = new pc.Color(0, 0, 0);
-    const textPosition = new pc.Vec2(10, 0);
+    const textPosition = new pc.Vec2(30, 0);
 
     this.scoreText = new UIText(
       this.app,

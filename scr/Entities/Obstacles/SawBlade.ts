@@ -1,5 +1,7 @@
 import * as pc from "playcanvas";
 import { Obstacle } from "../Obstacle";
+import { GameManager } from "../../Manager/GameManager";
+
 export class SawBlade extends Obstacle {
     rotationSpeed: number;
     collider2: pc.Entity;
@@ -19,6 +21,7 @@ export class SawBlade extends Obstacle {
 
     setupBehavior() {
         this.app.on("update", (dt) => {
+            if(GameManager.getInstance().isPaused() || GameManager.getInstance().isOver() ) return;
             const angle = this.rotationSpeed * dt;
             this.entity.rotate(angle, 0, 0);
         });

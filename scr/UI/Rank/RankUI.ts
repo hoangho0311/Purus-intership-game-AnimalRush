@@ -115,7 +115,7 @@ export class RankUI extends pc.Entity implements IUIController {
         Math.round(topDistances[i]),
         new pc.Vec2(0, 0),
         new pc.Vec2(0, 0),
-        30,
+        60,
         new pc.Color(0, 0, 0)
       );
       distanceText.entity.element!.anchor = new pc.Vec4(0.65, 0.65, 0.65, 0.65);
@@ -127,8 +127,8 @@ export class RankUI extends pc.Entity implements IUIController {
   
     content.addComponent("element", {
       anchor: new pc.Vec4(0.5, 0.5, 0.5, 0.5),
-      pivot: new pc.Vec2(0.5, 0.5),
-      height:  this.app.graphicsDevice.height * 0.65,
+      pivot: new pc.Vec2(0.48, 0.5),
+      height:  this.app.graphicsDevice.height * 0.6,
       width: this.app.graphicsDevice.width,
       type: pc.ELEMENTTYPE_GROUP,
       useInput: true,

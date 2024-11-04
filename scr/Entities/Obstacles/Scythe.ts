@@ -1,5 +1,7 @@
 import * as pc from "playcanvas";
 import { Obstacle } from "../Obstacle";
+import { GameManager } from "../../Manager/GameManager";
+
 export class Scythe extends Obstacle {
     swingSpeed: number;
     swingAngle: number;
@@ -21,6 +23,7 @@ export class Scythe extends Obstacle {
 
     setupBehavior() {
         this.app.on("update", (dt) => {
+            if(GameManager.getInstance().isPaused() || GameManager.getInstance().isOver() ) return;
             const position = this.entity.getLocalPosition();
 
             position.x += this.swingSpeed * dt * this.direction;

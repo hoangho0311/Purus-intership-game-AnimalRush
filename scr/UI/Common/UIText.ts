@@ -42,7 +42,6 @@ export class UIText {
             fontSize: fontSize,
             height: 64,
             width: 128,
-            wrapLines: true,
             text: text,
             color: color,
             alignment: new pc.Vec2(1, 1),

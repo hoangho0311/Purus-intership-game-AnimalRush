@@ -20,7 +20,7 @@ export class OpenRankButton extends UIButton {
             "RANK",
             fontAsset!,
             buttonTexture,
-            new pc.Vec2(25, 0) 
+            new pc.Vec2(40, 0) 
         );
 
         this.setupClickListener();

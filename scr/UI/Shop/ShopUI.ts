@@ -181,9 +181,9 @@ export class ShopUI extends pc.Entity implements IUIController {
         type: pc.ELEMENTTYPE_TEXT,
         text: `${this.skinItems[i].price}`,
         fontAsset: this.assetManager.getAsset(SafeKeyAsset.Font)!.id,
-        fontSize: 18,
+        fontSize: 35,
         pivot: new pc.Vec2(0.5, 0.5),
-        anchor: new pc.Vec4(0.4, 0, 0.4, 0),
+        anchor: new pc.Vec4(0.4, 0.08, 0.4, 0.08),
         color: new pc.Color(0, 0, 0),
       });
 
@@ -212,8 +212,8 @@ export class ShopUI extends pc.Entity implements IUIController {
 
     content.addComponent("element", {
       anchor: new pc.Vec4(0.5, 0.5, 0.5, 0.5),
-      pivot: new pc.Vec2(0.52, 0.5),
-      height: this.app.graphicsDevice.height * 0.66,
+      pivot: new pc.Vec2(0.48, 0.5),
+      height: this.app.graphicsDevice.height * 0.55,
       width: this.app.graphicsDevice.width,
       type: pc.ELEMENTTYPE_GROUP,
       useInput: true,

@@ -1,5 +1,7 @@
 import * as pc from "playcanvas";
 import { Obstacle } from "../Obstacle";
+import { GameManager } from "../../Manager/GameManager";
+
 export class SpinHammer extends Obstacle {
     rotationSpeed: number;
     collider2: pc.Entity;
@@ -19,6 +21,7 @@ export class SpinHammer extends Obstacle {
 
     setupBehavior() {
         this.app.on("update", (dt) => {
+            if(GameManager.getInstance().isPaused() || GameManager.getInstance().isOver() ) return;
             const angle = this.rotationSpeed * dt;
             this.entity.rotate(0, angle , 0);
         });
