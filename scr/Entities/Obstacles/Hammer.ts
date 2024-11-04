@@ -21,7 +21,7 @@ export class Hammer extends Obstacle {
 
         this.rotationSpeed = rotationSpeed;
         this.swingAngle = 0;
-        this.swingSpeed = 100;
+        this.swingSpeed = 60;
         this.swingDirection = 1;
     }
 

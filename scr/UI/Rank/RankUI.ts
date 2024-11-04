@@ -6,12 +6,12 @@ import { UIText } from "../Common/UIText";
 import { UIPanel } from "../Common/UIPanel";
 import { UIManager } from "../../Manager/UIManager";
 import { BackHomeButton } from "./BackHomeButton";
+import { GameManager } from "../../Manager/GameManager";
 
 export class RankUI extends pc.Entity implements IUIController {
   private app: pc.Application;
   private assetManager: AssetManager;
   private uiManager: UIManager;
-  private scoreText: UIText;
   private screenWidth: number;
   private screenHeight: number;
 
@@ -27,6 +27,13 @@ export class RankUI extends pc.Entity implements IUIController {
     this.setUpPanel();
     this.setupText();
     this.setupButtons();
+  }
+
+  loadPanel(){
+    this.setElement();
+    this.setUpPanel();
+    this.setupText();
+    this.setupButtons()
   }
 
   private setElement() {
@@ -65,7 +72,7 @@ export class RankUI extends pc.Entity implements IUIController {
     this.addChild(this.createRankScrollView());
   }
 
-  private createRankScrollView(): pc.Entity {
+  createRankScrollView(): pc.Entity {
     const scrollView = new pc.Entity("RankScrollView");
   
     const viewport = new pc.Entity("Viewport");
@@ -89,7 +96,10 @@ export class RankUI extends pc.Entity implements IUIController {
       wrap: false,
     });
   
-    for (let i = 0; i < 5; i++) {
+    const topDistancesString  = localStorage.getItem("topDistances");
+    const topDistances = topDistancesString ? JSON.parse(topDistancesString) : [];
+
+    for (let i = 0; i < topDistances.length; i++) {
       const rankItem = new pc.Entity(`RankItem-${i}`);
       rankItem.addComponent("element", {
         type: pc.ELEMENTTYPE_IMAGE,
@@ -99,6 +109,19 @@ export class RankUI extends pc.Entity implements IUIController {
         anchor: new pc.Vec4(0.5, 1 - (i * 0.1), 0.5, 1 - (i * 0.1)),
       });
       rankItem.element!.texture = this.assetManager.getAsset(SafeKeyAsset.IMGRankItem)?.resource;
+      const distanceText = new UIText(
+        this.app,
+        this.assetManager,
+        Math.round(topDistances[i]),
+        new pc.Vec2(0, 0),
+        new pc.Vec2(0, 0),
+        30,
+        new pc.Color(0, 0, 0)
+      );
+      distanceText.entity.element!.anchor = new pc.Vec4(0.65, 0.65, 0.65, 0.65);
+      distanceText.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
+
+    rankItem.addChild(distanceText.entity);
       content.addChild(rankItem);
     }
   

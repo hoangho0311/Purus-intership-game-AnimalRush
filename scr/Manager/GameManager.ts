@@ -69,8 +69,7 @@ export class GameManager {
             this.isGameOver = true;
             this.isGamePaused = false;
             this.coinManager.finalizeSession();
-
-            console.log("Game over. Total coins:", this.coinManager.getTotalCoins());
+            this.updateHighestDistance();
         }
     }
 
@@ -117,6 +116,21 @@ export class GameManager {
         if (this.isGameStarted && !this.isGameOver && !this.isGamePaused) {
             this.distanceManager.updateDistance(delta);
         }
+    }
+
+    showNewHighScoreText(): boolean{
+        if(this.distanceManager.loadTopDistances()[0] <= this.distanceManager.getDistance()){
+            return true;
+        }
+        return false;
+    }
+
+    getTopDistances():void{
+        this.distanceManager.getTopDistances();
+    }
+
+    updateHighestDistance() : void{
+        this.distanceManager.updateHighestDistance();
     }
 
     getDistance(): number {

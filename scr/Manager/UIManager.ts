@@ -104,6 +104,7 @@ export class UIManager extends pc.Entity {
     }
 
     openrankUI() {
+        this.rankUI.loadPanel();
         this.switchUI(this.rankUI);
     }
 

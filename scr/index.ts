@@ -41,7 +41,8 @@ const app = new pc.Application(canvas, {
 });
 
 app.setCanvasFillMode(pc.FILLMODE_FILL_WINDOW);
-app.setCanvasResolution(pc.RESOLUTION_AUTO);
+app.setCanvasResolution(pc.RESOLUTION_FIXED, window.innerWidth * device.maxPixelRatio, window.innerHeight * device.maxPixelRatio);
+
 
 const setCanvasSize = () => {
   const screenWidth = window.innerWidth;

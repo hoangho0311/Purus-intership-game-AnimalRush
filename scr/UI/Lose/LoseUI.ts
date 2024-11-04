@@ -18,6 +18,7 @@ export class LoseUI extends pc.Entity implements IUIController {
     private scoreText: UIText;
     private distanceText: UIText;
     private timeText: UIText;
+    private highScoreText: UIText;
 
     constructor(app: pc.Application, uiManager: UIManager) {
         super();
@@ -31,6 +32,7 @@ export class LoseUI extends pc.Entity implements IUIController {
         this.setUpPanel();
         this.setupText();
         this.setupButtons();
+        this.showHighScoreText();
 
         this.app.on("UI:OpenLoseGame", this.updateLoseUI, this);
     }
@@ -68,6 +70,8 @@ export class LoseUI extends pc.Entity implements IUIController {
     }
 
     private setupText() {
+        
+
 
         //Lose Title
         const loseTitle = new UIText(
@@ -145,10 +149,35 @@ export class LoseUI extends pc.Entity implements IUIController {
         this.addChild(backToHomeButton.entity);
     }
 
+    showHighScoreText(){
+        this.highScoreText = new UIText(
+            this.app,
+            this.assetManager,
+            "NEW SCORE",
+            new pc.Vec2(0, 0),
+            new pc.Vec2(0, 0),
+            this.app.graphicsDevice.width/15,
+            new pc.Color(0, 0, 0)
+        );
+        this.highScoreText.entity.element!.anchor =  new pc.Vec4(0.4, 0.7, 0.4, 0.7);
+        this.highScoreText.entity.element!.pivot = new pc.Vec2(0.5, 0.5);
+        this.highScoreText.entity.setLocalEulerAngles(0, 0, 45);
+        this.highScoreText.entity.enabled = false;
+        this.addChild(this.highScoreText.entity);
+    }
+
     private updateLoseUI(): void {
         this.updateScoreText();
         this.updateDistanceText();
         this.updateTimeText();
+        if(GameManager.getInstance().showNewHighScoreText())
+        {
+            console.log("true");
+            this.highScoreText.entity.enabled = true;
+        }else{
+            console.log("gg");
+            this.highScoreText.entity.enabled = false;
+        }
     }
 
     public updateScoreText() {
