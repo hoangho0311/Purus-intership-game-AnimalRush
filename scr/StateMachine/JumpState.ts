@@ -27,8 +27,8 @@ export class JumpState extends State {
       this.character.changeState("run");
       return;
     }
-
-    // this.updateHorizontalPosition(dt);
+    if(this.jumpTime > 0.3)
+      this.updateHorizontalPosition(dt);
   }
 
   exit() {
@@ -43,15 +43,19 @@ export class JumpState extends State {
   }
 
   private updateHorizontalPosition(dt: number) {
+    const charSpeed = 15;
+    const minX = -4;
+    const maxX = 4;
+
+    const direction = this.character.inputHandler.getMovementDirection(dt, charSpeed, minX, maxX);
+
     const position = this.character.entity.getPosition();
-    const direction = this.character.inputHandler.getMovementDirection(dt, this.CHAR_SPEED, this.MIN_X, this.MAX_X);
 
-    if (!this.character.inputHandler.isTouching) {
-      position.x -= direction;
-    }
+    position.x -= direction;
 
-    const deltaX = -this.character.inputHandler.getMovementDelta() * this.character.inputHandler.touchSpeed;
-    position.x = pc.math.clamp(position.x + deltaX, this.MIN_X, this.MAX_X);
+    const deltaX = this.character.inputHandler.getMovementDelta();
+    position.x += -deltaX * this.character.inputHandler.touchSpeed;
+    position.x = pc.math.clamp(position.x, minX, maxX);
 
     this.character.entity.rigidbody!.teleport(position);
   }

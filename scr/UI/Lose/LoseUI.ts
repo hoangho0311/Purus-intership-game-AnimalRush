@@ -172,10 +172,8 @@ export class LoseUI extends pc.Entity implements IUIController {
         this.updateTimeText();
         if(GameManager.getInstance().showNewHighScoreText())
         {
-            console.log("true");
             this.highScoreText.entity.enabled = true;
         }else{
-            console.log("gg");
             this.highScoreText.entity.enabled = false;
         }
     }
